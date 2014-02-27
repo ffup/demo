@@ -1,0 +1,8 @@
+acme_board:
+    resource: "@AcmeBoardBundle/Resources/config/routing.yml"
+    prefix:   /board
+
+acme_user:
+    resource: "@AcmeUserBundle/Resources/config/routing.yml"
+    prefix:   /
+

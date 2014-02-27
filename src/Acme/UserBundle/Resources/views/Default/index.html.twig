@@ -1,0 +1,9 @@
+{% extends "AcmeUserBundle::layout.html.twig" %}
+
+{% block title 'User Bundle' %}
+
+{% block body %}
+    <div><a href="{{ path('_signout') }}">signout</a></div>
+    <div><a href="{{ path('_signin') }}">signin</a></div>   
+    Hello {{ name }}!
+{% endblock %}

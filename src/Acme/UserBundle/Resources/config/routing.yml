@@ -1,0 +1,6 @@
+acme_user_homepage:
+    pattern:  /user
+    defaults: { _controller: AcmeUserBundle:Default:index }
+_user_secured:
+    resource: "@AcmeUserBundle/Controller/SecuredController.php"
+    type:     annotation

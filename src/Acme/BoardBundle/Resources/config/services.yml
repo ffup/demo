@@ -1,0 +1,7 @@
+parameters:
+#    acme_board.example.class: Acme\BoardBundle\Example
+
+services:
+#    acme_board.example:
+#        class: %acme_board.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

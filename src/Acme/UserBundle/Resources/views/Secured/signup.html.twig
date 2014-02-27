@@ -1,0 +1,31 @@
+{% extends "AcmeUserBundle::layout.html.twig" %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.username, 'Username Description') }}
+        {{ form_errors(form.username) }}
+        {{ form_widget(form.username, {'attr': {'class': 'username_field'}}) }}
+    </div>
+
+    <div>
+        {{ form_label(form.password) }}
+        {{ form_errors(form.password) }}
+        {{ form_widget(form.password) }}
+    </div>
+    
+    <div>
+        {{ form_label(form.email) }}
+        {{ form_errors(form.email) }}
+        {{ form_widget(form.email) }}
+    </div>
+    
+    <div>
+        <button type="submit">signin</button>
+    </div>
+
+{{ form_end(form) }}
+
+{% endblock %}

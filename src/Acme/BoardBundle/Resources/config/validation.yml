@@ -1,0 +1,12 @@
+# Acme/BoardBundle/Resources/config/validation.yml
+Acme\BoardBundle\Entity\Thread:
+    properties:
+        title:
+            - NotBlank: ~
+            - Length:
+                min: 4
+        content:
+            - NotBlank: ~
+            - Length:
+                min: 10
+            

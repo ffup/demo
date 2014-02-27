@@ -1,0 +1,11 @@
+acme_board_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AcmeBoardBundle:Default:index }
+
+board_index:
+    pattern: /
+    defaults: { _controller: AcmeBoardBundle:Thread:index }
+    
+thread_create:
+    pattern: /thread/create
+    defaults: { _controller: AcmeBoardBundle:Thread:create }

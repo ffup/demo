@@ -1,0 +1,26 @@
+{% extends 'AcmeBoardBundle::layout.html.twig' %}
+
+{% block body %}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.title, 'Title') }}
+        {{ form_errors(form.title) }}
+        {{ form_widget(form.title, {'attr': {'class': 'username_field'}}) }}
+    </div>
+
+    <div>
+        {{ form_label(form.content) }}
+        {{ form_errors(form.content) }}
+        {{ form_widget(form.content) }}
+    </div>
+     
+    <div>
+        <button type="submit">create</button>
+    </div>
+
+{{ form_end(form) }}
+
+{% endblock %}
