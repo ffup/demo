@@ -2,10 +2,24 @@ acme_board_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: AcmeBoardBundle:Default:index }
 
-board_index:
+thread_index:
     pattern: /
     defaults: { _controller: AcmeBoardBundle:Thread:index }
-    
+    requirements:
+        id:  \d+
+
+#category_index:    
+
+thread_view:
+    pattern: /thread/{id}
+    defaults: { _controller: AcmeBoardBundle:Thread:view } 
+    requirements:
+        id:  \d+
+ 
 thread_create:
     pattern: /thread/create
     defaults: { _controller: AcmeBoardBundle:Thread:create }
+
+comment_create:
+    pattern: /comment/create
+    defaults: { _controller: AcmeBoardBundle:Comment:create }

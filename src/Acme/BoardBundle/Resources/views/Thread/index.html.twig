@@ -1,7 +1,90 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 
-{% block title %}AcmeBoardBundle:Thread:index{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Thread:index page</h1>
+<!--
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+-->
+
+<!-- HTML to write -->
+<div class="page-header">
+  <h1>Example page header <small>Subtext for header</small></h1>
+</div>
+
+
+<div class="tooltip">
+  <div class="tooltip-inner">
+    Tooltip!
+  </div>
+  <div class="tooltip-arrow"></div>
+</div>
+ 
+ <!-- Generated markup by the plugin -->
+
+
+<div class="row">
+  <div class="col-xs-10 col-sm-10">
+    <dl class="">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Replies</th>
+            <th>Last Post</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for thread in pagination %}
+          <tr>
+            <td></td>
+            <td>
+            <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a></td>
+            <td>{{ thread.content }}</td>      
+            <td>{{ thread.numReplies }}</td>      
+            <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if pagination %}
+    
+    <div>
+      <ul class="pagination">
+      {% if pages.current != pages.first %}
+        <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
+          <a href="{{ path('thread_index', {'page': pages.first}) }}">&laquo;</a>
+        </li>
+      {% endif %}
+      {% for page in pages.pagesInRange %}
+        <li class="{{ pages.current == page ? 'active' : null }}">
+          <a href="{{ path('thread_index', {'page': page}) }}">{{ page }}</a>
+        </li>
+      {% endfor %}
+      {% if pages.current != pages.last %}
+        <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
+          <a href="{{ path('thread_index', {'page': pages.last}) }}">&raquo;</a>
+        </li>
+      {% endif %}
+      </ul>
+    </div>
+    {% endif %}
+
+<div><a href="{{ path('thread_create') }}">
+    <button class="btn btn-primary">create</button></a>
+</div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-2 col-sm-2">
+  </div>
+</div>
+
 {% endblock %}

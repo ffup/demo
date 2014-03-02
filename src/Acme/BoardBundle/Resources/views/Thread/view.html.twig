@@ -1,0 +1,79 @@
+{% extends 'AcmeBoardBundle::layout.html.twig' %}
+
+{% block body %}
+
+<h2>{{ thread.title }}</h2>
+
+<!-- thread -->
+  <!-- Button trigger modal -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--
+<div class="pull-left">LEFT</div>
+<div class="pull-right">RIGHT</div>
+
+-->
+
+<!-- comment -->
+<div class="">
+{% for comment in pagination %}
+    <div id="{{ comment.postIndex }}">
+    <p class="primary">{{ comment.content|nl2br }}</p>
+    <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>    
+    
+    {{ comment.user.username }} : {{ comment.createdAt|time_ago_in_words }}
+
+    {# Add the following translations to your \app\Resources\translations\messages.locale.yml #}
+    </div>
+{% endfor %}
+</div>
+
+<div>
+  <ul class="pagination">
+    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
+      {% if pages.current != pages.first %}
+      <a href="{{ path('thread_view', {'id': thread.id, 'page': pages.first}) }}">&laquo;</a></li>
+      {% endif %}
+      {% for page in pages.pagesInRange %}
+    <li class="{{ pages.current == page ? 'active' : null }}">
+      <a href="{{ path('thread_view', {'id': thread.id, 'page': page}) }}">{{ page }}</a></li>
+      {% endfor %}
+    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
+      {% if pages.current != pages.last %}
+      <a href="{{ path('thread_view', {'id': thread.id, 'page': pages.last}) }}">&raquo;</a>
+      {% endif %}
+  </li>
+    </ul>
+</div>
+
+<div>
+<a class="btn btn-primary" href="{{ path('comment_create', {'id': thread.id}) }}" role="button">create</a>
+</div>
+
+{% endblock %}
+
+
+
+

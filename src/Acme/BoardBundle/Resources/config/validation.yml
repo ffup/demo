@@ -9,4 +9,11 @@ Acme\BoardBundle\Entity\Thread:
             - NotBlank: ~
             - Length:
                 min: 10
+
+Acme\BoardBundle\Entity\Comment:
+    properties:
+        content:
+            - NotBlank: ~
+            - Length:
+                min: 10                
             

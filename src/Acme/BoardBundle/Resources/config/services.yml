@@ -5,3 +5,10 @@ services:
 #    acme_board.example:
 #        class: %acme_board.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+services:
+    salavert.twig.time_ago:
+        class: Salavert\Twig\Extension\TimeAgoExtension
+        arguments: [@translator]
+        tags:
+        - { name: twig.extension }

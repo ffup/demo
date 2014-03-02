@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Thread
  *
- * @ORM\Table(name="thread")
+ * @ORM\Table(name="thread", indexes={@ORM\Index(columns={"updated_at"})})
  * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\ThreadRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -65,10 +65,15 @@ class Thread
     private $updatedAt;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads")
+     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread")
+     */
+    protected $comments;
 
     /**
      * Get id
@@ -251,5 +256,45 @@ class Thread
     public function getUser()
     {
         return $this->user;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $comments
+     * @return Thread
+     */
+    public function addComment(\Acme\BoardBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Acme\BoardBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

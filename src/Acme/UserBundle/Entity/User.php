@@ -50,6 +50,11 @@ class User implements UserInterface, \Serializable
      */
     protected $threads;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="user")
+     */
+    protected $comments;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -271,5 +276,38 @@ class User implements UserInterface, \Serializable
     public function getThreads()
     {
         return $this->threads;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $comments
+     * @return User
+     */
+    public function addComment(\Acme\BoardBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Acme\BoardBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

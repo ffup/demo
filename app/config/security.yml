@@ -28,12 +28,17 @@ security:
         login:
             pattern:  ^/secured/signin$
             security: false
-
-        secured_area:
+     
+        main:
             pattern:    ^/
             form_login:
                 check_path: _signin_check
                 login_path: _signin
+            remember_me:
+                key:      "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path:     /
+                domain:   ~ # Defaults to the current domain from $_SERVER
 
             logout:
                 path:   _signout
@@ -41,7 +46,7 @@ security:
             anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
-
+            
     access_control:
         - { path: create$, roles: ROLE_USER }         
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

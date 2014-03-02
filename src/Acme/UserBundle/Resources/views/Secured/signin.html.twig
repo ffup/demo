@@ -1,28 +1,64 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
 
+{% block title %}Sign in{% endblock %}
+
 {% block body %}
 
-{% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
+<h2>Sign in</h2>
 
-<form action="{{ path('_signin_check') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
-    
-    <input type="hidden" name="_csrf_token"
-        value="{{ csrf_token('authenticate') }}"
-    >
-    {#
-        If you want to control the URL the user
-        is redirected to on success (more details below)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
-
-    <button type="submit">signin</button>
+<div class="row">
+  <div class="col-xs-8 col-sm-4">
+  {% if error %}
+    <p class="bg-danger"><h4>{{ error.message }}</h4></p>
+  {% endif %}
+<!-- Split button -->
+<form role="form" action="{{ path('_signin_check') }}" method="post">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Username</label>
+    <input type="text" value="{{ last_username }}" class="form-control" id="exampleInputEmail1" name="_username" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" name="_password" placeholder="Password">
+  </div>
+  
+  <div class="form-group">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8">
+        <input type="checkbox" id="remember_me" name="_remember_me" checked />
+        <label for="remember_me">Keep me logged in</label>
+      </div>
+      <div class="col-xs-4 col-sm-4">
+        <button type="submit" class="btn btn-default">Signin</button>
+      </div>
+  </div>
+ 
+  <input type="hidden" name="_csrf_token"value="{{ csrf_token('authenticate') }}">
+  
 </form>
+
+<div class="text-left"><a href="{{ path('_signup') }}">Create a Account</a></div>
+
+  </div>
+  
+  <div class="col-xs-4 col-sm-8">
+
+ 
+  </div>
+
+
+
+
+  <!-- Add the extra clearfix for only the required viewport -->
+  <div class="clearfix visible-xs"></div>
+</div>
+
+
+<!--
+    If you want to control the URL the user
+    is redirected to on success (more details below)
+    <input type="hidden" name="_target_path" value="/account" />
+-->
+
 
 {% endblock %}

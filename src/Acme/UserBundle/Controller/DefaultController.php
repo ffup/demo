@@ -9,10 +9,7 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-           
-        $user = $this->getUser();
-        var_dump($user);
-        $name = 123;
+        $name = null;
         return $this->render('AcmeUserBundle:Default:index.html.twig', array('name' => $name));
     }
 }
