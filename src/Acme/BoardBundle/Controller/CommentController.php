@@ -5,9 +5,6 @@ namespace Acme\BoardBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use Doctrine\DBAL\LockMode;
-use Doctrine\ORM\OptimisticLockException;
-
 class CommentController extends Controller
 {
     public function createAction(Request $request)
@@ -28,29 +25,9 @@ class CommentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {            
-
-            try {
-                $em->getConnection()->beginTransaction(); // suspend auto-commit
-                $em->lock($thread, LockMode::PESSIMISTIC_WRITE);
-                // thread->numReplies ++;
-                $thread->setNumReplies($thread->getNumReplies() + 1);
-                $thread->setUpdatedAt(new \DateTime());
-                
-                $comment->setUser($this->getUser());
-                $comment->setThread($thread);
-                $comment->setPostIndex($thread->getNumReplies() +1);
-                
-                $em->persist($thread);
-                $em->persist($comment);
-                              
-                $em->flush();
-                $em->getConnection()->commit();     
-            
-            } catch(OptimisticLockException $e) {
-                $em->getConnection()->rollback();
-                $em->close();
-                throw $e;
-            }    
+        
+            $em->getRepository('AcmeBoardBundle:Comment')
+              ->create($thread, $comment, $this->getUser());
 
             // Notice
             $this->get('session')->getFlashBag()->add(

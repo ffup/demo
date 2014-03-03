@@ -21,7 +21,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "ircmaxell/password-compat": "~1.0.3",
         "zendframework/zendframework": "2.*",
-        "salavert/time-ago-in-words": "1.*"
+        "salavert/time-ago-in-words": "1.*",
+        "friendsofsymfony/jsrouting-bundle": "@stable"        
     },
     "scripts": {
         "post-install-cmd": [

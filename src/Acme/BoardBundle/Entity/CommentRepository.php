@@ -3,6 +3,8 @@
 namespace Acme\BoardBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\OptimisticLockException;
 
 /**
  * CommentRepository
@@ -12,4 +14,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
+    public function create(Thread $thread, Comment $comment, \Acme\UserBundle\Entity\User $user)
+    {
+        $em = $this->getEntityManager();
+
+        try {
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            $em->lock($thread, LockMode::PESSIMISTIC_WRITE);
+            // thread->numReplies ++;
+            $thread->setNumReplies($thread->getNumReplies() + 1);
+            $thread->setUpdatedAt(new \DateTime());
+            
+            $comment->setUser($user);
+            $comment->setThread($thread);
+            $comment->setPostIndex($thread->getNumReplies() +1);
+            
+            $em->persist($thread);
+            $em->persist($comment);
+                          
+            $em->flush();
+            $em->getConnection()->commit();     
+        
+        } catch(OptimisticLockException $e) {
+            $em->getConnection()->rollback();
+            $em->close();
+            throw $e;
+        }    
+        
+    }
+
 }

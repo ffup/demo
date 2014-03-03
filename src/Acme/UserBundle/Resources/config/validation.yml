@@ -1,7 +1,14 @@
 # Acme/UserBundle/Resources/config/validation.yml
 Acme\UserBundle\Entity\User:
+    group_sequence:
+        - User
+        - Strict
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email        
     properties:
         username:
+            # in order to avoid multiple error messages        
             - NotBlank: ~
             - Length:
                 min: 6
@@ -14,6 +21,8 @@ Acme\UserBundle\Entity\User:
             - Email: ~
     getters:
         passwordLegal:
-            - "True": { message: "The password cannot match your username" }
+            - "True": 
+                message: "The password cannot match your username"
+                groups: [Strict]
 
             

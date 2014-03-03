@@ -6,10 +6,11 @@
 
 <!-- thread -->
   <!-- Button trigger modal -->
+<!--
 <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   Launch demo modal
 </button>
-
+-->
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -39,14 +40,18 @@
 <!-- comment -->
 <div class="">
 {% for comment in pagination %}
-    <div id="{{ comment.postIndex }}">
-    <p class="primary">{{ comment.content|nl2br }}</p>
-    <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>    
-    
-    {{ comment.user.username }} : {{ comment.createdAt|time_ago_in_words }}
-
-    {# Add the following translations to your \app\Resources\translations\messages.locale.yml #}
-    </div>
+  <div id="{{ comment.postIndex }}">
+  <div class="primary">{{ comment.content }}</div>
+  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>    
+  <div class="btn-group pull-left" data-toggle="buttons">
+    <label class="btn btn-default">
+      <input type="checkbox"> 0
+    </label>
+  </div>
+  {{ comment.user.username }} : {{ comment.createdAt|time_ago_in_words }}
+  
+  {# Add the following translations to your \app\Resources\translations\messages.locale.yml #}
+  </div>
 {% endfor %}
 </div>
 

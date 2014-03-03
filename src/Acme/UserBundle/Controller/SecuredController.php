@@ -4,6 +4,7 @@ namespace Acme\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -77,9 +78,7 @@ class SecuredController extends Controller
      */
     public function signupAction(Request $request)
     {
-        
         $user = new \Acme\UserBundle\Entity\User();
-        
         $form = $this->createForm(new \Acme\UserBundle\Form\UserType(), $user);
         
         $form->handleRequest($request);
@@ -100,11 +99,15 @@ class SecuredController extends Controller
                 'notice',
                 'Successful registration!'
             );
+            
+            // Here, "main" is the name of the firewall in your security.yml
+            // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+            // $this->get('security.context')->setToken($token);
 
-            return $this->redirect($this->generateUrl('_demo'));
+            return $this->redirect($this->generateUrl('_sign_in'));
         }
         
         return $this->render('AcmeUserBundle:Secured:signup.html.twig', 
-            array('name' => null, 'form' => $form->createView()));
+            array('form' => $form->createView()));
     }
 }

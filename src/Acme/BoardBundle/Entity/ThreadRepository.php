@@ -12,4 +12,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThreadRepository extends EntityRepository
 {
+    public function create(Thread $thread, \Acme\UserBundle\Entity\User $user)
+    {
+        $em = $this->getEntityManager();
+
+        try {
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            $thread->setUser($user);
+            
+            $em->persist($thread);
+            $em->flush();
+            
+            $comment = new \Acme\BoardBundle\Entity\Comment();
+            $comment->setUser($user)
+                ->setThread($thread)
+                ->setContent($thread->getContent())
+                ->setPostIndex(1);
+            
+            $em->persist($comment);
+            $em->flush();
+            
+            $em->getConnection()->commit();     
+            
+            } catch(\Exception $e) {
+                $em->getConnection()->rollback();
+                $em->close();
+                throw $e;
+            }    
+        
+    }
 }

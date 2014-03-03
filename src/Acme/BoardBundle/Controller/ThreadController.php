@@ -8,12 +8,10 @@ use Doctrine\ORM\Tools\Pagination\Paginator as Pagination;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\Null as PaginatorNullAdapter;
 
-
 class ThreadController extends Controller
 {
     public function indexAction(Request $request)
     {
-
         $page = $request->query->get('page', 1);;
         $pageSize = 5;
         
@@ -39,47 +37,23 @@ class ThreadController extends Controller
     
     public function createAction(Request $request)
     {
-        $thread = new \Acme\BoardBundle\Entity\Thread();
-        
+        $thread = new \Acme\BoardBundle\Entity\Thread();   
         $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
-        
         $form->handleRequest($request);
-        $user = $this->getUser();
         
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database       
             $em = $this->getDoctrine()->getManager();
             // $this->container->get('security.context')->getToken()->getUser()
-            try {
-                $em->getConnection()->beginTransaction(); // suspend auto-commit
-                $thread->setUser($user);
-                
-                $em->persist($thread);
-                $em->flush();
-                
-                $comment = new \Acme\BoardBundle\Entity\Comment();
-                $comment->setUser($user)
-                    ->setThread($thread)
-                    ->setContent($thread->getContent())
-                    ->setPostIndex(1);
-                
-                $em->persist($comment);
-                $em->flush();
-                
-                $em->getConnection()->commit();     
-            
-            } catch(\Exception $e) {
-                $em->getConnection()->rollback();
-                $em->close();
-                throw $e;
-            }    
+            $em->getRepository('AcmeBoardBundle:Thread')
+              ->create($thread, $this->getUser());
 
             $this->get('session')->getFlashBag()->add(
                 'notice',
                 'Successfully created!'
             );
 
-            return $this->redirect($this->generateUrl('_demo'));
+            return $this->redirect($this->generateUrl('thread_index'));
         }
         
         return $this->render('AcmeBoardBundle:Thread:create.html.twig', 
@@ -117,12 +91,13 @@ class ThreadController extends Controller
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(10);
         
+        $params =  array('thread' => $thread, 
+            'pages' => $paginator->getPages(), 
+            'pagination' => $pagination);
          // \Doctrine\Common\Util\Debug::dump($query);
         
-        return $this->render('AcmeBoardBundle:Thread:view.html.twig', 
-            array('thread' => $thread, 
-                'pages' => $paginator->getPages(), 
-                'pagination' => $pagination));
+        
+        return $this->render('AcmeBoardBundle:Thread:view.html.twig', $params);
                 
     }
 

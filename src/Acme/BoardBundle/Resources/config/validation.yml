@@ -2,18 +2,18 @@
 Acme\BoardBundle\Entity\Thread:
     properties:
         title:
-            - NotBlank: ~
+            - NotBlank: ~        
             - Length:
                 min: 4
         content:
-            - NotBlank: ~
+            - NotBlank: ~        
             - Length:
                 min: 10
 
 Acme\BoardBundle\Entity\Comment:
     properties:
         content:
-            - NotBlank: ~
+            - NotBlank: ~        
             - Length:
                 min: 10                
             
