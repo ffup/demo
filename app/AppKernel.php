@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Acme\UserBundle\AcmeUserBundle(),
             new Acme\BoardBundle\AcmeBoardBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

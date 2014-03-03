@@ -6,29 +6,85 @@
   <div class="col-xs-8 col-sm-6">
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-horizontal', 'role': 'form'}}) }}
       <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">{{ form_errors(form) }}</div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form) }}</div>
       </div>
       <div class="form-group {{ form_errors(form.username) ? 'has-error' : null }}">  
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">{{ form_errors(form.username) }}</div>  
-        <label for="username" class="col-sm-2 control-label">Username</label>
-        <div class="col-sm-10">{{ form_widget(form.username, {'attr': {'id': 'username', 'class': 'form-control', 'placeholder': 'Username'}}) }}</div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.username) }}</div>  
+        <label for="username" class="col-sm-3 control-label">Username</label>
+        <div class="col-sm-9">{{ form_widget(form.username, {'attr': {'id': 'username', 'class': 'form-control', 'placeholder': 'Username'}}) }}</div>
       </div>
-      <div class="form-group {{ form_errors(form.password) ? 'has-error has-feedback' : null }}">  
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">{{ form_errors(form.password) }}</div>  
-        <label for="password3" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-10">{{ form_widget(form.password, {'attr': {'id': 'password', 'class': 'form-control', 'placeholder': 'Password', 'type': 'password'}}) }}</div>
+      
+      <div class="form-group {{ form_errors(form.password.first) ? 'has-error has-feedback' : null }}">  
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.password.first) }}</div>  
+        <label for="password" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-9">{{ form_widget(form.password.first, {'attr': {'id': 'password', 'class': 'form-control', 'placeholder': 'Password', 'type': 'password'}}) }}</div>
       </div>
+      
+      <div class="form-group {{ form_errors(form.password.second) ? 'has-error has-feedback' : null }}">  
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.password.second) }}</div>  
+        <label for="repassword" class="col-sm-3 control-label">RePassword</label>
+        <div class="col-sm-9">{{ form_widget(form.password.second, {'attr': {'id': 'repassword', 'class': 'form-control', 'placeholder': 'RePassword', 'type': 'password'}}) }}</div>
+      </div>
+      
       <div class="form-group {{ form_errors(form.email) ? 'has-error' : null }}">  
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">{{ form_errors(form.email) }}    </div>  
-        <label for="email" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-10">{{ form_widget(form.email, {'attr': {'id': 'email', 'class': 'form-control', 'placeholder': 'Email'}}) }}</div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.email) }}</div>  
+        <label for="email" class="col-sm-3 control-label">Email</label>
+        <div class="col-sm-9">{{ form_widget(form.email, {'attr': {'id': 'email', 'class': 'form-control', 'placeholder': 'Email'}}) }}</div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.recaptcha) }}</div>
+      
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <div id="recaptcha_widget">
+            <a title="Get another CAPTCHA" href="javascript:Recaptcha.reload()"><div id="recaptcha_image"></div></a>
+            <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
+            <span class="recaptcha_only_if_image">Prove you’re not a robot</span>
+            <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
+            <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" placeholder="Type the text" />
+            <!-- <div><a href="javascript:Recaptcha.reload()">Get another CAPTCHA</a></div>
+            <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Get an audio CAPTCHA</a></div>
+            <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Get an image CAPTCHA</a></div>
+            <div><a href="javascript:Recaptcha.showhelp()">Help</a></div> -->
+           </div>
+          {% form_theme form 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig' %}
+          {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom',},} }) }}
+        </div>
+      </div>
+      <style>
+      #recaptcha_response_field {
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.428571429;
+      color: #555555;
+      vertical-align: middle;
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+              transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      }
+
+      #recaptcha_response_field:focus {
+      border-color: #66afe9;
+      outline: 0;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      }
+      </style>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-9">
           <button type="submit" class="btn btn-default">Sign up</button>
         </div>
       </div>

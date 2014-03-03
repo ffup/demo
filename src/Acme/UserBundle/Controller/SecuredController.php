@@ -33,7 +33,6 @@ class SecuredController extends Controller
         );
 
         return $this->render('AcmeUserBundle:Secured:signin.html.twig', $params);
-
     }
 
     /**
@@ -104,7 +103,7 @@ class SecuredController extends Controller
             // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
             // $this->get('security.context')->setToken($token);
 
-            return $this->redirect($this->generateUrl('_sign_in'));
+            return $this->redirect($this->generateUrl('_signin'));
         }
         
         return $this->render('AcmeUserBundle:Secured:signup.html.twig', 

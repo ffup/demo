@@ -18,8 +18,8 @@ security:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
         user_db:
-            entity: { class: Acme\UserBundle\Entity\User, property: username } 
-
+            entity: { class: Acme\UserBundle\Entity\User } 
+            #entity: { class: Acme\UserBundle\Entity\User, property: username } 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
