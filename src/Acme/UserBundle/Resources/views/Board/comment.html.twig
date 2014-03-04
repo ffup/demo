@@ -1,0 +1,39 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}My comments{% endblock %}
+
+{% block body %}
+<div class="page-header">
+  <h1>My comments <small>Subtext for header</small></h1>
+</div>
+
+<div class="">
+{% for comment in pagination %}
+<div id="{{ comment.postIndex }}">
+  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>
+  <blockquote>
+    <p><a href="{{ path('thread_view', {'id': comment.getThread.id, 'page': comment.getPostIndexPage(pages.itemCountPerPage)}) }}#{{ comment.postIndex }}">{{ comment.content|nl2br }}</a></p>
+    <footer>{{ comment.getThread.getTitle }}<cite title="Source Title">({{ comment.createdAt|time_ago_in_words }})</cite></footer>
+  </blockquote>
+</div>
+{% endfor %}
+</div>
+<div>
+  <ul class="pagination">
+    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
+      {% if pages.firstPageInRange is not defined %}
+      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.first}) }}">&laquo;</a></li>
+      {% endif %}
+      {% for page in pages.pagesInRange %}
+    <li class="{{ pages.current == page ? 'active' : null }}">
+      <a href="{{ path(app.request.attributes.get('_route'), {'page': page}) }}">{{ page }}</a></li>
+      {% endfor %}
+    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
+      {% if pages.lastPageInRange is not defined %}
+      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.last}) }}">&raquo;</a>
+      {% endif %}
+    </li>
+  </ul>
+</div>
+
+{% endblock %}

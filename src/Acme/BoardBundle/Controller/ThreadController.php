@@ -16,19 +16,18 @@ class ThreadController extends Controller
         $pageSize = 5;
         
         $entityManager = $this->getDoctrine()->getManager();
-        $dql = "SELECT t FROM AcmeBoardBundle:Thread t ORDER BY t.updatedAt DESC";
+        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
+            ORDER BY t.updatedAt DESC";
         $query = $entityManager->createQuery($dql)
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
-
-        // \Doctrine\Common\Util\Debug::dump($query);
 
         $pagination = new Pagination($query);
         
         $paginator = new Paginator(new PaginatorNullAdapter($pagination->count()));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(10);
+
         // $offset = $paginator->getAbsoluteItemNumber($page) - 1;
         
         return $this->render('AcmeBoardBundle:Thread:index.html.twig', 
@@ -46,7 +45,7 @@ class ThreadController extends Controller
             $em = $this->getDoctrine()->getManager();
             // $this->container->get('security.context')->getToken()->getUser()
             $em->getRepository('AcmeBoardBundle:Thread')
-              ->create($thread, $this->getUser());
+               ->create($thread, $this->getUser());
 
             $this->get('session')->getFlashBag()->add(
                 'notice',
@@ -89,9 +88,10 @@ class ThreadController extends Controller
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(10);
+        // default 10
+        // $paginator->setPageRange(10);
         
-        $params =  array('thread' => $thread, 
+        $params = array('thread' => $thread, 
             'pages' => $paginator->getPages(), 
             'pagination' => $pagination);
          // \Doctrine\Common\Util\Debug::dump($query);

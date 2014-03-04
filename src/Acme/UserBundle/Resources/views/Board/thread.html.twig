@@ -1,19 +1,8 @@
-{% extends 'AcmeBoardBundle::layout.html.twig' %}
+{% extends "AcmeUserBundle::layout.html.twig" %}
+{% block title %}My threads{% endblock %}
 {% block body %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-<script>
-var url = Routing.generate('thread_index');
-console.log(url);
-</script>
-<!--
-<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
-<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
--->
-<!-- HTML to write -->
 <div class="page-header">
-  <h1>Example page header <small>Subtext for header</small></h1>
+  <h1>My threads <small>Subtext for header</small></h1>
 </div>
 <div class="table-condensed">
   <table class="table">
@@ -21,7 +10,6 @@ console.log(url);
       <tr>
         <th>#</th>
         <th>Subject</th>
-        <th>Author</th>
         <th>Replies</th>
         <th>Last Post</th>
       </tr>
@@ -32,15 +20,14 @@ console.log(url);
         <td></td>
         <td>
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a></td>
-        <td>{{ thread.user.username }}</td>      
-        <td><span class="badge">{{ thread.numReplies }}</span></td>      
+        <td><span class="badge">{{ thread.numReplies|number_format }}</span></td>      
         <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-{% if pages.pageCount > 1 %}
+
 <div>
   <ul class="pagination">
   {% if pages.firstPageInRange is not defined %}
@@ -60,9 +47,6 @@ console.log(url);
   {% endif %}
   </ul>
 </div>
-{% endif %}
-<div><a href="{{ path('thread_create') }}">
-  <button class="btn btn-primary">create</button></a>
-</div>
 
 {% endblock %}
+

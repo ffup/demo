@@ -1,6 +1,15 @@
 acme_user_homepage:
     pattern:  /user
     defaults: { _controller: AcmeUserBundle:Default:index }
+    
 _user_secured:
     resource: "@AcmeUserBundle/Controller/SecuredController.php"
     type:     annotation
+
+user_thread:
+    pattern: /user/thread
+    defaults: { _controller: AcmeUserBundle:Board:thread }
+
+user_comment:
+    pattern: /user/comment
+    defaults: { _controller: AcmeUserBundle:Board:comment }

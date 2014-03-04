@@ -32,8 +32,21 @@ security:
         main:
             pattern:    ^/
             form_login:
+                # submit the login form here
                 check_path: _signin_check
+                
+                # the user is redirected here when they need to log in
                 login_path: _signin
+                
+                # if true, forward the user to the login form instead of redirecting
+                use_forward: false
+                
+                # login success redirecting options
+                always_use_default_target_path: false
+                default_target_path:            /
+                target_path_parameter:          _target_path
+                use_referer:                    false
+                
             remember_me:
                 key:      "%secret%"
                 lifetime: 31536000 # 365 days in seconds
@@ -41,12 +54,22 @@ security:
                 domain:   ~ # Defaults to the current domain from $_SERVER
 
             logout:
-                path:   _signout
-                target: _demo
+                path:                 _signout
+                target:               /
+                success_handler:      ~
+                invalidate_session:   true
+                delete_cookies:
+
+                    # Prototype
+                    name:
+                        path:                 ~
+                        domain:               ~
+    
             anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
             
     access_control:
-        - { path: create$, roles: ROLE_USER }         
+        - { path: create$, roles: ROLE_USER }
+        - { path: /user, roles: ROLE_USER }                  
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

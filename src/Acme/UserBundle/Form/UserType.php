@@ -5,7 +5,6 @@ namespace Acme\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
 
 class UserType extends AbstractType
 {
@@ -18,10 +17,7 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('password', 'repeated', array('type' => 'password'))
-            ->add('email')
-            ->add('recaptcha', 'ewz_recaptcha', 
-                array('mapped' => false, 'constraints' => array(new True()))
-            );
+            ->add('email');
     }
     
     /**

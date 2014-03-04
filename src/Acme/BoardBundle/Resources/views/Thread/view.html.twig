@@ -40,21 +40,15 @@
 <!-- comment -->
 <div class="">
 {% for comment in pagination %}
-  <div id="{{ comment.postIndex }}">
-  <div class="primary">{{ comment.content }}</div>
-  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>    
-  <div class="btn-group pull-left" data-toggle="buttons">
-    <label class="btn btn-default">
-      <input type="checkbox"> 0
-    </label>
-  </div>
-  {{ comment.user.username }} : {{ comment.createdAt|time_ago_in_words }}
-  
-  {# Add the following translations to your \app\Resources\translations\messages.locale.yml #}
-  </div>
+<div id="{{ comment.postIndex }}">
+  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>
+  <blockquote>
+    <p>{{ comment.content }}</p>
+    <footer>{{ comment.user.username }}<cite title="Source Title">({{ comment.createdAt|time_ago_in_words }})</cite></footer>
+  </blockquote>
+</div>
 {% endfor %}
 </div>
-
 <div>
   <ul class="pagination">
     <li class="{{ pages.current == pages.first ? 'disabled' : null }}">

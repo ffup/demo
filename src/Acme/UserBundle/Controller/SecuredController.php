@@ -21,6 +21,11 @@ class SecuredController extends Controller
      */
     public function signinAction(Request $request)
     {
+        // $form = $this->createFormBuilder()
+        //    ->add('recaptcha', 'ewz_recaptcha', array('mapped' => false, 
+        //        'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True())))
+        //    ->getForm();
+    
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
@@ -30,6 +35,7 @@ class SecuredController extends Controller
         $params = array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
+            // 'form'          => $form->createView()
         );
 
         return $this->render('AcmeUserBundle:Secured:signin.html.twig', $params);
@@ -79,6 +85,8 @@ class SecuredController extends Controller
     {
         $user = new \Acme\UserBundle\Entity\User();
         $form = $this->createForm(new \Acme\UserBundle\Form\UserType(), $user);
+        $form->add('recaptcha', 'ewz_recaptcha', array('mapped' => false, 
+            'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True())));
         
         $form->handleRequest($request);
 
