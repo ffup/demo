@@ -217,4 +217,9 @@ class Comment
     {
         return $this->postIndex;
     }
+    
+    public function getPostIndexPage($pageSize)
+    {
+        return (int)($this->postIndex / $pageSize + 1);
+    }
 }

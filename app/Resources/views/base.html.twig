@@ -51,17 +51,19 @@
     </div><!-- /.container-fluid -->
   </nav>
   {% endblock %}
-  <div class="text-center">
-    {% block notice %}
+  <blockquote>
+  {% block notice %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
-    <div class="flash-message alert alert-success">
-      <em>Notice</em>: {{ flashMessage }}
-    </div>
+    <p class="flash-message alert alert-success">
+      <strong>Well done!</strong>: {{ flashMessage }}
+    </p>
     {% endfor %}
-    {% endblock %}
-  </div>
+  {% endblock %}
+  </blockquote>
   <div class="container">
-  {% block body %}{% endblock %}
+  {% block body %}
+    {% block breadcrumbs %}{% endblock %}
+  {% endblock %}
   </div>
   {% block script %}{% endblock %}
   </body>

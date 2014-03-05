@@ -3,10 +3,10 @@ acme_board_homepage:
     defaults: { _controller: AcmeBoardBundle:Default:index }
 
 thread_index:
-    pattern: /
-    defaults: { _controller: AcmeBoardBundle:Thread:index }
+    pattern: /{module_id}
+    defaults: { _controller: AcmeBoardBundle:Thread:index, module_id: 1 }
     requirements:
-        id:  \d+
+        module_id:  \d+
     options:
         expose: true
 
@@ -25,3 +25,11 @@ thread_create:
 comment_create:
     pattern: /comment/create
     defaults: { _controller: AcmeBoardBundle:Comment:create }
+
+search:
+    pattern: /search
+    defaults: { _controller: AcmeBoardBundle:Search:index }
+
+index:
+    pattern: /module
+    defaults: { _controller: AcmeBoardBundle:Module:index }

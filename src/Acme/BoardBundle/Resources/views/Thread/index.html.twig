@@ -12,9 +12,18 @@ console.log(url);
 <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 -->
 <!-- HTML to write -->
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li class="active">Board</li>
+</ol>
 <div class="page-header">
   <h1>Example page header <small>Subtext for header</small></h1>
 </div>
+
+<div><a href="{{ path('thread_create') }}">
+  <button class="btn btn-default">CREATE THREAD</button></a>
+</div>
+
 <div class="table-condensed">
   <table class="table">
     <thead>
@@ -31,7 +40,8 @@ console.log(url);
       <tr>
         <td></td>
         <td>
-        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a></td>
+        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a><span class="label label-default">Default</span>
+</td>
         <td>{{ thread.user.username }}</td>      
         <td><span class="badge">{{ thread.numReplies }}</span></td>      
         <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
@@ -41,10 +51,10 @@ console.log(url);
   </table>
 </div>
 {% if pages.pageCount > 1 %}
-<div>
+<div class="pull-right">
   <ul class="pagination">
   {% if pages.firstPageInRange is not defined %}
-    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
+    <li>
       <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.first}) }}">&laquo;</a>
     </li>
   {% endif %}
@@ -54,15 +64,12 @@ console.log(url);
     </li>
   {% endfor %}
   {% if pages.lastPageInRange is not defined %}
-    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
+    <li>
       <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.last}) }}">&raquo;</a>
     </li>
   {% endif %}
   </ul>
 </div>
 {% endif %}
-<div><a href="{{ path('thread_create') }}">
-  <button class="btn btn-primary">create</button></a>
-</div>
 
 {% endblock %}

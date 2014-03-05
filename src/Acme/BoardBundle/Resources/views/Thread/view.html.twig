@@ -1,9 +1,16 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
-
 {% block body %}
-
-<h2>{{ thread.title }}</h2>
-
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li><a href="/board">Board</a></li>
+  <li class="active">thread</li>
+</ol>
+<div class="page-header">
+  <h1>{{ thread.title }} <small>Subtext for header</small></h1>
+</div>
+<div>
+<a class="btn btn-default" href="{{ path('comment_create', {'id': thread.id}) }}" role="button">CREATE COMMENT</a>
+</div>
 <!-- thread -->
   <!-- Button trigger modal -->
 <!--
@@ -30,7 +37,6 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
 <!--
 <div class="pull-left">LEFT</div>
 <div class="pull-right">RIGHT</div>
@@ -43,13 +49,13 @@
 <div id="{{ comment.postIndex }}">
   <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>
   <blockquote>
-    <p>{{ comment.content }}</p>
+    <p>{{ comment.content|nl2br }}</p>
     <footer>{{ comment.user.username }}<cite title="Source Title">({{ comment.createdAt|time_ago_in_words }})</cite></footer>
   </blockquote>
 </div>
 {% endfor %}
 </div>
-<div>
+<div class="pull-right">
   <ul class="pagination">
     <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
       {% if pages.current != pages.first %}
@@ -65,10 +71,6 @@
       {% endif %}
   </li>
     </ul>
-</div>
-
-<div>
-<a class="btn btn-primary" href="{{ path('comment_create', {'id': thread.id}) }}" role="button">create</a>
 </div>
 
 {% endblock %}
