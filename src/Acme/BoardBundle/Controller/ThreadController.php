@@ -13,12 +13,18 @@ class ThreadController extends Controller
     public function indexAction(Request $request)
     {
         $page = $request->query->get('page', 1);;
+        $moduleId = $request->get('module_id');
         $pageSize = 5;
         
         $entityManager = $this->getDoctrine()->getManager();
+        
+        $module = $entityManager->getRepository('AcmeBoardBundle:Module')
+            ->findById($moduleId);  
+        
         $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
-            ORDER BY t.updatedAt DESC";
+            WHERE t.module = :module_id ORDER BY t.updatedAt DESC";
         $query = $entityManager->createQuery($dql)
+            ->setParameter('module_id', $moduleId)  
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
 
@@ -27,11 +33,12 @@ class ThreadController extends Controller
         $paginator = new Paginator(new PaginatorNullAdapter($pagination->count()));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
-
-        // $offset = $paginator->getAbsoluteItemNumber($page) - 1;
+        // $offset = $paginator->getAbsoluteItemNumber($page) - 1;   
+        $params = array('module' => $module, 
+            'pages' => $paginator->getPages(), 
+            'pagination' => $pagination);
         
-        return $this->render('AcmeBoardBundle:Thread:index.html.twig', 
-            array('pages' => $paginator->getPages(), 'pagination' => $pagination));
+        return $this->render('AcmeBoardBundle:Thread:index.html.twig', $params);
     }
     
     public function createAction(Request $request)
@@ -40,9 +47,14 @@ class ThreadController extends Controller
         $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
         $form->handleRequest($request);
         
-        if ($form->isValid()) {
+        if ($form->isValid()) {        
             // perform some action, such as saving the task to the database       
             $em = $this->getDoctrine()->getManager();
+            
+            $module = $em->getRepository('AcmeBoardBundle:Module')
+                ->findById($request->query->get('module_id'));
+            
+            $thread->setModule($module);
             // $this->container->get('security.context')->getToken()->getUser()
             $em->getRepository('AcmeBoardBundle:Thread')
                ->create($thread, $this->getUser());
@@ -52,7 +64,9 @@ class ThreadController extends Controller
                 'Successfully created!'
             );
 
-            return $this->redirect($this->generateUrl('thread_index'));
+            return $this->redirect($this->generateUrl('thread_index', 
+                array('module_id' => $module->getId()))
+            );
         }
         
         return $this->render('AcmeBoardBundle:Thread:create.html.twig', 
@@ -66,8 +80,11 @@ class ThreadController extends Controller
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
         if (!$thread) {
-           throw new \Exception('no id');
+           throw new \Doctrine\ORM\NoResultException;
         }
+        
+        $module = $em->getRepository('AcmeBoardBundle:Module')
+            ->findById($thread->getModule()->getId());  
         
         // Pagnation
         $page = $request->query->get('page', 1);
@@ -93,7 +110,8 @@ class ThreadController extends Controller
         
         $params = array('thread' => $thread, 
             'pages' => $paginator->getPages(), 
-            'pagination' => $pagination);
+            'pagination' => $pagination,
+            'module' => $module);
          // \Doctrine\Common\Util\Debug::dump($query);
         
         

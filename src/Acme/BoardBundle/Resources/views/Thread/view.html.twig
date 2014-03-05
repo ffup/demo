@@ -1,15 +1,21 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% block body %}
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="/board">Board</a></li>
-  <li class="active">thread</li>
+  <li><a href="{{ path('thread_index', {'module_id': module.id}) }}">{{ module.name }}</a></li>  
+  <li class="active">{{ thread.title }}</li>
 </ol>
+
 <div class="page-header">
   <h1>{{ thread.title }} <small>Subtext for header</small></h1>
 </div>
+
 <div>
-<a class="btn btn-default" href="{{ path('comment_create', {'id': thread.id}) }}" role="button">CREATE COMMENT</a>
+<a class="btn btn-default" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button">CREATE COMMENT</a>
 </div>
 <!-- thread -->
   <!-- Button trigger modal -->
@@ -44,34 +50,65 @@
 -->
 
 <!-- comment -->
-<div class="">
-{% for comment in pagination %}
-<div id="{{ comment.postIndex }}">
-  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>
-  <blockquote>
-    <p>{{ comment.content|nl2br }}</p>
-    <footer>{{ comment.user.username }}<cite title="Source Title">({{ comment.createdAt|time_ago_in_words }})</cite></footer>
-  </blockquote>
+
+<div class="table-condensed">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th style="width: 25%"></th>
+        <th style="width: 55%"></th>
+        <th style="width: 15%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for comment in pagination %}
+      <tr id="{{ comment.postIndex }}">
+        <td>{{ comment.user.username }}</td>
+        <td>{{ comment.content|nl2br }}</td>
+        <td>{{ comment.createdAt|time_ago_in_words }}<div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div></td>                      
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-{% endfor %}
-</div>
+
 <div class="pull-right">
   <ul class="pagination">
     <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
       {% if pages.current != pages.first %}
-      <a href="{{ path('thread_view', {'id': thread.id, 'page': pages.first}) }}">&laquo;</a></li>
+      <a href="{{ path('thread_view', { 'id': thread.id, 'page': pages.first }) }}">&laquo;</a></li>
       {% endif %}
       {% for page in pages.pagesInRange %}
     <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path('thread_view', {'id': thread.id, 'page': page}) }}">{{ page }}</a></li>
+      <a href="{{ path('thread_view', { 'id': thread.id, 'page': page }) }}">{{ page }}</a></li>
       {% endfor %}
     <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
       {% if pages.current != pages.last %}
-      <a href="{{ path('thread_view', {'id': thread.id, 'page': pages.last}) }}">&raquo;</a>
+      <a href="{{ path('thread_view', { 'id': thread.id, 'page': pages.last }) }}">&raquo;</a>
       {% endif %}
   </li>
     </ul>
 </div>
+
+<script>
+var url = Routing.generate('rate_increase');
+function voteup() {
+  $.post(url, { comment_id: 'mydata1' }, 
+    function(response) {
+      if(response.code == 100 && response.success){//dummy check
+        alert(1);
+      } else {
+        alert(2);
+      }
+    }, "json");    
+}
+
+$(document).ready(function() {     
+  $('#test').on('click', function(){ voteup(); });
+});
+
+</script>
+<button id="test" class="btn btn-primary">ajax</button>
 
 {% endblock %}
 

@@ -76,6 +76,11 @@ class Thread
     protected $comments;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Module", inversedBy="threads", fetch="EXTRA_LAZY")
+     */    
+    protected $module;
+
+    /**
      * Get id
      *
      * @return integer 

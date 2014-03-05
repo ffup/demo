@@ -1,1 +1,46 @@
 {% extends '::base.html.twig' %}
+{% block style %}
+<style>
+.view-forum .forum-topics .topic-title {
+    display: block;
+    height: 41px;
+    line-height: 41px;
+    max-width: 360px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.view-forum .forum-topics .topic-title {
+    display: block;
+    height: 41px;
+    line-height: 41px;
+    max-width: 360px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.view-forum .forum-topics .author-cell .author-wrapper {
+    display: block;
+    white-space: nowrap;
+    height: 41px;
+    width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.view-forum .forum-topics .reply-column, .view-forum .forum-topics .reply-cell {
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: center;
+}
+table { table-layout: fixed; }
+table th, table td { overflow: hidden; }
+</style>
+{% endblock %}
+
+{% block body %}
+  {% block breadcrumb %}
+  {% endblock %} 
+{% endblock %}
+
+
+

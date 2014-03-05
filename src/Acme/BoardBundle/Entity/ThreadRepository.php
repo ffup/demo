@@ -23,6 +23,10 @@ class ThreadRepository extends EntityRepository
             $em->persist($thread);
             $em->flush();
             
+            $module = $thread->getModule();
+            $module->setNumThreads($module->getNumThreads() + 1);
+            $em->persist($module);
+            
             $comment = new \Acme\BoardBundle\Entity\Comment();
             $comment->setUser($user)
                 ->setThread($thread)

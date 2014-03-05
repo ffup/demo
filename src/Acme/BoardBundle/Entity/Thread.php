@@ -302,4 +302,27 @@ class Thread
     {
         return $this->comments;
     }
+
+    /**
+     * Set module
+     *
+     * @param \Acme\BoardBundle\Entity\Module $module
+     * @return Thread
+     */
+    public function setModule(\Acme\BoardBundle\Entity\Module $module = null)
+    {
+        $this->module = $module;
+
+        return $this;
+    }
+
+    /**
+     * Get module
+     *
+     * @return \Acme\BoardBundle\Entity\Module 
+     */
+    public function getModule()
+    {
+        return $this->module;
+    }
 }

@@ -7,18 +7,30 @@
   <h1>My comments <small>Subtext for header</small></h1>
 </div>
 
-<div class="">
-{% for comment in pagination %}
-<div id="{{ comment.postIndex }}">
-  <div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div>
-  <blockquote>
-    <p><a href="{{ path('thread_view', {'id': comment.getThread.id, 'page': comment.getPostIndexPage(pages.itemCountPerPage)}) }}#{{ comment.postIndex }}">{{ comment.content|nl2br }}</a></p>
-    <footer>{{ comment.getThread.getTitle }}<cite title="Source Title">({{ comment.createdAt|time_ago_in_words }})</cite></footer>
-  </blockquote>
+
+
+<div class="table-condensed">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th style="width: 25%">Subject</th>
+        <th style="width: 55%"></th>
+        <th style="width: 15%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for comment in pagination %}
+      <tr id="{{ comment.postIndex }}">
+        <td>{{ comment.getThread.getTitle }}</td>
+        <td><a href="{{ path('thread_view', {'id': comment.getThread.id, 'page': comment.getPostIndexPage(pages.itemCountPerPage)}) }}#{{ comment.postIndex }}">{{ comment.content|nl2br }}</a></td>
+        <td>{{ comment.createdAt|time_ago_in_words }}<div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div></td>                      
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-{% endfor %}
-</div>
-<div>
+
+<div class="pull-right">
   <ul class="pagination">
     <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
       {% if pages.firstPageInRange is not defined %}

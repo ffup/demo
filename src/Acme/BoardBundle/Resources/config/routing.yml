@@ -4,13 +4,9 @@ acme_board_homepage:
 
 thread_index:
     pattern: /{module_id}
-    defaults: { _controller: AcmeBoardBundle:Thread:index, module_id: 1 }
+    defaults: { _controller: AcmeBoardBundle:Thread:index }
     requirements:
         module_id:  \d+
-    options:
-        expose: true
-
-#category_index:    
 
 thread_view:
     pattern: /thread/{id}
@@ -30,6 +26,12 @@ search:
     pattern: /search
     defaults: { _controller: AcmeBoardBundle:Search:index }
 
-index:
-    pattern: /module
+module_index:
+    pattern: /
     defaults: { _controller: AcmeBoardBundle:Module:index }
+
+rate_increase:
+    pattern: /rate/increase
+    defaults: { _controller: AcmeBoardBundle:Rate:increase }
+    options:
+        expose: true

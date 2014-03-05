@@ -17,7 +17,7 @@ class CommentController extends Controller
         // \Doctrine\Common\Util\Debug::dump($thread);
         
         if (!$thread) {
-           throw new Exception('id is not exist!');
+            throw new \Doctrine\ORM\NoResultException;
         }
         
         $comment = new \Acme\BoardBundle\Entity\Comment();

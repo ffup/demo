@@ -37,8 +37,8 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="{{ path('user_thread') }}">View last threads</a></li>
-              <li><a href="{{ path('user_comment') }}">View last comments</a></li>
+              <li><a href="{{ path('user_thread') }}">Last threads</a></li>
+              <li><a href="{{ path('user_comment') }}">Last comments</a></li>
               <li class="divider"></li>
               <li><a href="{{ path('_signout') }}">Signout</a></li>
             </ul>
@@ -51,15 +51,13 @@
     </div><!-- /.container-fluid -->
   </nav>
   {% endblock %}
-  <blockquote>
   {% block notice %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
-    <p class="flash-message alert alert-success">
-      <strong>Well done!</strong>: {{ flashMessage }}
-    </p>
+    <div class="flash-message text-center">
+      <em>Well done!</em> {{ flashMessage }}
+    </div>
     {% endfor %}
   {% endblock %}
-  </blockquote>
   <div class="container">
   {% block body %}
     {% block breadcrumbs %}{% endblock %}

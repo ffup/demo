@@ -2,8 +2,15 @@
 
 {% block title %}Module{% endblock %}
 
-
 {% block body %}
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li class="active">Board</li>
+</ol>
+
+<div class="page-header">
+  <h1>Modules <small>Subtext for header</small></h1>
+</div>
 
 <div class="panel-group" id="accordion">
   {% for module in modules %}
@@ -19,7 +26,7 @@
       <div class="panel-body">
         <div class="row">
         {% for child in module.getChildren %}
-          <div class="col-xs-3 col-sm-3"><a href="{{ path('thread_index') }}">{{ child.name }}</a></div>
+          <div class="col-xs-3 col-sm-3"><a href="{{ path('thread_index', {'module_id': child.id}) }}">{{ child.name }} <span class="badge">{{ child.numThreads|number_format }}</span></a></div>
           <!-- Optional: clear the XS cols if their content doesn't match in height -->
           <div class="clearfix visible-xs"></div>
         {% endfor %}
@@ -29,6 +36,5 @@
   </div>
   {% endfor %}
 </div>
-
 
 {% endblock %}

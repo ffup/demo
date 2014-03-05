@@ -43,6 +43,11 @@ class Module
     protected $threads;
    
     /**
+     * @ORM\Column(name="num_threads", type="integer")
+     */   
+    private $numThreads;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -137,5 +142,62 @@ class Module
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add threads
+     *
+     * @param \Acme\BoardBundle\Entity\Thread $threads
+     * @return Module
+     */
+    public function addThread(\Acme\BoardBundle\Entity\Thread $threads)
+    {
+        $this->threads[] = $threads;
+
+        return $this;
+    }
+
+    /**
+     * Remove threads
+     *
+     * @param \Acme\BoardBundle\Entity\Thread $threads
+     */
+    public function removeThread(\Acme\BoardBundle\Entity\Thread $threads)
+    {
+        $this->threads->removeElement($threads);
+    }
+
+    /**
+     * Get threads
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getThreads()
+    {
+        return $this->threads;
+    }
+
+
+    /**
+     * Set numThreads
+     *
+     * @param integer $numThreads
+     * @return Module
+     */
+    public function setNumThreads($numThreads)
+    {
+        $this->numThreads = $numThreads;
+
+        return $this;
+    }
+
+    /**
+     * Get numThreads
+     *
+     * @return integer 
+     */
+    public function getNumThreads()
+    {
+        return $this->numThreads;
     }
 }

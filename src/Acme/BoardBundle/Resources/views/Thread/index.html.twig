@@ -14,25 +14,43 @@ console.log(url);
 <!-- HTML to write -->
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
-  <li class="active">Board</li>
+  <li><a href="/board">Board</a></li>
+  {#
+  <li class="dropdown"><a data-toggle="dropdown" href="#">{{ module.parent.name }}</a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+      <li role="presentation" class="dropdown-header">Dropdown header</li>
+      <li role="presentation" class="dropdown-header">Dropdown header</li>
+    </ul>  
+  </li>
+  #}
+  <li class="active">{{ module.name }}</li>  
 </ol>
+
+<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+  <li role="presentation" class="dropdown-header">Dropdown header</li>
+  ...
+  <li role="presentation" class="divider"></li>
+  <li role="presentation" class="dropdown-header">Dropdown header</li>
+  ...
+</ul>
+
 <div class="page-header">
-  <h1>Example page header <small>Subtext for header</small></h1>
+  <h1>{{ module.name }} <small>Subtext for header</small></h1>
 </div>
 
-<div><a href="{{ path('thread_create') }}">
+<div><a href="{{ path('thread_create', {'module_id': app.request.get('module_id')}) }}">
   <button class="btn btn-default">CREATE THREAD</button></a>
 </div>
 
 <div class="table-condensed">
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Subject</th>
-        <th>Author</th>
-        <th>Replies</th>
-        <th>Last Post</th>
+        <th style="width: 5%">#</th>
+        <th style="width: 55%">Subject</th>
+        <th style="width: 15%">Author</th>
+        <th style="width: 5%">Replies</th>
+        <th style="width: 25%">Last Post</th>
       </tr>
     </thead>
     <tbody>
@@ -50,26 +68,25 @@ console.log(url);
     </tbody>
   </table>
 </div>
-{% if pages.pageCount > 1 %}
+
 <div class="pull-right">
   <ul class="pagination">
   {% if pages.firstPageInRange is not defined %}
     <li>
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.first}) }}">&laquo;</a>
+      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': pages.first}) }}">&laquo;</a>
     </li>
   {% endif %}
   {% for page in pages.pagesInRange %}
     <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': page}) }}">{{ page }}</a>
+      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': page}) }}">{{ page }}</a>
     </li>
   {% endfor %}
   {% if pages.lastPageInRange is not defined %}
     <li>
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.last}) }}">&raquo;</a>
+      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': pages.last}) }}">&raquo;</a>
     </li>
   {% endif %}
   </ul>
 </div>
-{% endif %}
 
 {% endblock %}
