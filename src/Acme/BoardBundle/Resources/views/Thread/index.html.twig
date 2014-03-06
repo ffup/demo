@@ -1,11 +1,6 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% block body %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-<script>
-var url = Routing.generate('thread_index');
-console.log(url);
-</script>
+
 <!--
 <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
@@ -39,7 +34,7 @@ console.log(url);
 </div>
 
 <div><a href="{{ path('thread_create', {'module_id': app.request.get('module_id')}) }}">
-  <button class="btn btn-default">CREATE THREAD</button></a>
+  <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> THREAD</button></a>
 </div>
 
 <div class="table-condensed">

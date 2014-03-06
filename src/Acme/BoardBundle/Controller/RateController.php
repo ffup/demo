@@ -10,18 +10,28 @@ class RateController extends Controller
 {
     public function increaseAction(Request $request)
     {
-    
-        $data1 = $request->query->get('comment_id');
+        $request->isXmlHttpRequest(); // is it an Ajax request?
 
-        
-        $data = array("code" => 100, "success" => true);
-
-        
+        $commentId = $request->request->get('comment_id');    
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository('AcmeBoardBundle:Comment')->find($commentId);
         $response = new JsonResponse();
-        $response->setData($data);
         
+        if (!$comment) {
+            return $response;
+        }
+        
+        $comment->setVotes($comment->getVotes() + 1);
+        $em->persist($comment);               
+        $em->flush();
+              
+        $data = array("code" => 100, 
+            "success" => true, 
+            "votes" => $comment->getVotes());
+        $response->setData($data);
         return $response;
         
+        // Test
         $params = array();
         return $this->render('AcmeBoardBundle:Rate:increase.html.twig', $params);
     }

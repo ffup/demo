@@ -51,6 +51,11 @@ class Comment
     private $updatedAt;
 
     /**
+     * @ORM\Column(name="votes", type="integer")
+     */
+    private $votes;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments", fetch="EXTRA_LAZY")
      */
     protected $user;
@@ -221,5 +226,28 @@ class Comment
     public function getPostIndexPage($pageSize)
     {
         return (int)($this->postIndex / $pageSize + 1);
+    }
+
+    /**
+     * Set votes
+     *
+     * @param integer $votes
+     * @return Comment
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+
+        return $this;
+    }
+
+    /**
+     * Get votes
+     *
+     * @return integer 
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }

@@ -15,7 +15,7 @@
 </div>
 
 <div>
-<a class="btn btn-default" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button">CREATE COMMENT</a>
+<a class="btn btn-default" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><span class="glyphicon glyphicon-plus"></span> COMMENT</a>
 </div>
 <!-- thread -->
   <!-- Button trigger modal -->
@@ -55,17 +55,21 @@
   <table class="table table-hover">
     <thead>
       <tr>
+        <th style="width: 10%" ></th>
         <th style="width: 25%"></th>
         <th style="width: 55%"></th>
-        <th style="width: 15%"></th>
+        <th style="width: 20%"></th>
       </tr>
     </thead>
     <tbody>
       {% for comment in pagination %}
       <tr id="{{ comment.postIndex }}">
+        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
+</button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>
-        <td>{{ comment.createdAt|time_ago_in_words }}<div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div></td>                      
+        <td><div class="pull-right"><a href="#{{ comment.postIndex }}">#{{ comment.postIndex }}</a></div>{{ comment.createdAt|time_ago_in_words }}
+        </td>                      
       </tr>
       {% endfor %}
     </tbody>
@@ -91,24 +95,33 @@
 </div>
 
 <script>
-var url = Routing.generate('rate_increase');
-function voteup() {
-  $.post(url, { comment_id: 'mydata1' }, 
-    function(response) {
-      if(response.code == 100 && response.success){//dummy check
-        alert(1);
-      } else {
-        alert(2);
-      }
-    }, "json");    
-}
-
-$(document).ready(function() {     
-  $('#test').on('click', function(){ voteup(); });
-});
+var path = Routing.generate('rate_increase');
 
 </script>
-<button id="test" class="btn btn-primary">ajax</button>
+<script>
+  $('.btn-vote').click(function () {
+    var btn = $(this);
+    // btn.button("loading");
+    $.ajax({
+      type: "POST",
+      url: path,
+      dataType: "json",
+      data: { comment_id: btn.attr('data') }
+    }).done(function(data) {
+      if (data.code == 100 && data.success) {
+        btn.addClass('disabled');
+        var span = btn.find("span.votes");
+        span.text(data.votes);
+        // btn.button('reset');
+      }
+      
+    }).fail(function() {
+
+    }).always(function () {
+      // btn.button('reset')
+    });
+  });
+</script>
 
 {% endblock %}
 

@@ -177,4 +177,27 @@ class Module
         return $this->threads;
     }
 
+
+    /**
+     * Set numThreads
+     *
+     * @param integer $numThreads
+     * @return Module
+     */
+    public function setNumThreads($numThreads)
+    {
+        $this->numThreads = $numThreads;
+
+        return $this;
+    }
+
+    /**
+     * Get numThreads
+     *
+     * @return integer 
+     */
+    public function getNumThreads()
+    {
+        return $this->numThreads;
+    }
 }
