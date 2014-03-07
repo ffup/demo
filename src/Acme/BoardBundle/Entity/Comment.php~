@@ -56,6 +56,11 @@ class Comment
     private $votes;    
     
     /**
+     * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="comment")
+     */      
+    private $userTracks;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments", fetch="EXTRA_LAZY")
      */
     protected $user;
@@ -249,5 +254,45 @@ class Comment
     public function getVotes()
     {
         return $this->votes;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userTracks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add userTracks
+     *
+     * @param \Acme\BoardBundle\Entity\CommentTrack $userTracks
+     * @return Comment
+     */
+    public function addUserTrack(\Acme\BoardBundle\Entity\CommentTrack $userTracks)
+    {
+        $this->userTracks[] = $userTracks;
+
+        return $this;
+    }
+
+    /**
+     * Remove userTracks
+     *
+     * @param \Acme\BoardBundle\Entity\CommentTrack $userTracks
+     */
+    public function removeUserTrack(\Acme\BoardBundle\Entity\CommentTrack $userTracks)
+    {
+        $this->userTracks->removeElement($userTracks);
+    }
+
+    /**
+     * Get userTracks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserTracks()
+    {
+        return $this->userTracks;
     }
 }

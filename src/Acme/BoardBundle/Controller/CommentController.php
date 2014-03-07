@@ -27,7 +27,7 @@ class CommentController extends Controller
         if ($form->isValid()) {            
         
             $em->getRepository('AcmeBoardBundle:Comment')
-               ->create($thread, $comment, $this->getUser());
+               ->create($this->getUser(), $thread, $comment);
 
             // Notice
             $this->get('session')->getFlashBag()->add(

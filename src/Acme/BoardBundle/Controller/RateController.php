@@ -10,30 +10,38 @@ class RateController extends Controller
 {
     public function increaseAction(Request $request)
     {
-        $request->isXmlHttpRequest(); // is it an Ajax request?
-
+        // $request->isXmlHttpRequest(); // is it an Ajax request?
         $commentId = $request->request->get('comment_id');    
         $em = $this->getDoctrine()->getManager();
-        $comment = $em->getRepository('AcmeBoardBundle:Comment')->find($commentId);
         $response = new JsonResponse();
+        $user = $this->getUser();
         
-        if (!$comment) {
+        if (!isset($user) || false == preg_match('/^\d+$/', $commentId)) {
             return $response;
         }
         
-        $comment->setVotes($comment->getVotes() + 1);
-        $em->persist($comment);               
-        $em->flush();
+        $comment = $em->getRepository('AcmeBoardBundle:Comment')->find($commentId);
+        
+        if (false == $comment) {
+            return $response;
+        }
+        
+        $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
+            ->findByUserWithComment($user, $comment);
+     
+        if (isset($track) && $track->getHasVoted()) {
+            return $response;
+        }
+          
+        $em->getRepository('AcmeBoardBundle:CommentTrack')->create($user, $comment);
               
-        $data = array("code" => 100, 
+        $data = array(
+            "code"    => 100, 
             "success" => true, 
-            "votes" => $comment->getVotes());
+            "votes"   => $comment->getVotes());
         $response->setData($data);
         return $response;
         
-        // Test
-        $params = array();
-        return $this->render('AcmeBoardBundle:Rate:increase.html.twig', $params);
     }
 
 }

@@ -6,7 +6,7 @@
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="/board">Board</a></li>
-  <li><a href="{{ path('thread_index', {'module_id': module.id}) }}">{{ module.name }}</a></li>  
+  <li><a href="{{ path('thread_index', {'module_id': thread.module.id}) }}">{{ thread.module.name }}</a></li>  
   <li class="active">{{ thread.title }}</li>
 </ol>
 
@@ -64,7 +64,7 @@
     <tbody>
       {% for comment in pagination %}
       <tr id="{{ comment.postIndex }}">
-        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
+        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ comment._hasVoted ? 'disabled': null }}"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
 </button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>

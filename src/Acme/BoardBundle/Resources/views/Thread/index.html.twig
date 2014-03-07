@@ -44,8 +44,9 @@
         <th style="width: 5%">#</th>
         <th style="width: 55%">Subject</th>
         <th style="width: 15%">Author</th>
-        <th style="width: 5%">Replies</th>
-        <th style="width: 25%">Last Post</th>
+        <th style="width: 7%">Replies</th>
+        <th style="width: 7%">Views</th>        
+        <th style="width: 16%">Last Post</th>
       </tr>
     </thead>
     <tbody>
@@ -55,8 +56,9 @@
         <td>
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a><span class="label label-default">Default</span>
 </td>
-        <td>{{ thread.user.username }}</td>      
-        <td><span class="badge">{{ thread.numReplies }}</span></td>      
+        <td>{{ thread.user.username }} </td>      
+        <td><span class="badge">{{ thread.numReplies }}</span></td>    
+        <td>{{ thread.numViews }}</td>  
         <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
       </tr>
       {% endfor %}

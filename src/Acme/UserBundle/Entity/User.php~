@@ -41,6 +41,16 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\ThreadTrack", mappedBy="user")
+     */    
+    private $threadTracks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\CommentTrack", mappedBy="user")
+     */    
+    private $commentTracks;
+
+    /**
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -309,5 +319,71 @@ class User implements UserInterface, \Serializable
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add threadTracks
+     *
+     * @param \Acme\BoardBundle\Entity\ThreadTrack $threadTracks
+     * @return User
+     */
+    public function addThreadTrack(\Acme\BoardBundle\Entity\ThreadTrack $threadTracks)
+    {
+        $this->threadTracks[] = $threadTracks;
+
+        return $this;
+    }
+
+    /**
+     * Remove threadTracks
+     *
+     * @param \Acme\BoardBundle\Entity\ThreadTrack $threadTracks
+     */
+    public function removeThreadTrack(\Acme\BoardBundle\Entity\ThreadTrack $threadTracks)
+    {
+        $this->threadTracks->removeElement($threadTracks);
+    }
+
+    /**
+     * Get threadTracks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getThreadTracks()
+    {
+        return $this->threadTracks;
+    }
+
+    /**
+     * Add commentTracks
+     *
+     * @param \Acme\BoardBundle\Entity\CommentTrack $commentTracks
+     * @return User
+     */
+    public function addCommentTrack(\Acme\BoardBundle\Entity\CommentTrack $commentTracks)
+    {
+        $this->commentTracks[] = $commentTracks;
+
+        return $this;
+    }
+
+    /**
+     * Remove commentTracks
+     *
+     * @param \Acme\BoardBundle\Entity\CommentTrack $commentTracks
+     */
+    public function removeCommentTrack(\Acme\BoardBundle\Entity\CommentTrack $commentTracks)
+    {
+        $this->commentTracks->removeElement($commentTracks);
+    }
+
+    /**
+     * Get commentTracks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommentTracks()
+    {
+        return $this->commentTracks;
     }
 }

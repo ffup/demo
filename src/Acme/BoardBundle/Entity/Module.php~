@@ -38,6 +38,11 @@ class Module
     private $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
+     **/
+    private $threadTracks;
+
+    /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="module")
      **/
     protected $threads;
@@ -199,5 +204,38 @@ class Module
     public function getNumThreads()
     {
         return $this->numThreads;
+    }
+
+    /**
+     * Add threadTracks
+     *
+     * @param \Acme\BoardBundle\Entity\ThreadTrack $threadTracks
+     * @return Module
+     */
+    public function addThreadTrack(\Acme\BoardBundle\Entity\ThreadTrack $threadTracks)
+    {
+        $this->threadTracks[] = $threadTracks;
+
+        return $this;
+    }
+
+    /**
+     * Remove threadTracks
+     *
+     * @param \Acme\BoardBundle\Entity\ThreadTrack $threadTracks
+     */
+    public function removeThreadTrack(\Acme\BoardBundle\Entity\ThreadTrack $threadTracks)
+    {
+        $this->threadTracks->removeElement($threadTracks);
+    }
+
+    /**
+     * Get threadTracks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getThreadTracks()
+    {
+        return $this->threadTracks;
     }
 }

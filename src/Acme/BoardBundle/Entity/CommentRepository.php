@@ -14,7 +14,7 @@ use Doctrine\ORM\OptimisticLockException;
  */
 class CommentRepository extends EntityRepository
 {
-    public function create(Thread $thread, Comment $comment, \Acme\UserBundle\Entity\User $user)
+    public function create(\Acme\UserBundle\Entity\User $user, Thread $thread, Comment $comment)
     {
         $em = $this->getEntityManager();
 
@@ -28,6 +28,7 @@ class CommentRepository extends EntityRepository
             $comment->setUser($user);
             $comment->setThread($thread);
             $comment->setPostIndex($thread->getNumReplies() +1);
+            $comment->setVotes(0);
             
             $em->persist($thread);
             $em->persist($comment);
