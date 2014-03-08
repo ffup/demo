@@ -42,15 +42,11 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 <!--
 <div class="pull-left">LEFT</div>
 <div class="pull-right">RIGHT</div>
-
 -->
-
 <!-- comment -->
-
 <div class="table-condensed">
   <table class="table table-hover">
     <thead>
@@ -64,7 +60,7 @@
     <tbody>
       {% for comment in pagination %}
       <tr id="{{ comment.postIndex }}">
-        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ comment._hasVoted ? 'disabled': null }}"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
+        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ app.user == false or comment._hasVoted ? 'disabled': null }}"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
 </button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>

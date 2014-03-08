@@ -56,7 +56,6 @@ class BoardController extends Controller
     
         $params = array('pages' => $paginator->getPages(), 'pagination' => $pagination);
       
-
         return $this->render('AcmeUserBundle:Board:comment.html.twig', $params);
     }
 

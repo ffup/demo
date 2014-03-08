@@ -27,7 +27,7 @@ class RateController extends Controller
         }
         
         $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
-            ->findByUserWithComment($user, $comment);
+            ->findByUserAndComment($user, $comment);
      
         if (isset($track) && $track->getHasVoted()) {
             return $response;

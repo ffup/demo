@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentTrackRepository extends EntityRepository
 {
-    public function findByUserWithComment($user, $comment)
+    public function findByUserAndComment($user, $comment)
     {
         $em = $this->getEntityManager();
         $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
@@ -38,7 +38,7 @@ class CommentTrackRepository extends EntityRepository
         $em->flush();
     }
     
-    public function findByUserWithThread($user, $thread)
+    public function findByUserAndThread($user, $thread)
     {
         $ids = array();
         
@@ -48,7 +48,7 @@ class CommentTrackRepository extends EntityRepository
         
         $em = $this->getEntityManager();
         $dql = "SELECT c.id FROM AcmeBoardBundle:CommentTrack ct JOIN ct.comment c
-        WHERE ct.user = :user AND ct.thread = :thread";
+            WHERE ct.user = :user AND ct.thread = :thread";
         $query = $em->createQuery($dql)
             ->setParameter('user', $user)
             ->setParameter('thread', $thread);  

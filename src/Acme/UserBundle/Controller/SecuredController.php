@@ -92,16 +92,19 @@ class SecuredController extends Controller
 
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
-            
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($user);
             $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
             $user->setPassword($password);
             
             $em = $this->getDoctrine()->getManager();
+            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
+            
+            $user->addRole($role);                
             $em->persist($user);
-            $em->flush();
-
+            $em->flush(); 
+     
+            // Notice
             $this->get('session')->getFlashBag()->add(
                 'notice',
                 'Successful registration!'
@@ -116,5 +119,22 @@ class SecuredController extends Controller
         
         return $this->render('AcmeUserBundle:Secured:signup.html.twig', 
             array('form' => $form->createView()));
+    }
+    
+    private function sendMailAction($user)
+    {
+        // Send Email
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Hello Email')
+            ->setFrom('send@example.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+            $this->renderView(
+                'AcmeDemoBundle:Demo:hello.html.twig',
+                array('name' => $user->getUsername())
+            )
+        );
+
+        $this->get('mailer')->send($message);    
     }
 }

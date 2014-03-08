@@ -56,6 +56,12 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     *
+     */
+    private $roles;
+
+    /**
      * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Thread", mappedBy="user")
      */
     protected $threads;
@@ -69,6 +75,7 @@ class User implements UserInterface, \Serializable
     {
         $this->isActive = true;
         $this->threads = new ArrayCollection();
+        $this->roles = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
     }
@@ -104,7 +111,8 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->roles->toArray();
+        // return array('ROLE_USER');
     }
 
     /**
@@ -385,5 +393,28 @@ class User implements UserInterface, \Serializable
     public function getCommentTracks()
     {
         return $this->commentTracks;
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \Acme\UserBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\Acme\UserBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \Acme\UserBundle\Entity\Role $roles
+     */
+    public function removeRole(\Acme\UserBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
     }
 }

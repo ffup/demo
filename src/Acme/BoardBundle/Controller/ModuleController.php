@@ -12,6 +12,10 @@ class ModuleController extends Controller
             ->getRepository('AcmeBoardBundle:Module')
             ->findBy(array('parent' => null));
     
+    
+        // TODO admin role
+
+        
         $params = array('modules' => $modules);
         return $this->render('AcmeBoardBundle:Module:index.html.twig', $params);
     }

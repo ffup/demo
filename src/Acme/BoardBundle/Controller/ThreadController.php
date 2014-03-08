@@ -17,14 +17,13 @@ class ThreadController extends Controller
         $pageSize = 5;
         
         $user = $this->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         
-        $module = $entityManager->getRepository('AcmeBoardBundle:Module')
-            ->findById($moduleId);  
+        $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);  
         
         $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
             WHERE t.module = :module ORDER BY t.updatedAt DESC";
-        $query = $entityManager->createQuery($dql)
+        $query = $em->createQuery($dql)
             ->setParameter('module', $module)  
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
@@ -53,7 +52,7 @@ class ThreadController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             $module = $em->getRepository('AcmeBoardBundle:Module')
-                ->findById($request->query->get('module_id'));
+                ->find($request->query->get('module_id'));
             
             $thread->setModule($module);
             // $this->container->get('security.context')->getToken()->getUser()
@@ -102,8 +101,10 @@ class ThreadController extends Controller
             ->setParameter('end', $offset + $pageSize + 1);           
         
         $ids = $em->getRepository('AcmeBoardBundle:CommentTrack')
-            ->findByUserWithThread($user, $thread); 
+            ->findByUserAndThread($user, $thread); 
+            
         $pagination = $query->getResult();
+        
         foreach ($pagination as $comment) {
             if (in_array($comment->getId(), $ids)) {
                 $comment->_hasVoted = true;
