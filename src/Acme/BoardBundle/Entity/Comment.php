@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Comment
  *
  * @ORM\Table(name="comment", uniqueConstraints={@ORM\UniqueConstraint(columns={"thread_id", "post_index"})})
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\CommentRepository")
+ * @ORM\Entity(repositoryClass="CommentRepository")
  * @ORM\HasLifecycleCallbacks() 
  */
 class Comment

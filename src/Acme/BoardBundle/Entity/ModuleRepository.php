@@ -12,20 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class ModuleRepository extends EntityRepository
 {
-    public function findById($id)
-    {
-        $em = $this->getEntityManager();
-        $query = $em->createQuery('SELECT m FROM AcmeBoardBundle:Module m 
-            WHERE m.id = :module_id')
-            ->setParameter('module_id', $id);
-            
-        return $query->getSingleResult();
-        /*   
-        try {
-
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-        */
-    }
 }

@@ -45,7 +45,7 @@ class Module
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="module")
      **/
-    protected $threads;
+    private $threads;
    
     /**
      * @ORM\Column(name="num_threads", type="integer")

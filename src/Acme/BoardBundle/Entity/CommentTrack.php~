@@ -21,7 +21,7 @@ class CommentTrack
     private $comment;
     
     /**
-     * @ORM\Column(name="hasVoted", type="boolean") 
+     * @ORM\Column(name="has_voted", type="boolean") 
      */
     private $hasVoted;
         

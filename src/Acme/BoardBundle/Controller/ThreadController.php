@@ -14,12 +14,15 @@ class ThreadController extends Controller
     {
         $page = $request->query->get('page', 1);;
         $moduleId = $request->get('module_id');
-        $pageSize = 5;
+        $pageSize = 10;
         
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         
         $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);  
+        if (false == $module) {
+           throw new \Doctrine\ORM\NoResultException;
+        }
         
         $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
             WHERE t.module = :module ORDER BY t.updatedAt DESC";
@@ -34,9 +37,11 @@ class ThreadController extends Controller
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
         
-        $params = array('module' => $module, 
-            'pages' => $paginator->getPages(), 
-            'pagination' => $pagination,);
+        $params = array(
+                      'module' => $module, 
+                      'pages' => $paginator->getPages(), 
+                      'pagination' => $pagination,
+                  );
         
         return $this->render('AcmeBoardBundle:Thread:index.html.twig', $params);
     }
@@ -47,13 +52,12 @@ class ThreadController extends Controller
         $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
         $form->handleRequest($request);
         
-        if ($form->isValid()) {        
-            // perform some action, such as saving the task to the database       
-            $em = $this->getDoctrine()->getManager();
-            
-            $module = $em->getRepository('AcmeBoardBundle:Module')
+        $em = $this->getDoctrine()->getManager();
+        $module = $em->getRepository('AcmeBoardBundle:Module')
                 ->find($request->query->get('module_id'));
-            
+        
+        if ($form->isValid()) {        
+            // perform some action, such as saving the task to the database             
             $thread->setModule($module);
             // $this->container->get('security.context')->getToken()->getUser()
             $em->getRepository('AcmeBoardBundle:Thread')
@@ -69,8 +73,13 @@ class ThreadController extends Controller
             );
         }
         
-        return $this->render('AcmeBoardBundle:Thread:create.html.twig', 
-            array('form' => $form->createView()));
+        $params = array(
+                      'thread' => $thread,
+                      'form'   => $form->createView(),
+                      'module' => $module,
+                  );
+        
+        return $this->render('AcmeBoardBundle:Thread:create.html.twig', $params);
     }
     
     public function viewAction(Request $request)
@@ -88,7 +97,7 @@ class ThreadController extends Controller
              
         // Pagnation
         $page = $request->query->get('page', 1);
-        $pageSize = 5;
+        $pageSize = 10;
     
         $offset =($page - 1) * $pageSize;    
         
@@ -99,6 +108,9 @@ class ThreadController extends Controller
             ->setParameter('thread', $thread)  
             ->setParameter('start', $offset)  
             ->setParameter('end', $offset + $pageSize + 1);           
+        
+        // Result Cache
+        // $query->setResultCacheLifetime(60);
         
         $ids = $em->getRepository('AcmeBoardBundle:CommentTrack')
             ->findByUserAndThread($user, $thread); 
@@ -118,11 +130,12 @@ class ThreadController extends Controller
         $paginator->setCurrentPageNumber($page);// default 10
         // $paginator->setPageRange(10);
         
-        $params = array('thread' => $thread, 
-            'pages' => $paginator->getPages(), 
-            'pagination' => $pagination,);
+        $params = array(
+                      'thread' => $thread, 
+                      'pages' => $paginator->getPages(), 
+                      'pagination' => $pagination,
+                  );
          // \Doctrine\Common\Util\Debug::dump($query);
-  
         return $this->render('AcmeBoardBundle:Thread:view.html.twig', $params);
                 
     }

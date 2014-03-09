@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ThreadTrack
  *
  * @ORM\Table(name="thread_track")
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\ThreadTrackRepository")
+ * @ORM\Entity(repositoryClass="ThreadTrackRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class ThreadTrack

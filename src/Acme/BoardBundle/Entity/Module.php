@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Module
  *
  * @ORM\Table(name="module")
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\ModuleRepository")
+ * @ORM\Entity(repositoryClass="ModuleRepository")
  */
 class Module
 {
@@ -45,7 +45,7 @@ class Module
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="module")
      **/
-    protected $threads;
+    private $threads;
    
     /**
      * @ORM\Column(name="num_threads", type="integer")

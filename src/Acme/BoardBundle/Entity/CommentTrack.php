@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ThreadTrack
  *
  * @ORM\Table(name="comment_track")
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\CommentTrackRepository")
+ * @ORM\Entity(repositoryClass="CommentTrackRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class CommentTrack

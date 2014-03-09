@@ -40,8 +40,11 @@ class CommentController extends Controller
             );
         }
         
-        return $this->render('AcmeBoardBundle:Comment:create.html.twig', 
-            array('form' => $form->createView()));
+        $params = array(
+                      'form' => $form->createView(),
+                       'thread' => $thread,
+                    );
+        return $this->render('AcmeBoardBundle:Comment:create.html.twig', $params);
     
     }
 

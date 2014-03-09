@@ -1,42 +1,23 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% block body %}
-
 <!--
 <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 -->
 <!-- HTML to write -->
+
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
-  <li><a href="/board">Board</a></li>
-  {#
-  <li class="dropdown"><a data-toggle="dropdown" href="#">{{ module.parent.name }}</a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-      <li role="presentation" class="dropdown-header">Dropdown header</li>
-      <li role="presentation" class="dropdown-header">Dropdown header</li>
-    </ul>  
-  </li>
-  #}
+  <li><a href="{{ path('module_index') }}">Board</a></li>
   <li class="active">{{ module.name }}</li>  
 </ol>
-
-<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-  <li role="presentation" class="dropdown-header">Dropdown header</li>
-  ...
-  <li role="presentation" class="divider"></li>
-  <li role="presentation" class="dropdown-header">Dropdown header</li>
-  ...
-</ul>
-
 <div class="page-header">
   <h1>{{ module.name }} <small>Subtext for header</small></h1>
 </div>
-
 <div><a href="{{ path('thread_create', {'module_id': app.request.get('module_id')}) }}">
-  <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> THREAD</button></a>
+  <button class="btn btn-primary"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE THREAD</strong></button></a>
 </div>
-
 <div class="table-condensed">
   <table class="table table-hover">
     <thead>
@@ -57,7 +38,7 @@
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a><span class="label label-default">Default</span>
 </td>
         <td>{{ thread.user.username }} </td>      
-        <td><span class="badge">{{ thread.numReplies }}</span></td>    
+        <td><span class="">{{ thread.numReplies }}</span></td>    
         <td>{{ thread.numViews }}</td>  
         <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
       </tr>

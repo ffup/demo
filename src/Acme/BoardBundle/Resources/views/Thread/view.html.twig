@@ -2,20 +2,19 @@
 {% block body %}
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-<ol class="breadcrumb">
-  <li><a href="/">Home</a></li>
-  <li><a href="/board">Board</a></li>
-  <li><a href="{{ path('thread_index', {'module_id': thread.module.id}) }}">{{ thread.module.name }}</a></li>  
-  <li class="active">{{ thread.title }}</li>
-</ol>
-
+<div>
+  <ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="{{ path('module_index') }}">Board</a></li>
+    <li><a href="{{ path('thread_index', {'module_id': thread.module.id}) }}">{{ thread.module.name }}</a></li>  
+    <li class="active">{{ thread.title }}</li>
+  </ol>
+</div>
 <div class="page-header">
   <h1>{{ thread.title }} <small>Subtext for header</small></h1>
 </div>
-
 <div>
-<a class="btn btn-default" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><span class="glyphicon glyphicon-plus"></span> COMMENT</a>
+<a class="btn btn-primary" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE COMMENT</strong></a>
 </div>
 <!-- thread -->
   <!-- Button trigger modal -->

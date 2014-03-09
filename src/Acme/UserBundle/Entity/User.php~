@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="Acme\UserBundle\Entity\UserRepository")
+ * @ORM\Entity(repositoryClass="UserRepository")
  */
 class User implements UserInterface, \Serializable
 {

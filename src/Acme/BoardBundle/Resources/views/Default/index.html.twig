@@ -1,14 +1,12 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 
+{% block nav%}{% endblock %}
 {% block body %}
- 
-{% for flashMessage in app.session.flashbag.get('notice') %}
-    <div class="flash-notice">
-        {{ flashMessage }}
-    </div>
-{% endfor %}
-
-Hello {{ name }}!
-<p>Username: {{ app.user.username }}</p>
-
+ <div class="jumbotron">
+  <h1>Demo</h1>
+  <p></p>
+  <p><a href="{{ path('module_index') }}" class="btn btn-primary btn-lg" role="button">Board</a></p>
+</div>
 {% endblock %}
+
+

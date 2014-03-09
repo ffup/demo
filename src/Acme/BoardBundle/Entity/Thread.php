@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Thread
  *
  * @ORM\Table(name="thread", indexes={@ORM\Index(columns={"updated_at"})})
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\ThreadRepository")
+ * @ORM\Entity(repositoryClass="ThreadRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Thread
@@ -78,17 +78,17 @@ class Thread
      * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    protected $user;
+    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread")
      */
-    protected $comments;
+    private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Module", inversedBy="threads", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Module", inversedBy="threads")
      */    
-    protected $module;
+    private $module;
 
     /**
      * Get id

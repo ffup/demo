@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Role
  *
  * @ORM\Table(name="role")
- * @ORM\Entity(repositoryClass="Acme\UserBundle\Entity\RoleRepository")
+ * @ORM\Entity(repositoryClass="RoleRepository", readOnly=true)
  */
 class Role implements RoleInterface
 {
@@ -32,7 +32,7 @@ class Role implements RoleInterface
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles", fetch="EXTRA_LAZY")
      */
     private $users;
 

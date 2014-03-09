@@ -8,14 +8,20 @@ Acme\UserBundle\Entity\User:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email        
     properties:
         username:
-            # in order to avoid multiple error messages        
+            # in order to avoid multiple error messages     
+            - Regex:
+                pattern:  /^[a-zA-Z\d]+[\w.-]*[a-zA-Z\d]$/
+                match:    true
+                message:  Your name is not illegal
+                groups:   [Strict]
+
             - NotBlank: ~
             - Length:
-                min: 6
+                min: 4
         password:
             - NotBlank: ~
             - Length:
-                min: 8
+                min: 4
         email:
             - NotBlank: ~
             - Email: ~
