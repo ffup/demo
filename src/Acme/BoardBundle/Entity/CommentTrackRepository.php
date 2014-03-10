@@ -3,6 +3,7 @@
 namespace Acme\BoardBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Acme\UserBundle\Entity\User;
 
 /**
  * CommentTrackRepository
@@ -12,18 +13,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentTrackRepository extends EntityRepository
 {
-    public function findByUserAndComment($user, $comment)
+
+    public function findByUserAndComment(User $user, Comment $comment)
     {
         $em = $this->getEntityManager();
         $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
-            ->find(array('user' => $user->getId(),
-                'comment'  => $comment->getId(),
-                'thread'   => $comment->getThread()->getId(),
-            ));
+            ->find(array(
+                      'user' => $user->getId(),
+                      'comment'  => $comment->getId(),
+                      'thread'   => $comment->getThread()->getId(),
+                  )
+              );
+              
         return $track;
     }
     
-    public function create($user, $comment)
+    public function create(User $user, Comment $comment)
     {
         $em = $this->getEntityManager();
         $track = new \Acme\BoardBundle\Entity\CommentTrack();
@@ -38,7 +43,7 @@ class CommentTrackRepository extends EntityRepository
         $em->flush();
     }
     
-    public function findByUserAndThread($user, $thread)
+    public function findByUserAndThread(User $user = null, Thread $thread)
     {
         $ids = array();
         

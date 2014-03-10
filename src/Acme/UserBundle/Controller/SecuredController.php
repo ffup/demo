@@ -1,5 +1,4 @@
 <?php
-
 namespace Acme\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -7,7 +6,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -15,29 +13,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class SecuredController extends Controller
 {
+
     /**
      * @Route("/signin", name="_signin")
-     * @Template()
      */
     public function signinAction(Request $request)
     {
-        // $form = $this->createFormBuilder()
-        //    ->add('recaptcha', 'ewz_recaptcha', array('mapped' => false, 
-        //        'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True())))
-        //    ->getForm();
-    
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
             $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
-
+        
         $params = array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error'         => $error,
-            // 'form'          => $form->createView()
+            'error' => $error
         );
-
+        
         return $this->render('AcmeUserBundle:Secured:signin.html.twig', $params);
     }
 
@@ -58,38 +50,21 @@ class SecuredController extends Controller
     }
 
     /**
-     * @Route("/hello", defaults={"name"="World"}),
-     * @Route("/hello/{name}", name="_secured_hello")
-     * @Template()
-     */
-    public function helloAction($name)
-    {
-        return $this->render('AcmeUserBundle:Default:index.html.twig', array('name' => null));
-    }
-
-    /**
-     * @Route("/hello/admin/{name}", name="_secured_hello_admin")
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @Template()
-     */
-    public function helloadminAction($name)
-    {
-        return array('name' => $name);
-    }
-    
-    /**
      * @Route("/signup", name="_signup")
-     * @Template()
      */
     public function signupAction(Request $request)
     {
         $user = new \Acme\UserBundle\Entity\User();
         $form = $this->createForm(new \Acme\UserBundle\Form\UserType(), $user);
-        $form->add('recaptcha', 'ewz_recaptcha', array('mapped' => false, 
-            'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True())));
+        $form->add('recaptcha', 'ewz_recaptcha', 
+            array(
+                'mapped' => false,
+                'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True()),
+            )
+        );
         
         $form->handleRequest($request);
-
+        
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
@@ -100,41 +75,37 @@ class SecuredController extends Controller
             $em = $this->getDoctrine()->getManager();
             $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
             
-            $user->addRole($role);                
+            $user->addRole($role);
             $em->persist($user);
-            $em->flush(); 
-     
+            $em->flush();
+            
             // Notice
-            $this->get('session')->getFlashBag()->add(
-                'notice',
-                'Successful registration!'
-            );
+            $this->get('session')
+                ->getFlashBag()
+                ->add('notice', 'Successful registration!');
             
             // Here, "main" is the name of the firewall in your security.yml
             // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
             // $this->get('security.context')->setToken($token);
-
+            
             return $this->redirect($this->generateUrl('_signin'));
         }
         
-        return $this->render('AcmeUserBundle:Secured:signup.html.twig', 
-            array('form' => $form->createView()));
+        return $this->render('AcmeUserBundle:Secured:signup.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
-    
+
     private function sendMailAction($user)
     {
         // Send Email
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Hello Email')
+        $message = \Swift_Message::newInstance()->setSubject('Hello Email')
             ->setFrom('send@example.com')
             ->setTo($user->getEmail())
-            ->setBody(
-            $this->renderView(
-                'AcmeDemoBundle:Demo:hello.html.twig',
-                array('name' => $user->getUsername())
-            )
-        );
-
-        $this->get('mailer')->send($message);    
+            ->setBody($this->renderView('AcmeDemoBundle:Demo:hello.html.twig', array(
+            'name' => $user->getUsername()
+        )));
+        
+        $this->get('mailer')->send($message);
     }
 }

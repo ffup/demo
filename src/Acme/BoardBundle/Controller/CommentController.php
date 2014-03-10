@@ -4,20 +4,19 @@ namespace Acme\BoardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CommentController extends Controller
 {
+
     public function createAction(Request $request)
     {
-
-        $id = $request->query->get('id');
+        $id = (int) $request->query->get('id');
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        // \Doctrine\Common\Util\Debug::dump($thread);
-        
-        if (!$thread) {
-            throw new \Doctrine\ORM\NoResultException;
+        if (! $thread) {
+            throw new NotFoundHttpException;
         }
         
         $comment = new \Acme\BoardBundle\Entity\Comment();
@@ -42,8 +41,8 @@ class CommentController extends Controller
         
         $params = array(
                       'form' => $form->createView(),
-                       'thread' => $thread,
-                    );
+                      'thread' => $thread,
+                  );
         return $this->render('AcmeBoardBundle:Comment:create.html.twig', $params);
     
     }

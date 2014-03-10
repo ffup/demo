@@ -3,6 +3,7 @@
 namespace Acme\BoardBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Acme\UserBundle\Entity\User;
 
 /**
  * ThreadRepository
@@ -12,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThreadRepository extends EntityRepository
 {
-    public function create(\Acme\UserBundle\Entity\User $user, Thread $thread)
+    public function create(User $user, Thread $thread)
     {
         $em = $this->getEntityManager();
         

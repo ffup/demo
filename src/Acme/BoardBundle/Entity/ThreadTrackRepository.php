@@ -3,6 +3,7 @@
 namespace Acme\BoardBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Acme\UserBundle\Entity\User;
 
 /**
  * ThreadTrackRepository
@@ -12,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThreadTrackRepository extends EntityRepository
 {
-    public function create(\Acme\UserBundle\Entity\User $user = null, Thread $thread)
+    public function create(User $user = null, Thread $thread)
     {
         if (!isset($user)) {
             return;
@@ -20,9 +21,13 @@ class ThreadTrackRepository extends EntityRepository
     
         $em = $this->getEntityManager();
         $track = $em->getRepository('AcmeBoardBundle:ThreadTrack')
-            ->find(array('user' => $user->getId(),
-                'thread' => $thread->getId(),
-                'module' => $thread->getModule()));
+            ->find(array(
+                      'user' => $user->getId(),
+                      'thread' => $thread->getId(),
+                      'module' => $thread->getModule(),
+                  )
+              );
+                
         if (isset($track) && $track->getHasViewed()) {
             return;
         }
@@ -38,18 +43,5 @@ class ThreadTrackRepository extends EntityRepository
         $em->persist($thread);
         $em->persist($track);
         $em->flush();       
-        
-        // TODO 
-        /*
-        $dql = "SELECT t.id FROM AcmeBoardBundle:ThreadTrack tt JOIN tt.thread t
-            WHERE tt.user = :user_id AND tt.hasViewed = true";
-        $query = $entityManager->createQuery($dql)
-            ->setParameter('user_id', $user->getId()); 
-        $viewedIds = $query->getResult();
-             
-        \Doctrine\Common\Util\Debug::dump($viewedIds);
-        */
- 
     }
-
 }

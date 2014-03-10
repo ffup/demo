@@ -4,8 +4,8 @@ parameters:
     database_host: 127.0.0.1
     database_port: null
     database_name: demo
-    database_user: root
-    database_password: password
+    database_user: demouser
+    database_password: demopassword
     mailer_transport: gmail
     mailer_host: ~
     mailer_user: null

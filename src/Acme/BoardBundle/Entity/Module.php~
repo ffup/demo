@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Module
  *
  * @ORM\Table(name="module")
- * @ORM\Entity(repositoryClass="Acme\BoardBundle\Entity\ModuleRepository")
+ * @ORM\Entity(repositoryClass="ModuleRepository")
  */
 class Module
 {
@@ -37,6 +37,16 @@ class Module
      */
     private $name;
 
+    /**
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="enabled", type="boolean")
+     */
+    private $enabled;
+        
     /**
      * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
      **/
@@ -237,5 +247,28 @@ class Module
     public function getThreadTracks()
     {
         return $this->threadTracks;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Module
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

@@ -38,6 +38,11 @@ class Module
     private $name;
 
     /**
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+        
+    /**
      * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
      **/
     private $threadTracks;
@@ -237,5 +242,28 @@ class Module
     public function getThreadTracks()
     {
         return $this->threadTracks;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Module
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

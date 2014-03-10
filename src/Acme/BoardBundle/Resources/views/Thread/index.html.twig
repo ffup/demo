@@ -10,6 +10,13 @@
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
+  <li class="dropdown"><a href="{{ path('module_index') }}#{{ module.id }}" data-target="#" data-toggle="dropdown">{{ module.parent.name }}</a>
+    <ul class="dropdown-menu">
+      {% for child in module.parent.children %}
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('thread_index', {'module_id': child.id}) }}">{{ child.name }}</a></li>       
+      {% endfor %}
+    </ul>
+  </li>
   <li class="active">{{ module.name }}</li>  
 </ol>
 <div class="page-header">

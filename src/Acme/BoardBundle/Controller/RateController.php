@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RateController extends Controller
 {
+
     public function increaseAction(Request $request)
     {
         // $request->isXmlHttpRequest(); // is it an Ajax request?
@@ -36,12 +37,13 @@ class RateController extends Controller
         $em->getRepository('AcmeBoardBundle:CommentTrack')->create($user, $comment);
               
         $data = array(
-            "code"    => 100, 
-            "success" => true, 
-            "votes"   => $comment->getVotes());
+                    "code"    => 100, 
+                    "success" => true, 
+                    "votes"   => $comment->getVotes()
+                );
+                
         $response->setData($data);
         return $response;
-        
     }
 
 }

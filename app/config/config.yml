@@ -61,7 +61,6 @@ doctrine:
         auto_mapping: true
         metadata_cache_driver: apc
 #        query_cache_driver: apc
-
         result_cache_driver:
             type: memcache
             host: localhost
@@ -82,4 +81,4 @@ ewz_recaptcha:
     private_key:  6Lck-cwSAAAAAGS8YFI3DJGNgoDEzlavglTFJkWT
     secure:       false
     locale_key:   kernel.default_locale
-    enabled:      false
+    enabled:      true
