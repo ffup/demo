@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Module
  *
- * @ORM\Table(name="module")
+ * @ORM\Table(name="module", indexes={@ORM\Index(columns={"is_enabled"})})
  * @ORM\Entity(repositoryClass="ModuleRepository")
  */
 class Module
@@ -41,6 +41,16 @@ class Module
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
+      
+    /**
+     * @ORM\Column(name="is_displayed", type="boolean")
+     */        
+    private $isDisplayed;
+    
+    /**
+     * @ORM\Column(name="is_enabled", type="boolean")
+     */    
+    private $isEnabled;
         
     /**
      * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
@@ -265,5 +275,51 @@ class Module
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set isDisplayed
+     *
+     * @param boolean $isDisplayed
+     * @return Module
+     */
+    public function setIsDisplayed($isDisplayed)
+    {
+        $this->isDisplayed = $isDisplayed;
+
+        return $this;
+    }
+
+    /**
+     * Get isDisplayed
+     *
+     * @return boolean 
+     */
+    public function getIsDisplayed()
+    {
+        return $this->isDisplayed;
+    }
+
+    /**
+     * Set isEnabled
+     *
+     * @param boolean $isEnabled
+     * @return Module
+     */
+    public function setIsEnabled($isEnabled)
+    {
+        $this->isEnabled = $isEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get isEnabled
+     *
+     * @return boolean 
+     */
+    public function getIsEnabled()
+    {
+        return $this->isEnabled;
     }
 }

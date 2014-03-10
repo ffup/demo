@@ -1,12 +1,11 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
+{% use '::page.html.twig' %}
 {% block body %}
 <!--
 <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 -->
-<!-- HTML to write -->
-
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
@@ -32,18 +31,17 @@
         <th style="width: 5%">#</th>
         <th style="width: 55%">Subject</th>
         <th style="width: 15%">Author</th>
-        <th style="width: 7%">Replies</th>
-        <th style="width: 7%">Views</th>        
-        <th style="width: 16%">Last Post</th>
+        <th style="width: 5%">Replies</th>
+        <th style="width: 5%">Views</th>        
+        <th style="width: 15%">Last Post</th>
       </tr>
     </thead>
     <tbody>
       {% for thread in pagination %}
       <tr>
         <td></td>
-        <td>
-        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a><span class="label label-default">Default</span>
-</td>
+        <td><span class="label label-default">Default</span>
+        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a></td>
         <td>{{ thread.user.username }} </td>      
         <td><span class="">{{ thread.numReplies }}</span></td>    
         <td>{{ thread.numViews }}</td>  
@@ -54,24 +52,8 @@
   </table>
 </div>
 
-<div class="pull-right">
-  <ul class="pagination">
-  {% if pages.firstPageInRange is not defined %}
-    <li>
-      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': pages.first}) }}">&laquo;</a>
-    </li>
-  {% endif %}
-  {% for page in pages.pagesInRange %}
-    <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': page}) }}">{{ page }}</a>
-    </li>
-  {% endfor %}
-  {% if pages.lastPageInRange is not defined %}
-    <li>
-      <a href="{{ path(app.request.attributes.get('_route'), {'module_id': app.request.get('module_id'), 'page': pages.last}) }}">&raquo;</a>
-    </li>
-  {% endif %}
-  </ul>
-</div>
+{% block pagingwrapper %}
+  {{ parent() }}
+{% endblock %}
 
 {% endblock %}

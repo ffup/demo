@@ -1,14 +1,10 @@
 {% extends "::base.html.twig" %}
-
+{% use '::page.html.twig' %}
 {% block title %}My comments{% endblock %}
-
 {% block body %}
 <div class="page-header">
   <h1>My comments <small>Subtext for header</small></h1>
 </div>
-
-
-
 <div class="table-condensed">
   <table class="table table-hover">
     <thead>
@@ -29,23 +25,8 @@
     </tbody>
   </table>
 </div>
-
-<div class="pull-right">
-  <ul class="pagination">
-    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
-      {% if pages.firstPageInRange is not defined %}
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.first}) }}">&laquo;</a></li>
-      {% endif %}
-      {% for page in pages.pagesInRange %}
-    <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': page}) }}">{{ page }}</a></li>
-      {% endfor %}
-    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
-      {% if pages.lastPageInRange is not defined %}
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.last}) }}">&raquo;</a>
-      {% endif %}
-    </li>
-  </ul>
-</div>
+{% block pagingwrapper %}
+  {{ parent() }}
+{% endblock %}
 
 {% endblock %}

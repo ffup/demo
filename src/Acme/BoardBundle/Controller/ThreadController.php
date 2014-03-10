@@ -13,15 +13,14 @@ class ThreadController extends Controller
 
     public function indexAction(Request $request)
     {
-        $page = (int) $request->query->get('page', 1) > 0 ?  : 1;
-        $moduleId = $request->get('module_id');
         $pageSize = 10;
-        
-        $user = $this->getUser();
+        $page = (int) $request->query->get('page', 1);
+        $moduleId = $request->get('module_id');
+   
         $em = $this->getDoctrine()->getManager();
         
         $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $moduleId);
-        if (false == $module) {
+        if ($page <= 0 || false == $module || false == $module->getIsDisplayed()) {
             throw new NotFoundHttpException();
         }
         
@@ -86,22 +85,20 @@ class ThreadController extends Controller
 
     public function viewAction(Request $request)
     {
+        $pageSize = 10;
+        $page = (int) $request->query->get('page', 1);
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        if (false == $thread) {
+        if ($page <= 0 || false == $thread) {
             throw new NotFoundHttpException();
         }
         
         $user = $this->getUser();
         $em->getRepository('AcmeBoardBundle:ThreadTrack')->create($user, $thread);
         
-        // Pagnation
-        $page = (int) $request->query->get('page', 1) > 0 ?  : 1;
-        ;
-        $pageSize = 10;
-        
+        // Pagnation    
         $offset = ($page - 1) * $pageSize;
         
         $em = $this->getDoctrine()->getManager();
@@ -124,8 +121,9 @@ class ThreadController extends Controller
         
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);
-        $paginator->setCurrentPageNumber($page); // default 10
-                                                 // $paginator->setPageRange(10);
+        $paginator->setCurrentPageNumber($page); 
+        // default 10
+        // $paginator->setPageRange(10);
         
         $params = array(
             'thread' => $thread,

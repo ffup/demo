@@ -10,12 +10,11 @@ class ModuleController extends Controller
     {
         $modules = $this->getDoctrine()
             ->getRepository('AcmeBoardBundle:Module')
-            ->findBy(array('parent' => null));
-    
-    
-        // TODO admin role
-
-        
+            ->findBy(array(
+                        'isEnabled' => true, 
+                        'parent' => null)
+                    );
+          
         $params = array('modules' => $modules);
         return $this->render('AcmeBoardBundle:Module:index.html.twig', $params);
     }

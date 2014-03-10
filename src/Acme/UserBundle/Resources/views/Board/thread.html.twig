@@ -1,4 +1,5 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
+{% use '::page.html.twig' %}
 {% block title %}My threads{% endblock %}
 {% block body %}
 <div class="page-header">
@@ -28,25 +29,9 @@
   </table>
 </div>
 
-<div class="pull-right">
-  <ul class="pagination">
-  {% if pages.firstPageInRange is not defined %}
-    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.first}) }}">&laquo;</a>
-    </li>
-  {% endif %}
-  {% for page in pages.pagesInRange %}
-    <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': page}) }}">{{ page }}</a>
-    </li>
-  {% endfor %}
-  {% if pages.lastPageInRange is not defined %}
-    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), {'page': pages.last}) }}">&raquo;</a>
-    </li>
-  {% endif %}
-  </ul>
-</div>
+{% block pagingwrapper %}
+  {{ parent() }}
+{% endblock %}
 
 {% endblock %}
 

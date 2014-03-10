@@ -41,11 +41,16 @@ class Module
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
-
+      
     /**
-     * @ORM\Column(name="enabled", type="boolean")
-     */
-    private $enabled;
+     * @ORM\Column(name="is_displayed", type="boolean")
+     */        
+    private $isDisplayed;
+    
+    /**
+     * @ORM\Column(name="is_enabled", type="boolean")
+     */    
+    private $isEnabled;
         
     /**
      * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")

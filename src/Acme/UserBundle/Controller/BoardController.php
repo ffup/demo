@@ -12,9 +12,12 @@ class BoardController extends Controller
 
     public function threadAction(Request $request)
     {
-        $page = (int) $request->query->get('page', 1) > 0 ?  : 1;
-        ;
         $pageSize = 10;
+        $page = (int) $request->query->get('page', 1);
+      
+        if ($page <= 0) {
+            throw new NotFoundHttpException();
+        }
         
         $entityManager = $this->getDoctrine()->getManager();
         $dql = "SELECT t FROM AcmeBoardBundle:Thread t WHERE t.user = :user
@@ -39,10 +42,13 @@ class BoardController extends Controller
 
     public function commentAction(Request $request)
     {
-        $page = (int) $request->query->get('page', 1) > 0 ?  : 1;
-        ;
         $pageSize = 10;
+        $page = (int) $request->query->get('page', 1);
         
+        if ($page <= 0) {
+            throw new NotFoundHttpException();
+        }
+   
         $entityManager = $this->getDoctrine()->getManager();
         $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 
             WHERE c.user = :user";
