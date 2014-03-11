@@ -13,20 +13,6 @@ use Acme\UserBundle\Entity\User;
  */
 class CommentTrackRepository extends EntityRepository
 {
-
-    public function findByUserAndComment(User $user, Comment $comment)
-    {
-        $em = $this->getEntityManager();
-        $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
-            ->find(array(
-                      'user' => $user->getId(),
-                      'comment'  => $comment->getId(),
-                      'thread'   => $comment->getThread()->getId(),
-                  )
-              );
-              
-        return $track;
-    }
     
     public function create(User $user, Comment $comment)
     {
@@ -45,22 +31,20 @@ class CommentTrackRepository extends EntityRepository
     
     public function findByUserAndThread(User $user = null, Thread $thread)
     {
-        $ids = array();
+        $tracks = array();
         
         if (!isset($user)) {
-            return $ids;
+            return $tracks;
         }
         
         $em = $this->getEntityManager();
-        $dql = "SELECT c.id FROM AcmeBoardBundle:CommentTrack ct JOIN ct.comment c
+        $dql = "SELECT ct FROM AcmeBoardBundle:CommentTrack ct
             WHERE ct.user = :user AND ct.thread = :thread";
         $query = $em->createQuery($dql)
             ->setParameter('user', $user)
             ->setParameter('thread', $thread);  
         $tracks = $query->getResult();
                 
-        $ids = array_map(function ($v) { return $v['id'];}, $tracks);
-
-        return $ids;
+        return $tracks;
     }
 }

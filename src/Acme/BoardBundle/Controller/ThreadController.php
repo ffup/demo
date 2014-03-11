@@ -24,7 +24,7 @@ class ThreadController extends Controller
             throw new NotFoundHttpException();
         }
         
-        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
+        $dql = "SELECT t FROM AcmeBoardBundle:Thread t
             WHERE t.module = :module ORDER BY t.updatedAt DESC";
         $query = $em->createQuery($dql)
             ->setParameter('module', $module)
@@ -55,7 +55,7 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $request->query->get('module_id'));
         
-        if (false == $module || false == $module->getParent()) {
+        if (false == $module || false == $module->getIsEnabled()) {
             throw new NotFoundHttpException();
         }
         
@@ -102,7 +102,7 @@ class ThreadController extends Controller
         $offset = ($page - 1) * $pageSize;
         
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT c FROM AcmeBoardBundle:Comment c JOIN c.thread t
+        $dql = "SELECT c FROM AcmeBoardBundle:Comment c
             WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
         $query = $em->createQuery($dql)
             ->setParameter('thread', $thread)
@@ -111,12 +111,16 @@ class ThreadController extends Controller
         
         // $query->setResultCacheLifetime(60);
         
-        $ids = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
+        $tracks = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
         
+        $trackIds = array_map(function ($track) {
+                return $track->getComment()->getId();
+            }, $tracks);
+                   
         $pagination = $query->getResult();
         
         foreach ($pagination as $comment) {
-            $comment->_hasVoted  = in_array($comment->getId(), $ids) ? true : false;
+            $comment->_hasVoted  = in_array($comment->getId(), $trackIds);
         }
         
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));

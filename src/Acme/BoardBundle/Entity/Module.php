@@ -15,7 +15,7 @@ class Module
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -28,7 +28,7 @@ class Module
 
     /**
      * @ORM\ManyToOne(targetEntity="Module", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      **/
     private $parent;
 
@@ -63,7 +63,7 @@ class Module
     private $threads;
    
     /**
-     * @ORM\Column(name="num_threads", type="integer")
+     * @ORM\Column(name="num_threads", type="integer", options={"unsigned"=true})
      */   
     private $numThreads;
     

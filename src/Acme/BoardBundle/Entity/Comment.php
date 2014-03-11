@@ -18,7 +18,7 @@ class Comment
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -61,12 +61,14 @@ class Comment
     private $userTracks;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)     
      */
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acme\BoardBundle\Entity\Thread", inversedBy="comments", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)     
      */
     protected $thread;
 

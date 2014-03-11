@@ -35,8 +35,6 @@ class CommentTrack
      */
     private $createdAt;
     
-   
-    
     /**
      * @ORM\PrePersist
      */

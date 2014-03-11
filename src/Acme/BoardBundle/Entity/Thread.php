@@ -16,7 +16,7 @@ class Thread
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -36,17 +36,27 @@ class Thread
      */
     private $content;
 
+    /*
+     * @ORM\Column(name="status", type="smallint", options={"unsigned"=true})
+     */
+    private $status;
+    
+    /*
+     * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
+     */    
+    private $type;
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="num_replies", type="integer")
+     * @ORM\Column(name="num_replies", type="integer", options={"unsigned"=true})
      */
     private $numReplies;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="num_views", type="integer")
+     * @ORM\Column(name="num_views", type="integer", options={"unsigned"=true})
      */
     private $numViews;
 
@@ -65,28 +75,29 @@ class Thread
     private $updatedAt;
     
     /**
-     * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="thread", fetch="EXTRA_LAZY")
      **/    
     private $commentTracks;
     
     /**
-     * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="thread", fetch="EXTRA_LAZY")
      */      
     private $userTracks;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread", fetch="EXTRA_LAZY")
      */
     private $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity="Module", inversedBy="threads")
+     * @ORM\JoinColumn(nullable=false)          
      */    
     private $module;
 

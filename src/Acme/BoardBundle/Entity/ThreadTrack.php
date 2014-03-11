@@ -25,7 +25,7 @@ class ThreadTrack
      */
     private $hasViewed;
     
-    /** @ORM\ManyToOne(targetEntity="Module", inversedBy="threadTracks") */
+    /** @ORM\ManyToOne(targetEntity="Module", inversedBy="threadTracks") @ORM\JoinColumn(nullable=false) */
     private $module;
     
     /**
