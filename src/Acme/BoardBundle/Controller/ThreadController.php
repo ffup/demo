@@ -20,14 +20,14 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         
         $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $moduleId);
-        if ($page <= 0 || false == $module || false == $module->getIsDisplayed()) {
+        if ($page < 1 || false == $module || false == $module->getIsDisplayed()) {
             throw new NotFoundHttpException();
         }
         
-        $dql = "SELECT t FROM AcmeBoardBundle:Thread t
+        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
             WHERE t.module = :module ORDER BY t.updatedAt DESC";
         $query = $em->createQuery($dql)
-            ->setParameter('module', $module)
+            ->setParameter('module', $module->getId())
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
         
@@ -91,7 +91,7 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        if ($page <= 0 || false == $thread) {
+        if ($page < 1 || false == $thread) {
             throw new NotFoundHttpException();
         }
         
@@ -102,23 +102,21 @@ class ThreadController extends Controller
         $offset = ($page - 1) * $pageSize;
         
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT c FROM AcmeBoardBundle:Comment c
+        $dql = "SELECT c, u FROM AcmeBoardBundle:Comment c JOIN c.user u
             WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
         $query = $em->createQuery($dql)
-            ->setParameter('thread', $thread)
+            ->setParameter('thread', $thread->getId())
             ->setParameter('start', $offset)
             ->setParameter('end', $offset + $pageSize + 1);
-        
         // $query->setResultCacheLifetime(60);
+        $pagination = $query->getResult();
         
         $tracks = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
         
         $trackIds = array_map(function ($track) {
                 return $track->getComment()->getId();
             }, $tracks);
-                   
-        $pagination = $query->getResult();
-        
+                    
         foreach ($pagination as $comment) {
             $comment->_hasVoted  = in_array($comment->getId(), $trackIds);
         }
@@ -126,7 +124,6 @@ class ThreadController extends Controller
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page); 
-        // default 10
         // $paginator->setPageRange(10);
         
         $params = array(

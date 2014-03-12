@@ -15,14 +15,14 @@ class BoardController extends Controller
         $pageSize = 10;
         $page = (int) $request->query->get('page', 1);
       
-        if ($page <= 0) {
+        if ($page < 1) {
             throw new NotFoundHttpException();
         }
         
-        $entityManager = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $dql = "SELECT t FROM AcmeBoardBundle:Thread t WHERE t.user = :user
             ORDER BY t.updatedAt DESC";
-        $query = $entityManager->createQuery($dql)
+        $query = $em->createQuery($dql)
             ->setParameter('user', $this->getUser())
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
@@ -45,7 +45,7 @@ class BoardController extends Controller
         $pageSize = 10;
         $page = (int) $request->query->get('page', 1);
         
-        if ($page <= 0) {
+        if ($page < 1) {
             throw new NotFoundHttpException();
         }
    

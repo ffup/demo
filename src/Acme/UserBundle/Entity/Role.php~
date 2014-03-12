@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Role implements RoleInterface
 {
 /**
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="smallint", options={"unsigned"=true})
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */

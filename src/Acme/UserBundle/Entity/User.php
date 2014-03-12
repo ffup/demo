@@ -64,10 +64,10 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Thread", mappedBy="user")
      */
-    protected $threads;
+    private $threads;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="user", fetch="EXTRA_LAZY")
      */
     protected $comments;
 
