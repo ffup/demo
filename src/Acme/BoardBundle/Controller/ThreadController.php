@@ -20,7 +20,7 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         
         $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $moduleId);
-        if ($page < 1 || false == $module || false == $module->getIsDisplayed()) {
+        if ($page < 1 || false == $module || $module->getEnableIndexing()) {
             throw new NotFoundHttpException();
         }
         
@@ -55,7 +55,7 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $request->query->get('module_id'));
         
-        if (false == $module || false == $module->getIsEnabled()) {
+        if (false == $module || $module->getEnableIndexing()) {
             throw new NotFoundHttpException();
         }
         

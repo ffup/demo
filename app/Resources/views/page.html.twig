@@ -1,19 +1,17 @@
 {% block pagingwrapper %}
 <div class="pull-right">
   <ul class="pagination">
-    <li class="{{ pages.current == pages.first ? 'disabled' : null }}">
-      {% if pages.firstPageInRange > 1 %}
-      <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page.first})) }}">&laquo;</a></li>
-      {% endif %}
-      {% for page in pages.pagesInRange %}
+    {% if pages.firstPageInRange > 1 %}
+    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page.first})) }}">&laquo;</a></li>
+    {% endif %}
+    {% for page in pages.pagesInRange %}
     <li class="{{ pages.current == page ? 'active' : null }}">
-      <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page})) }}">{{ page }}</a></li>
-      {% endfor %}
-    <li class="{{ pages.current == pages.last ? 'disabled' : null }}">
-      {% if pages.lastPageInRange < pages.last %} 
-      <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page.last})) }}">&raquo;</a>
-      {% endif %}
+      <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page})) }}">{{ page }}</a>
     </li>
+    {% endfor %}
+    {% if pages.lastPageInRange < pages.last %}
+    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': page.last})) }}">&raquo;</a></li>
+    {% endif %}
   </ul>
 </div>
 {% endblock %}

@@ -5,15 +5,18 @@ Acme\BoardBundle\Entity\Thread:
             - NotBlank: ~        
             - Length:
                 min: 4
+                max: 128
         content:
             - NotBlank: ~        
             - Length:
                 min: 10
+                max: 1024
 
 Acme\BoardBundle\Entity\Comment:
     properties:
         content:
             - NotBlank: ~        
             - Length:
-                min: 10                
+                min: 10
+                max: 1024               
             

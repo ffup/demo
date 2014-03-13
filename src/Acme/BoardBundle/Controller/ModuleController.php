@@ -10,7 +10,7 @@ class ModuleController extends Controller
     {
         $modules = $this->getDoctrine()
             ->getRepository('AcmeBoardBundle:Module')
-            ->findBy(array('isEnabled' => false,));
+            ->findBy(array('enableIndexing' => true,));
           
         $params = array('modules' => $modules);
         return $this->render('AcmeBoardBundle:Module:index.html.twig', $params);

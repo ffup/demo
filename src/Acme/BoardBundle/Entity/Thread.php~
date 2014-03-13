@@ -36,12 +36,12 @@ class Thread
      */
     private $content;
 
-    /*
+    /**
      * @ORM\Column(name="status", type="smallint", options={"unsigned"=true})
      */
     private $status;
     
-    /*
+    /**
      * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
      */    
     private $type;

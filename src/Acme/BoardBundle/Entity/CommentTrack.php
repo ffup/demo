@@ -25,7 +25,10 @@ class CommentTrack
      */
     private $hasVoted;
         
-    /** @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentTracks") */        
+    /**
+     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentTracks") 
+     * @ORM\JoinColumn(nullable=false)               
+     */        
     private $thread;
     
     /**

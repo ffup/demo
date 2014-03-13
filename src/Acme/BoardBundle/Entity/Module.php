@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Module
  *
- * @ORM\Table(name="module", indexes={@ORM\Index(columns={"is_enabled"})})
+ * @ORM\Table(name="module", indexes={@ORM\Index(columns={"enable_indexing"})})
  * @ORM\Entity(repositoryClass="ModuleRepository")
  */
 class Module
@@ -41,16 +41,11 @@ class Module
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
-      
+          
     /**
-     * @ORM\Column(name="is_displayed", type="boolean")
-     */        
-    private $isDisplayed;
-    
-    /**
-     * @ORM\Column(name="is_enabled", type="boolean")
+     * @ORM\Column(name="enable_indexing", type="boolean")
      */    
-    private $isEnabled;
+    private $enableIndexing;
         
     /**
      * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
@@ -278,48 +273,25 @@ class Module
     }
 
     /**
-     * Set isDisplayed
+     * Set enableIndexing
      *
-     * @param boolean $isDisplayed
+     * @param boolean $enableIndexing
      * @return Module
      */
-    public function setIsDisplayed($isDisplayed)
+    public function setEnableIndexing($enableIndexing)
     {
-        $this->isDisplayed = $isDisplayed;
+        $this->enableIndexing = $enableIndexing;
 
         return $this;
     }
 
     /**
-     * Get isDisplayed
+     * Get enableIndexing
      *
      * @return boolean 
      */
-    public function getIsDisplayed()
+    public function getEnableIndexing()
     {
-        return $this->isDisplayed;
-    }
-
-    /**
-     * Set isEnabled
-     *
-     * @param boolean $isEnabled
-     * @return Module
-     */
-    public function setIsEnabled($isEnabled)
-    {
-        $this->isEnabled = $isEnabled;
-
-        return $this;
-    }
-
-    /**
-     * Get isEnabled
-     *
-     * @return boolean 
-     */
-    public function getIsEnabled()
-    {
-        return $this->isEnabled;
+        return $this->enableIndexing;
     }
 }

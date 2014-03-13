@@ -1,11 +1,6 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% use '::page.html.twig' %}
 {% block body %}
-<!--
-<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
-<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
--->
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
@@ -40,8 +35,8 @@
       {% for thread in pagination %}
       <tr>
         <td></td>
-        <td><span class="label label-default">Default</span>
-        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title }}</a></td>
+        <td>{% if thread.status == 0 %}<span class="label label-default">Default</span>{% endif %}
+        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title[:50] ~ '...' }}</a></td>
         <td>{{ thread.user.username }} </td>      
         <td><span class="">{{ thread.numReplies }}</span></td>    
         <td>{{ thread.numViews }}</td>  

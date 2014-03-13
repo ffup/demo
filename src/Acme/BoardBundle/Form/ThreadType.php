@@ -16,7 +16,7 @@ class ThreadType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('content')
+            ->add('content', 'textarea')
         ;
     }
     

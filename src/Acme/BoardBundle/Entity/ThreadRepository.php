@@ -19,7 +19,9 @@ class ThreadRepository extends EntityRepository
         
         try {
             $em->getConnection()->beginTransaction(); // suspend auto-commit
-            $thread->setUser($user);
+            $thread->setUser($user)
+                ->setStatus(Thread::ITEM_UNLOCKED)
+                ->setType(Thread::POST_NORMAL);
             
             $em->persist($thread);
             $em->flush();
