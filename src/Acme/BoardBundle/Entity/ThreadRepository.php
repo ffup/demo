@@ -17,36 +17,25 @@ class ThreadRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         
-        try {
-            $em->getConnection()->beginTransaction(); // suspend auto-commit
-            $thread->setUser($user)
-                ->setStatus(Thread::ITEM_UNLOCKED)
-                ->setType(Thread::POST_NORMAL);
-            
-            $em->persist($thread);
-            $em->flush();
-            
-            $module = $thread->getModule();
-            $module->setNumThreads($module->getNumThreads() + 1);
-            $em->persist($module);
-            
-            $comment = new \Acme\BoardBundle\Entity\Comment();
-            $comment->setUser($user)
-                    ->setThread($thread)
-                    ->setContent($thread->getContent())
-                    ->setVotes(0)
-                    ->setPostIndex(1);
-                    
-            $em->persist($comment);
-            $em->flush();
-            
-            $em->getConnection()->commit();     
-            
-        } catch(\Exception $e) {
-            $em->getConnection()->rollback();
-            $em->close();
-            throw $e;
-        }    
+        $thread->setUser($user)
+            ->setStatus(Thread::ITEM_UNLOCKED)
+            ->setType(Thread::POST_NORMAL);
+             
+        $module = $thread->getModule();
+        $module->setNumThreads($module->getNumThreads() + 1);
+     
+        $comment = new Comment();
+        $comment->setUser($user)
+                ->setThread($thread)
+                ->setContent($thread->getContent())
+                ->setVotes(0)
+                ->setPostIndex(1);
+                
+        $thread->addComment($comment);
         
+        $em->persist($module);
+        $em->persist($thread);                    
+        $em->persist($comment);
+        $em->flush();                 
     }
 }

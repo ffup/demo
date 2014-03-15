@@ -7,7 +7,7 @@ parameters:
     database_user: demouser
     database_password: demopassword
     mailer_transport: gmail
-    mailer_host: ~
+    mailer_host: null
     mailer_user: null
     mailer_password: null
     locale: en
