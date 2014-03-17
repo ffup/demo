@@ -20,7 +20,7 @@
       <tr>
         <td></td>
         <td>
-        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title[:50] ~ '...' }}</a><span class="label label-default">{{ thread.module.name }}</span></td>
+        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a><span class="label label-default">{{ thread.module.name }}</span></td>
         <td><span class="badge">{{ thread.numReplies|number_format }}</span></td>      
         <td>{{ thread.updatedAt|time_ago_in_words }}</td>                  
       </tr>

@@ -5,7 +5,7 @@ Acme\BoardBundle\Entity\Thread:
             - NotBlank: ~        
             - Length:
                 min: 4
-                max: 128
+                max: 64
         content:
             - NotBlank: ~        
             - Length:

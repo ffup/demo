@@ -36,7 +36,7 @@
       <tr>
         <td></td>
         <td>{% if thread.status == 0 %}<span class="label label-default">Default</span>{% endif %}
-        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title[:50] ~ '...' }}</a></td>
+        <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a></td>
         <td>{{ thread.user.username }} </td>      
         <td><span class="">{{ thread.numReplies }}</span></td>    
         <td>{{ thread.numViews }}</td>  

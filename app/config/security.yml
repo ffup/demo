@@ -45,7 +45,7 @@ security:
                 always_use_default_target_path: false
                 default_target_path:            /
                 target_path_parameter:          _target_path
-                use_referer:                    false
+                use_referer:                    true
                 
             remember_me:
                 key:      "%secret%"
@@ -55,7 +55,7 @@ security:
 
             logout:
                 path:                 _signout
-                target:               /
+                target:               _signin
                 success_handler:      ~
                 invalidate_session:   true
                 delete_cookies:

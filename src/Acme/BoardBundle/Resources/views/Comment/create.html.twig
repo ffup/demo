@@ -5,7 +5,7 @@
     <li><a href="/">Home</a></li>
     <li><a href="{{ path('module_index') }}">Board</a></li>
     <li><a href="{{ path('thread_index', {'module_id': thread.module.id}) }}">{{ thread.module.name }}</a></li>  
-    <li class="active">{{ thread.title }}</li>
+    <li class="active">{{ thread.title[:50] ~ '...' }}</li>
   </ol>
 </div>
 <h2>Create comment</h2>
