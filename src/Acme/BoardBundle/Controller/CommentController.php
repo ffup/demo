@@ -52,10 +52,10 @@ class CommentController extends Controller
         $pageSize = 10;
         $em = $this->getDoctrine()->getManager();
         
-        $id = (int) $request->query->get('id');
-        $moduleId = (int) $request->query->get('module_id');
+        $id = (int) $request->request->get('id');
+        $moduleId = (int) $request->request->get('module_id');
         
-        $dql = "SELECT t, c FROM AcmeBoardBundle:Comment c 
+        $dql = "SELECT t, c, u FROM AcmeBoardBundle:Comment c 
             JOIN c.user u JOIN c.thread t
             WHERE t.module = :module_id AND c.id > :id";
         $query = $em->createQuery($dql)
@@ -78,8 +78,6 @@ class CommentController extends Controller
         return $response;
         
         // TODO
-        $params = array();
-        return $this->render('AcmeBoardBundle:Default:index.html.twig', $params);
     }
 
 }

@@ -23,7 +23,7 @@ class CommentTrack
     /**
      * @ORM\Column(name="has_voted", type="boolean") 
      */
-    private $hasVoted;
+    private $hasVoted = false;
         
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentTracks") 

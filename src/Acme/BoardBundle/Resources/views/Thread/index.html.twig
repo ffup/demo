@@ -1,8 +1,10 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% use '::page.html.twig' %}
 {% block body %}
+<script src="{{ asset('js/JSLINQ.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
@@ -36,7 +38,7 @@
     <tbody>
       {% for thread in pagination %}
       <tr>
-        <td><span class="thread_id hidden">{{ thread.id }}</span></td>
+        <td><span class="last_comment_id hidden">{{ thread.lastComment.id }}</span><span class="thread_id hidden">{{ thread.id }}</span></td>
         <td>{% if thread.status == 0 %}<span class="label label-default">Default</span>{% endif %}
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a></td>
         <td>{{ thread.user.username }} </td>      
@@ -53,39 +55,58 @@
   {{ parent() }}
 {% endblock %}
 <input type="hidden" id="module_id" value="{{ module.id }}" />
-<!-- <button class="btn btn-test">test</button> -->
+
 <script>
 // TODO
-var retval = [];
-$("tbody span.thread_id").each(function () {
-  retval.push($(this).html());
-});
-
-console.log(retval);
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
+// "{0} is dead, but {1} is alive! {0} {2}".format("ASP", "ASP.NET")
 
 var path = Routing.generate('comment_check');
+var curPage = {
+    moduleId: $("#module_id").val(), 
+    lastCommentId: $('.last_comment_id:first').html(),
+    hasNew : false,
+    threadIds : []
+  };
 
-$('.btn-test').click(function () {
-  var btn = $(this);
+$(".thread_id").each(function () {
+  curPage.threadIds.push($(this).html());
+});
+
+curPage.threadIds.sort(function (a, b) { return a - b; });
+// console.log(curPage, curPage.threadIds);
+
+if (curPage.lastCommentId != null || 
+  curPage.lastCommentId !== undefined) {
+  // check();
+}
+
+function check() {
   $.ajax({
-    type: "GET",
+    type: "POST",
     url: path,
     dataType: "json",
-    data: { module_id: $("#module_id").val(), id: 1 }
+    data: { module_id: curPage.moduleId, id: 1 }
   }).done(function(data) {
-    if (data.code == 100 && data.success) {
-      $.each(data.comments, function(key, val) {   
-        /*
-        var $div = $("<div>", {id: "foo", class: "a"});
-        $div.text(val.thread.id);
-        $("body").prepend($div);
-        */
-      });
+    if (data.code == 100 && data.success) {  
+        $.each(data.comments, function(key, val) {  
+
+        });
+        console.log(data.comments);
     }
   }).fail(function() {
   }).always(function () {
   });
-});
+}
 </script>
-
 {% endblock %}

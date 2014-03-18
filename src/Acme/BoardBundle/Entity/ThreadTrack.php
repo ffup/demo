@@ -164,4 +164,27 @@ class ThreadTrack
     {
         return $this->module;
     }
+
+    /**
+     * Set hasFavored
+     *
+     * @param boolean $hasFavored
+     * @return ThreadTrack
+     */
+    public function setHasFavored($hasFavored)
+    {
+        $this->hasFavored = $hasFavored;
+
+        return $this;
+    }
+
+    /**
+     * Get hasFavored
+     *
+     * @return boolean 
+     */
+    public function getHasFavored()
+    {
+        return $this->hasFavored;
+    }
 }

@@ -37,7 +37,7 @@ CREATE TABLE `comment` (
   KEY `IDX_9474526CE2904019` (`thread_id`),
   CONSTRAINT `FK_9474526CE2904019` FOREIGN KEY (`thread_id`) REFERENCES `thread` (`id`),
   CONSTRAINT `FK_9474526CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +46,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (1,1,1,1,'dasdadadadadadaddasdad','2014-03-19 04:02:05','2014-03-19 04:02:05',0),(2,1,1,2,'333333333333333333333333333333333333','2014-03-19 04:02:17','2014-03-19 04:02:17',0),(3,1,2,1,'313131313123123131','2014-03-19 04:03:51','2014-03-19 04:03:51',1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,6 +79,7 @@ CREATE TABLE `comment_track` (
 
 LOCK TABLES `comment_track` WRITE;
 /*!40000 ALTER TABLE `comment_track` DISABLE KEYS */;
+INSERT INTO `comment_track` VALUES (1,3,2,1,'2014-03-19 04:04:27');
 /*!40000 ALTER TABLE `comment_track` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +110,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,NULL,'module-1','',1,0),(2,1,'submodule-1-1','description for submodule-1-1',0,0),(3,1,'submodule-1-2','description for submodule-1-2',0,0),(4,NULL,'module-2','',1,0),(5,4,'submodule-2-1','description for submodule-2-1',0,0),(6,4,'submodule-2-2','description for submodule-2-2',0,0);
+INSERT INTO `module` VALUES (1,NULL,'module-1','',1,0),(2,1,'submodule-1-1','description for submodule-1-1',0,2),(3,1,'submodule-1-2','description for submodule-1-2',0,0),(4,NULL,'module-2','',1,0),(5,4,'submodule-2-1','description for submodule-2-1',0,0),(6,4,'submodule-2-2','description for submodule-2-2',0,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,6 +151,7 @@ CREATE TABLE `thread` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `module_id` int(10) unsigned NOT NULL,
+  `last_comment_id` int(10) unsigned DEFAULT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(5) unsigned NOT NULL,
@@ -158,12 +161,14 @@ CREATE TABLE `thread` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_31204C83111D17F9` (`last_comment_id`),
   KEY `IDX_31204C83A76ED395` (`user_id`),
   KEY `IDX_31204C83AFC2B591` (`module_id`),
   KEY `IDX_31204C8343625D9F` (`updated_at`),
-  CONSTRAINT `FK_31204C83AFC2B591` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`),
-  CONSTRAINT `FK_31204C83A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  CONSTRAINT `FK_31204C83111D17F9` FOREIGN KEY (`last_comment_id`) REFERENCES `comment` (`id`),
+  CONSTRAINT `FK_31204C83A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_31204C83AFC2B591` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,6 +177,7 @@ CREATE TABLE `thread` (
 
 LOCK TABLES `thread` WRITE;
 /*!40000 ALTER TABLE `thread` DISABLE KEYS */;
+INSERT INTO `thread` VALUES (1,1,2,2,'dsdadadada','dasdadadadadadaddasdad',0,0,1,1,'2014-03-19 04:02:05','2014-03-19 04:02:17'),(2,1,2,3,'1312313123','313131313123123131',0,0,0,1,'2014-03-19 04:03:51','2014-03-19 04:03:51');
 /*!40000 ALTER TABLE `thread` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,6 +193,7 @@ CREATE TABLE `thread_track` (
   `thread_id` int(10) unsigned NOT NULL,
   `module_id` int(10) unsigned NOT NULL,
   `has_viewed` tinyint(1) NOT NULL,
+  `has_favored` tinyint(1) NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`user_id`,`thread_id`),
   KEY `IDX_DC67E79DA76ED395` (`user_id`),
@@ -204,6 +211,7 @@ CREATE TABLE `thread_track` (
 
 LOCK TABLES `thread_track` WRITE;
 /*!40000 ALTER TABLE `thread_track` DISABLE KEYS */;
+INSERT INTO `thread_track` VALUES (1,1,2,1,0,'2014-03-19 04:02:07'),(1,2,2,1,0,'2014-03-19 04:03:58');
 /*!40000 ALTER TABLE `thread_track` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +231,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649F85E0677` (`username`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,6 +240,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'root','$2y$13$CzpFhopfBQS4yvESCYCrTujg8GvaHOp51PsKUCqiQbsETfOSMnO9a','dasda@email.com',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,6 +268,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES (1,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -271,4 +281,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-15  1:06:19
+-- Dump completed on 2014-03-18 13:07:38

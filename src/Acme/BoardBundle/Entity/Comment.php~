@@ -27,7 +27,7 @@ class Comment
     /**
      * @ORM\Column(name="post_index", type="integer")
      */
-    private $postIndex;
+    private $postIndex = 1;
 
     /**
      * @var string
@@ -53,7 +53,7 @@ class Comment
     /**
      * @ORM\Column(name="votes", type="integer")
      */
-    private $votes;    
+    private $votes = 0;    
     
     /**
      * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="comment")
@@ -64,13 +64,13 @@ class Comment
      * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)     
      */
-    protected $user;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)     
      */
-    protected $thread;
+    private $thread;
 
     /**
      * Get id
