@@ -24,7 +24,6 @@ class ThreadTrackRepository extends EntityRepository
             ->find(array(
                       'user' => $user->getId(),
                       'thread' => $thread->getId(),
-                      'module' => $thread->getModule(),
                   )
               );
                 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acme\BoardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,12 +25,8 @@ class ThreadController extends Controller
             throw new NotFoundHttpException();
         }
         
-        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
-            WHERE t.module = :module ORDER BY t.updatedAt DESC";
-        $query = $em->createQuery($dql)
-            ->setParameter('module', $module->getId())
-            ->setFirstResult(($page - 1) * $pageSize)
-            ->setMaxResults($pageSize);
+        $query = $em->getRepository('AcmeBoardBundle:Thread')
+            ->pagination($module, $page, $pageSize);
         
         $pagination = new Pagination($query);
         
@@ -89,6 +86,7 @@ class ThreadController extends Controller
         $page = (int) $request->query->get('page', 1);
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
+        
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
         if ($page < 1 || false == $thread) {
@@ -98,29 +96,10 @@ class ThreadController extends Controller
         $user = $this->getUser();
         $em->getRepository('AcmeBoardBundle:ThreadTrack')->create($user, $thread);
         
-        // Pagnation    
-        $offset = ($page - 1) * $pageSize;
-        
-        $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT c, u FROM AcmeBoardBundle:Comment c JOIN c.user u
-            WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
-        $query = $em->createQuery($dql)
-            ->setParameter('thread', $thread->getId())
-            ->setParameter('start', $offset)
-            ->setParameter('end', $offset + $pageSize + 1);
-        // $query->setResultCacheLifetime(60);
-        $pagination = $query->getResult();
-        
-        $tracks = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
-        
-        $trackIds = array_map(function ($track) {
-                return $track->getComment()->getId();
-            }, $tracks);
-                    
-        foreach ($pagination as $comment) {
-            $comment->_hasVoted  = in_array($comment->getId(), $trackIds);
-        }
-        
+        // Pagnation            
+        $pagination = $em->getRepository('AcmeBoardBundle:Comment')
+            ->paginationWithTracks($user, $thread, $page, $pageSize);
+
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page); 

@@ -1,6 +1,8 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% use '::page.html.twig' %}
 {% block body %}
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
@@ -34,7 +36,7 @@
     <tbody>
       {% for thread in pagination %}
       <tr>
-        <td></td>
+        <td><span class="thread_id hidden">{{ thread.id }}</span></td>
         <td>{% if thread.status == 0 %}<span class="label label-default">Default</span>{% endif %}
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a></td>
         <td>{{ thread.user.username }} </td>      
@@ -50,5 +52,40 @@
 {% block pagingwrapper %}
   {{ parent() }}
 {% endblock %}
+<input type="hidden" id="module_id" value="{{ module.id }}" />
+<!-- <button class="btn btn-test">test</button> -->
+<script>
+// TODO
+var retval = [];
+$("tbody span.thread_id").each(function () {
+  retval.push($(this).html());
+});
+
+console.log(retval);
+
+var path = Routing.generate('comment_check');
+
+$('.btn-test').click(function () {
+  var btn = $(this);
+  $.ajax({
+    type: "GET",
+    url: path,
+    dataType: "json",
+    data: { module_id: $("#module_id").val(), id: 1 }
+  }).done(function(data) {
+    if (data.code == 100 && data.success) {
+      $.each(data.comments, function(key, val) {   
+        /*
+        var $div = $("<div>", {id: "foo", class: "a"});
+        $div.text(val.thread.id);
+        $("body").prepend($div);
+        */
+      });
+    }
+  }).fail(function() {
+  }).always(function () {
+  });
+});
+</script>
 
 {% endblock %}

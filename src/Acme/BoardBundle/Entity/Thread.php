@@ -55,26 +55,26 @@ class Thread
     /**
      * @ORM\Column(name="status", type="smallint", options={"unsigned"=true})
      */
-    private $status;
+    private $status = 0;
     
     /**
      * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
      */    
-    private $type;
+    private $type = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="num_replies", type="integer", options={"unsigned"=true})
      */
-    private $numReplies;
+    private $numReplies = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="num_views", type="integer", options={"unsigned"=true})
      */
-    private $numViews;
+    private $numViews = 0;
 
     /**
      * @var \DateTime
@@ -116,6 +116,12 @@ class Thread
      * @ORM\JoinColumn(nullable=false)          
      */    
     private $module;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Comment")
+     * @ORM\JoinColumn(name="last_comment_id", nullable=true)
+     */  
+    private $lastComment;
 
     /**
      * Get id
@@ -272,11 +278,8 @@ class Thread
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = $this->createdAt;
-        $this->numViews = 0;
-        $this->numReplies = 0;
     }
     
-
     /**
      * Set user
      *
@@ -308,15 +311,16 @@ class Thread
     }
 
     /**
-     * Add comments
+     * Add comment
      *
-     * @param \Acme\BoardBundle\Entity\Comment $comments
+     * @param \Acme\BoardBundle\Entity\Comment $comment
      * @return Thread
      */
-    public function addComment(\Acme\BoardBundle\Entity\Comment $comments)
+    public function addComment(\Acme\BoardBundle\Entity\Comment $comment)
     {
-        $this->comments[] = $comments;
-
+        $this->comments[] = $comment;
+        // $this->setLastComment = $comment;
+        $comment->setThread($this);
         return $this;
     }
 
@@ -473,5 +477,28 @@ class Thread
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set lastComment
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $lastComment
+     * @return Thread
+     */
+    public function setLastComment(\Acme\BoardBundle\Entity\Comment $lastComment = null)
+    {
+        $this->lastComment = $lastComment;
+
+        return $this;
+    }
+
+    /**
+     * Get lastComment
+     *
+     * @return \Acme\BoardBundle\Entity\Comment 
+     */
+    public function getLastComment()
+    {
+        return $this->lastComment;
     }
 }

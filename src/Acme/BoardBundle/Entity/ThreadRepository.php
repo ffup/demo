@@ -17,25 +17,35 @@ class ThreadRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         
-        $thread->setUser($user)
-            ->setStatus(Thread::ITEM_UNLOCKED)
-            ->setType(Thread::POST_NORMAL);
+        $thread->setUser($user);
              
         $module = $thread->getModule();
         $module->setNumThreads($module->getNumThreads() + 1);
      
         $comment = new Comment();
         $comment->setUser($user)
-                ->setThread($thread)
-                ->setContent($thread->getContent())
-                ->setVotes(0)
-                ->setPostIndex(1);
+            ->setContent($thread->getContent());
                 
         $thread->addComment($comment);
+        $thread->setLastComment($comment);
         
         $em->persist($module);
         $em->persist($thread);                    
         $em->persist($comment);
         $em->flush();                 
+    }
+    
+    public function pagination(Module $module, $page, $pageSize)
+    {
+        $em = $this->getEntityManager();
+        
+        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
+            WHERE t.module = :module ORDER BY t.updatedAt DESC";
+        $query = $em->createQuery($dql)
+            ->setParameter('module', $module->getId())
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+            
+        return $query;
     }
 }

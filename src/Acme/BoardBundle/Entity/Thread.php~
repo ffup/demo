@@ -13,6 +13,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Thread
 {
+
+    const 
+        ITEM_UNLOCKED = 0, 
+        
+        ITEM_LOCKED = 1,
+        
+        ITEM_MOVED = 2,
+        
+        POST_NORMAL = 0,
+        
+        POST_STICKY = 1, 
+        
+        POST_ANNOUNCE = 2,
+        
+        POST_GLOBAL = 3;
+
     /**
      * @var integer
      *
@@ -32,7 +48,7 @@ class Thread
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="content", type="string", length=65535)
      */
     private $content;
 
@@ -100,6 +116,12 @@ class Thread
      * @ORM\JoinColumn(nullable=false)          
      */    
     private $module;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Comment")
+
+     */  
+    private $lastComment;
 
     /**
      * Get id
@@ -411,5 +433,51 @@ class Thread
     public function getCommentTracks()
     {
         return $this->commentTracks;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Thread
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Thread
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

@@ -18,9 +18,9 @@ comment_create:
     pattern: /comment/create
     defaults: { _controller: AcmeBoardBundle:Comment:create }
 
-search:
-    pattern: /search
-    defaults: { _controller: AcmeBoardBundle:Search:index }
+#search:
+#    pattern: /search
+#    defaults: { _controller: AcmeBoardBundle:Search:index }
 
 module_index:
     pattern: /
@@ -29,5 +29,11 @@ module_index:
 rate_increase:
     pattern: /rate/increase
     defaults: { _controller: AcmeBoardBundle:Rate:increase }
+    options:
+        expose: true
+        
+comment_check:
+    pattern: /comment/check
+    defaults: { _controller: AcmeBoardBundle:Comment:check }
     options:
         expose: true

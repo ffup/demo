@@ -19,7 +19,7 @@ class CommentRepository extends EntityRepository
         $em = $this->getEntityManager();
 
         try {
-            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            $em->beginTransaction(); // suspend auto-commit
             $em->lock($thread, LockMode::PESSIMISTIC_WRITE);
             // thread->numReplies ++;
             $thread->setNumReplies($thread->getNumReplies() + 1);
@@ -28,20 +28,50 @@ class CommentRepository extends EntityRepository
             $comment->setUser($user);
             $comment->setThread($thread);
             $comment->setPostIndex($thread->getNumReplies() +1);
-            $comment->setVotes(0);
+            $thread->setLastComment($comment);
             
             $em->persist($thread);
             $em->persist($comment);
                           
             $em->flush();
-            $em->getConnection()->commit();     
+            $em->commit();     
         
         } catch(OptimisticLockException $e) {
-            $em->getConnection()->rollback();
+            $em->rollback();
             $em->close();
             throw $e;
         }    
         
     }
-
+    
+    public function pagination($thread, $page, $pageSize)
+    {
+        $em = $this->getEntityManager();
+        $offset = ($page - 1) * $pageSize; 
+        $dql = "SELECT c, u FROM AcmeBoardBundle:Comment c JOIN c.user u
+            WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
+        $query = $em->createQuery($dql)
+            ->setParameter('thread', $thread->getId())
+            ->setParameter('start', $offset)
+            ->setParameter('end', $offset + $pageSize + 1);
+        // $query->setResultCacheLifetime(60);
+        return $query;
+    }
+    
+    public function paginationWithTracks($user, Thread $thread, $page, $pageSize)
+    {
+        $pagination = $this->pagination($thread, $page, $pageSize)->getResult();
+        $em = $this->getEntityManager();
+        $tracks = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
+        
+        $trackIds = array_map(function ($track) {
+                return $track->getComment()->getId();
+            }, $tracks);
+                    
+        foreach ($pagination as $comment) {
+            $comment->_hasVoted  = in_array($comment->getId(), $trackIds);
+        }
+        
+        return $pagination;
+    }
 }

@@ -271,4 +271,27 @@ class Module
     {
         return $this->description;
     }
+
+    /**
+     * Set enableIndexing
+     *
+     * @param boolean $enableIndexing
+     * @return Module
+     */
+    public function setEnableIndexing($enableIndexing)
+    {
+        $this->enableIndexing = $enableIndexing;
+
+        return $this;
+    }
+
+    /**
+     * Get enableIndexing
+     *
+     * @return boolean 
+     */
+    public function getEnableIndexing()
+    {
+        return $this->enableIndexing;
+    }
 }

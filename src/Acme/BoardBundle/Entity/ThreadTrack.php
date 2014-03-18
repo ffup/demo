@@ -23,7 +23,12 @@ class ThreadTrack
     /**
      * @ORM\Column(name="has_viewed", type="boolean") 
      */
-    private $hasViewed;
+    private $hasViewed = false;
+    
+    /**
+     * @ORM\Column(name="has_favored", type="boolean") 
+     */    
+    private $hasFavored = false;
     
     /** @ORM\ManyToOne(targetEntity="Module", inversedBy="threadTracks") @ORM\JoinColumn(nullable=false) */
     private $module;
