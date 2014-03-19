@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Thread
  *
- * @ORM\Table(name="thread", indexes={@ORM\Index(columns={"updated_at"})})
+ * @ORM\Table(name="thread", indexes={@ORM\Index(columns={"module_id", "updated_at"})})
  * @ORM\Entity(repositoryClass="ThreadRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -77,16 +77,16 @@ class Thread
     private $numViews = 0;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="integer", options={"unsigned"=true})
      */
     private $updatedAt;
     
@@ -270,14 +270,22 @@ class Thread
     {
         return $this->updatedAt;
     }
-    
+      
     /**
      * @ORM\PrePersist
      */
     public function doStuffOnPrePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
         $this->updatedAt = $this->createdAt;
+    }
+    
+    /**
+     * @ORM\PreUpdate 
+     */
+    public function doStuffOnPrepdate()
+    {
+        $this->updatedAt = time();
     }
     
     /**

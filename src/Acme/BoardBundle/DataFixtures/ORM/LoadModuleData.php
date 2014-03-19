@@ -1,11 +1,12 @@
 <?php
 namespace Acme\BoardBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Acme\BoardBundle\Entity\Module;
 
-class LoadModuleData implements FixtureInterface
+class LoadModuleData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -71,6 +72,16 @@ class LoadModuleData implements FixtureInterface
         $manager->persist($module2_1);
         $manager->persist($module2_2);     
               
-        $manager->flush();              
+        $manager->flush();        
+        
+        $this->addReference('sub_module', $module1_1);     
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 3; // the order in which fixtures will be loaded
     }
 }

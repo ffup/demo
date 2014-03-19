@@ -14,7 +14,7 @@ class ThreadController extends Controller
 
     public function indexAction(Request $request)
     {
-        $pageSize = 10;
+        $pageSize = 20;
         $page = (int) $request->query->get('page', 1);
         $moduleId = $request->get('module_id');
    
@@ -25,12 +25,13 @@ class ThreadController extends Controller
             throw new NotFoundHttpException();
         }
         
-        $query = $em->getRepository('AcmeBoardBundle:Thread')
-            ->pagination($module, $page, $pageSize);
+        $repo = $em->getRepository('AcmeBoardBundle:Thread');
+        $query = $repo->pagination($module, $page, $pageSize);
         
-        $pagination = new Pagination($query);
+        $pagination = $query->getResult();
+        // $pagination = new Pagination($query);
         
-        $paginator = new Paginator(new PaginatorNullAdapter($pagination->count()));
+        $paginator = new Paginator(new PaginatorNullAdapter($module->getNumThreads()));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
         
@@ -82,7 +83,7 @@ class ThreadController extends Controller
 
     public function viewAction(Request $request)
     {
-        $pageSize = 10;
+        $pageSize = 20;
         $page = (int) $request->query->get('page', 1);
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();

@@ -23,8 +23,11 @@
         "zendframework/zendframework": "2.*",
         "salavert/time-ago-in-words": "1.*",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "excelwebzone/recaptcha-bundle": "dev-master",
-        "doctrine/doctrine-fixtures-bundle": "2.2.*"   
+        "excelwebzone/recaptcha-bundle": "dev-master"
+    },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "phpunit/phpunit": "4.0.*"
     },
     "scripts": {
         "post-install-cmd": [

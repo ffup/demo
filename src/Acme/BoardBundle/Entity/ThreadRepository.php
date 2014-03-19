@@ -39,7 +39,7 @@ class ThreadRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         
-        $dql = "SELECT t, u FROM AcmeBoardBundle:Thread t JOIN t.user u
+        $dql = "SELECT t FROM AcmeBoardBundle:Thread t
             WHERE t.module = :module ORDER BY t.updatedAt DESC";
         $query = $em->createQuery($dql)
             ->setParameter('module', $module->getId())
@@ -47,5 +47,44 @@ class ThreadRepository extends EntityRepository
             ->setMaxResults($pageSize);
             
         return $query;
+    }
+    
+    public function count(Module $module)
+    {
+        $em = $this->getEntityManager();
+        
+        $dql = "SELECT COUNT(t) FROM AcmeBoardBundle:Thread t
+            WHERE t.module = :module";
+        $query = $em->createQuery($dql)
+            ->setParameter('module', $module->getId());
+        
+        return $query->getSingleScalarResult();
+    }
+    
+    public function paginationByUser($user, $page, $pageSize, $interval)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT t FROM AcmeBoardBundle:Thread t 
+            WHERE t.user = :user AND t.updatedAt > :interval
+            ORDER BY t.id DESC";
+        $query = $em->createQuery($dql)
+            ->setParameter('user', $user)
+            ->setParameter('interval', strtotime($interval))            
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+            
+        return $query;
+    }
+    
+    public function countByUser($user, $interval)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT COUNT(t) FROM AcmeBoardBundle:Thread t 
+        WHERE t.user = :user AND t.updatedAt > :interval";
+        $query = $em->createQuery($dql)
+            ->setParameter('user', $user)
+            ->setParameter('interval', strtotime($interval));
+            
+        return $query->getSingleScalarResult();  
     }
 }

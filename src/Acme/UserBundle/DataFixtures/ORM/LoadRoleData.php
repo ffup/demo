@@ -1,11 +1,12 @@
 <?php
 namespace Acme\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Acme\UserBundle\Entity\Role;
 
-class LoadRoleData implements FixtureInterface
+class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -22,6 +23,16 @@ class LoadRoleData implements FixtureInterface
         
         $manager->persist($role1);
         $manager->persist($role2);                          
-        $manager->flush();   
+        $manager->flush();
+        
+        $this->addReference('role-user', $role2);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1; // the order in which fixtures will be loaded
     }
 }

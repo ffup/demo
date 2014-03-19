@@ -12,24 +12,23 @@ class BoardController extends Controller
 
     public function threadAction(Request $request)
     {
-        $pageSize = 10;
+        $pageSize = 20;
         $page = (int) $request->query->get('page', 1);
       
         if ($page < 1) {
             throw new NotFoundHttpException();
         }
         
+        $interval = '-160 min';
+        
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT t FROM AcmeBoardBundle:Thread t WHERE t.user = :user
-            ORDER BY t.updatedAt DESC";
-        $query = $em->createQuery($dql)
-            ->setParameter('user', $this->getUser())
-            ->setFirstResult(($page - 1) * $pageSize)
-            ->setMaxResults($pageSize);
+        $repo = $em->getRepository('AcmeBoardBundle:Thread');
+        $query = $repo->paginationByUser($this->getUser(), $page, $pageSize, $interval);
+                    
+        $pagination = $query->getResult();
         
-        $pagination = new Pagination($query);
-        
-        $paginator = new Paginator(new PaginatorNullAdapter($pagination->count()));
+        $paginator = new Paginator(new PaginatorNullAdapter(
+            $repo->countByUser($this->getUser(), $interval)));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
         
@@ -42,24 +41,23 @@ class BoardController extends Controller
 
     public function commentAction(Request $request)
     {
-        $pageSize = 10;
+        $pageSize = 20;
         $page = (int) $request->query->get('page', 1);
         
         if ($page < 1) {
             throw new NotFoundHttpException();
         }
    
-        $entityManager = $this->getDoctrine()->getManager();
-        $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 
-            WHERE c.user = :user";
-        $query = $entityManager->createQuery($dql)
-            ->setParameter('user', $this->getUser())
-            ->setFirstResult(($page - 1) * $pageSize)
-            ->setMaxResults($pageSize);
+        $em = $this->getDoctrine()->getManager();
+        $resp = $em->getRepository('AcmeBoardBundle:Comment');
+          
+        $query = $resp->paginationByUser($this->getUser(), $page, $pageSize);
         
-        $pagination = new Pagination($query);
+        $pagination = $query->getResult();
+        // $pagination = new Pagination($query);
         
-        $paginator = new Paginator(new PaginatorNullAdapter($pagination->count()));
+        $paginator = new Paginator(new PaginatorNullAdapter(
+            $resp->countByUser($this->getUser())));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
         // $paginator->setPageRange(10);

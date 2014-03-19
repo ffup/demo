@@ -10,7 +10,14 @@ class ModuleControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/index');
+        $crawler = $client->request('GET', '/board/');
+        
+        // var_dump($client->getResponse()->getContent());
+        
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Modules")')->count()
+        );
     }
 
 }

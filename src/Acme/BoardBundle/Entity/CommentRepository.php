@@ -23,7 +23,6 @@ class CommentRepository extends EntityRepository
             $em->lock($thread, LockMode::PESSIMISTIC_WRITE);
             // thread->numReplies ++;
             $thread->setNumReplies($thread->getNumReplies() + 1);
-            $thread->setUpdatedAt(new \DateTime());
             
             $comment->setUser($user);
             $comment->setThread($thread);
@@ -48,7 +47,7 @@ class CommentRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $offset = ($page - 1) * $pageSize; 
-        $dql = "SELECT c, u FROM AcmeBoardBundle:Comment c JOIN c.user u
+        $dql = "SELECT c FROM AcmeBoardBundle:Comment c
             WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
         $query = $em->createQuery($dql)
             ->setParameter('thread', $thread->getId())
@@ -74,4 +73,29 @@ class CommentRepository extends EntityRepository
         
         return $pagination;
     }
+    
+    public function paginationByUser($user, $page, $pageSize)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 
+            WHERE c.user = :user";
+        $query = $em->createQuery($dql)
+            ->setParameter('user', $user)
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+            
+        return $query;
+    }
+    
+    public function countByUser($user)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT COUNT(c) FROM AcmeBoardBundle:Comment c
+            WHERE c.user = :user";
+        $query = $em->createQuery($dql)
+            ->setParameter('user', $user);
+        
+        return $query->getSingleScalarResult();
+    }
+    
 }
