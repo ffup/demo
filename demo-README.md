@@ -27,7 +27,7 @@ Composer 将会安装所有的依赖组件到以下目录 `path/to/install`
 
 或者从 git 上获取 https://github.com/ffup/demo.git
 
-如果下载的文件没有 vender 目录，你还需要安装所有必要的依赖。下载 Composer（见上文），
+如果下载的文件没有 vendor 目录，你还需要安装所有必要的依赖。下载 Composer（见上文），
 然后运行 下面的命令：
 
     php composer.phar install
