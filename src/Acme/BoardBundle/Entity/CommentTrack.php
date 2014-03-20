@@ -32,9 +32,9 @@ class CommentTrack
     private $thread;
     
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
     
@@ -43,10 +43,8 @@ class CommentTrack
      */
     public function doStuffOnPrePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
     }
-
-
 
     /**
      * Set hasVoted

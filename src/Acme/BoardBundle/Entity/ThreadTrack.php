@@ -34,9 +34,9 @@ class ThreadTrack
     private $module;
     
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
     
@@ -139,7 +139,7 @@ class ThreadTrack
      */
     public function doStuffOnPrePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
     }
 
     /**

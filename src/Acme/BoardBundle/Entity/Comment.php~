@@ -37,16 +37,16 @@ class Comment
     private $content;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="integer", options={"unsigned"=true})
      */
     private $updatedAt;
 
@@ -202,7 +202,7 @@ class Comment
      */
     public function doStuffOnPrePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
         $this->updatedAt = $this->createdAt;
     }
     

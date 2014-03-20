@@ -34,8 +34,9 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
         {% if app.user %}
+          <li class="active"><a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="badge"> 0 </span></a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b> </a>
             <ul class="dropdown-menu">
               <li><a href="{{ path('user_thread') }}">Last threads</a></li>
               <li><a href="{{ path('user_comment') }}">Last comments</a></li>
@@ -54,7 +55,7 @@
   {% block notice %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
     <div class="flash-message text-center">
-      <em>Well done!</em> {{ flashMessage }}
+      <span class="glyphicon glyphicon-saved"></span> <em>{{ flashMessage }}</em>
     </div>
     {% endfor %}
   {% endblock %}
