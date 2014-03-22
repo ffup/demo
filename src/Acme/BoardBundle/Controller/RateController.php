@@ -27,18 +27,15 @@ class RateController extends Controller
             return $response;
         }
         
-        $track = $em->getRepository('AcmeBoardBundle:CommentTrack')
-            ->find(array(
-                      'user' => $user->getId(),
-                      'comment'  => $comment->getId(),
-                  )
-              );
+        $repo = $em->getRepository('AcmeBoardBundle:CommentTrack');
+        $track = $repo->find(array('user' => $user->getId(),
+            'comment' => $comment->getId(),));
      
         if (isset($track) && $track->getHasVoted()) {
             return $response;
         }
           
-        $em->getRepository('AcmeBoardBundle:CommentTrack')->create($user, $comment);
+        $repo->create($user, $comment);
               
         $data = array(
                     "code"    => 100, 

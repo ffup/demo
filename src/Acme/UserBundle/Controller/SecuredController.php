@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 
 /**
  * @Route("/secured")
@@ -59,7 +60,7 @@ class SecuredController extends Controller
         $form->add('recaptcha', 'ewz_recaptcha', 
             array(
                 'mapped' => false,
-                'constraints' => array(new \EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True()),
+                'constraints' => array(new Recaptcha()),
             )
         );
         

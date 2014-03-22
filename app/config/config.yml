@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -79,8 +79,8 @@ services:
       class: Twig_Extensions_Extension_Text
       tags:
           - { name: twig.extension }
-  salavert.twig.time_ago:
-      class: Salavert\Twig\Extension\TimeAgoExtension
+  acme.twig.acme_extension:
+      class: Acme\BoardBundle\Twig\AcmeExtension
       arguments: [@translator]
       tags:
       - { name: twig.extension }

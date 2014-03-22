@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>user.username.not_blank</source>
+                <target>Please enter an username</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>value.not_blank</source>
+                <target>This value should not be blank</target>
+            </trans-unit>      
+            <trans-unit id="3">
+                <source>user.username.illegal</source>
+                <target>Your username is not illegal</target>
+            </trans-unit>             
+            <trans-unit id="4">
+                <source>user.username_min_length</source>
+                <target>Your name must be at least {{ limit }} characters length</target>
+            </trans-unit>   
+            <trans-unit id="5">
+                <source>user.username_max_length</source>
+                <target>Your name cannot be longer than {{ limit }} characters length</target>
+            </trans-unit>   
+            <trans-unit id="6">
+                <source>user.email.invalid</source>
+                <target>{{ value }} is not a valid email</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>user.password.passwordLegal</source>
+                <target>The password cannot match your username</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>value.exist</source>
+                <target>This value is already used</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>user.password.mismatch</source>
+                <target>The password fields must match.</target>
+            </trans-unit>              
+        </body>
+    </file>
+</xliff>

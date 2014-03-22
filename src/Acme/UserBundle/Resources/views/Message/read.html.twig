@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Message:view{% endblock %}
+
+{% block body %}
+<div class="page-header">
+  <h1>Message view</h1>
+</div>
+
+<dl>
+  <dt>{{ message.title }}</dt>
+  <dd>{{ message.content }}</dd>
+</dl>
+
+<div>
+<ul class="list-unstyled">
+  <li>To: {{ message.toUser.username }}</li>
+  <li>From: {{ message.fromUser.username }}</li>
+  <li><em>{{ message.createdAt|date("m/d/Y") }}</em></li>  
+</ul>
+</div>
+{% endblock %}

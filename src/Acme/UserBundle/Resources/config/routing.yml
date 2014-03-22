@@ -13,3 +13,25 @@ user_thread:
 user_comment:
     pattern: /user/comment
     defaults: { _controller: AcmeUserBundle:Board:comment }
+
+user_message:
+    pattern: /user/message
+    defaults: { _controller: AcmeUserBundle:Message:index }
+    
+user_send:
+    pattern: /user/send/{id}
+    defaults: { _controller: AcmeUserBundle:Message:send, id: 1 }
+    requirements:
+        id:  \d+
+        
+user_read:
+    pattern: /user/read/{id}
+    defaults: { _controller: AcmeUserBundle:Message:read }
+    requirements:
+        id:  \d+
+        
+user_exp:
+    pattern: /user/exp
+    defaults: { _controller: AcmeUserBundle:Message:exp }
+    options:
+        expose: true

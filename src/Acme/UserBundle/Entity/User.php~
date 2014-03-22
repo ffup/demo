@@ -69,7 +69,22 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="user", fetch="EXTRA_LAZY")
      */
-    protected $comments;
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="fromUser", fetch="EXTRA_LAZY")
+     */  
+    private $sendMessages;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="toUser", fetch="EXTRA_LAZY")
+     */      
+    private $receiveMessages;
+
+    /** 
+     * @ORM\Column(name="unread_msg", type="smallint", options={"unsigned"=true})    
+     */
+    private $unreadMsg = 0;
 
     public function __construct()
     {
@@ -417,4 +432,71 @@ class User implements UserInterface, \Serializable
     {
         $this->roles->removeElement($roles);
     }
+
+    /**
+     * Add sendMessages
+     *
+     * @param \Acme\UserBundle\Entity\Message $sendMessages
+     * @return User
+     */
+    public function addSendMessage(\Acme\UserBundle\Entity\Message $sendMessages)
+    {
+        $this->sendMessages[] = $sendMessages;
+
+        return $this;
+    }
+
+    /**
+     * Remove sendMessages
+     *
+     * @param \Acme\UserBundle\Entity\Message $sendMessages
+     */
+    public function removeSendMessage(\Acme\UserBundle\Entity\Message $sendMessages)
+    {
+        $this->sendMessages->removeElement($sendMessages);
+    }
+
+    /**
+     * Get sendMessages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSendMessages()
+    {
+        return $this->sendMessages;
+    }
+
+    /**
+     * Add receiveMessages
+     *
+     * @param \Acme\UserBundle\Entity\Message $receiveMessages
+     * @return User
+     */
+    public function addReceiveMessage(\Acme\UserBundle\Entity\Message $receiveMessages)
+    {
+        $this->receiveMessages[] = $receiveMessages;
+
+        return $this;
+    }
+
+    /**
+     * Remove receiveMessages
+     *
+     * @param \Acme\UserBundle\Entity\Message $receiveMessages
+     */
+    public function removeReceiveMessage(\Acme\UserBundle\Entity\Message $receiveMessages)
+    {
+        $this->receiveMessages->removeElement($receiveMessages);
+    }
+
+    /**
+     * Get receiveMessages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReceiveMessages()
+    {
+        return $this->receiveMessages;
+    }
+
 }

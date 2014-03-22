@@ -4,31 +4,58 @@ Acme\UserBundle\Entity\User:
         - User
         - Strict
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email        
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+            fields:       username
+            message:      value.exist
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+            fields:       email
+            message:      value.exist  
+                       
     properties:
         username:
             # in order to avoid multiple error messages     
             - Regex:
                 pattern:  /^[a-zA-Z0-9]+([_\s\-]?[a-zA-Z0-9])*$/
                 match:    true
-                message:  Your name is not illegal
+                message:  user.username.illegal
                 groups:   [Strict]
 
-            - NotBlank: ~
+            - NotBlank:
+                message:  user.username.not_blank
             - Length:
-                min: 4
+                min:      4
+                max:      25
+                minMessage:   user.username_min_length
+                maxMessage:   user.username_max_length
         password:
-            - NotBlank: ~
+            - NotBlank:
+                message:  value.not_blank
             - Length:
-                min: 4
+                min:      4
         email:
-            - NotBlank: ~
-            - Email: ~
+            - NotBlank:  
+                message:  value.not_blank
+            - Email: 
+                message:  user.email.invalid
+                checkMX:  true
+
     getters:
         passwordLegal:
             - "True": 
-                message: "The password cannot match your username"
-                groups: [Strict]
+                message:  user.password.passwordLegal
+                groups:   [Strict]
 
-            
+Acme\UserBundle\Entity\Message:
+    properties:
+        toUser:
+            - NotBlank: ~        
+        title:
+            - NotBlank: ~        
+            - Length:
+                min: 5
+                max: 255     
+        content:
+            - NotBlank: ~        
+            - Length:
+                min: 5
+                max: 255      

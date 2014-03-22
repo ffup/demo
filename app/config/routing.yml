@@ -7,7 +7,7 @@ acme_user:
     prefix:   /{_locale}
     defaults: { _locale: en }
     requirements:
-        culture:  _locale: en|fr|de
+        culture:  _locale: en|zh
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

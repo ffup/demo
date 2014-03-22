@@ -6,8 +6,10 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
       {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('bootstrap-3.1.1-dist/css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('css/demo.css') }}" />      
       <style>
       body { padding-top: 70px; }
+      .badge:empty { display: none; }
       </style>
       {% block style %}{% endblock %}
       {% endblock %}
@@ -34,7 +36,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
         {% if app.user %}
-          <li class="active"><a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="badge"> 0 </span></a></li>
+          <li class="active"><a href="{{ path('user_message') }}"><!-- <span class="glyphicon glyphicon-envelope"></span>--> Message <span class="badge"> {{ app.user.unreadMsg }} </span></a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b> </a>
             <ul class="dropdown-menu">

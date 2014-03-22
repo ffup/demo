@@ -1,0 +1,70 @@
+<?php
+
+namespace Acme\UserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Message
+ *
+ * @ORM\Table(name="message")
+ * @ORM\Entity(repositoryClass="Acme\UserBundle\Entity\MessageRepository")
+ */
+class Message
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="receiveMessages")
+     * @ORM\JoinColumn(name="to_user_id", nullable=false)     
+     */
+    private $toUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="sendMessages")
+     * @ORM\JoinColumn(name="from_user_id", nullable=false)     
+     */
+    private $fromUser;
+    
+    /** 
+     * @ORM\Column(name="title", type="string")
+     */
+    private $title;
+    
+    /** 
+     * @ORM\Column(name="content", type="string")
+     */    
+    private $content;
+    
+    /** 
+     * @ORM\Column(name="has_read", type="boolean")
+     */    
+    private $hasRead = false;
+    
+    /**
+     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
+     */
+    private $createdAt;    
+    
+    /**
+     * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
+     */    
+    private $type = 0;
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

@@ -20,18 +20,17 @@
 <div class="page-header">
   <h1>{{ module.name }} <small>Subtext for header</small></h1>
 </div>
-<div><a href="{{ path('thread_create', {'module_id': app.request.get('module_id')}) }}">
-  <button class="btn btn-primary"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE THREAD</strong></button></a>
+<div><a class="btn btn-primary" href="{{ path('thread_create', {'module_id': app.request.get('module_id')}) }}"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE THREAD</strong></a>
 </div>
 <div class="table-condensed">
   <table class="table table-hover">
     <thead>
       <tr>
         <th style="width: 5%">#</th>
-        <th style="width: 55%">Subject</th>
+        <th style="width: 45%">Subject</th>
         <th style="width: 15%">Author</th>
-        <th style="width: 5%">Replies</th>
-        <th style="width: 5%">Views</th>        
+        <th style="width: 10%">Replies</th>
+        <th style="width: 10%">Views</th>        
         <th style="width: 15%">Last Post</th>
       </tr>
     </thead>
