@@ -20,7 +20,7 @@
             </trans-unit>   
             <trans-unit id="5">
                 <source>user.username_max_length</source>
-                <target>Your name cannot be longer than {{ limit }} characters length</target>
+                <target>Your name cannot be longer than %limit% characters length</target>
             </trans-unit>   
             <trans-unit id="6">
                 <source>user.email.invalid</source>

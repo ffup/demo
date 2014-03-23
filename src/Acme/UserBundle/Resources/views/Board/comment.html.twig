@@ -19,7 +19,7 @@
       <tr id="{{ comment.postIndex }}">
         <td>{{ comment.getThread.getTitle|truncate(40) }}</td>
         <td><a href="{{ path('thread_view', {'id': comment.getThread.id, 'page': comment.getPostIndexPage(pages.itemCountPerPage)}) }}#{{ comment.postIndex }}">{{ comment.content|truncate(60) }}</a></td>
-        <td>{{ comment.createdAt|time_ago_in_words }}<div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div></td>                      
+        <td>{{ comment.createdAt|human_time_diff }}<div class="pull-right"><a href="#{{ comment.postIndex}}">#{{ comment.postIndex }}</a></div></td>                      
       </tr>
       {% endfor %}
     </tbody>

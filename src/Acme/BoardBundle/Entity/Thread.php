@@ -279,15 +279,7 @@ class Thread
         $this->createdAt = time();
         $this->updatedAt = $this->createdAt;
     }
-    
-    /**
-     * @ORM\PreUpdate 
-     */
-    public function doStuffOnPrepdate()
-    {
-        $this->updatedAt = time();
-    }
-    
+        
     /**
      * Set user
      *

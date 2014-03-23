@@ -64,7 +64,7 @@
 </button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>
-        <td><div class="pull-right"><a href="#{{ comment.postIndex }}">#{{ comment.postIndex }}</a></div>{{ comment.createdAt|time_ago_in_words }}
+        <td><div class="pull-right"><a href="#{{ comment.postIndex }}">#{{ comment.postIndex }}</a></div>{{ comment.createdAt|human_time_diff }}
         </td>                      
       </tr>
       {% endfor %}

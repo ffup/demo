@@ -24,10 +24,12 @@ class CommentRepository extends EntityRepository
             // thread->numReplies ++;
             $thread->setNumReplies($thread->getNumReplies() + 1);
             
-            $comment->setUser($user);
-            $comment->setThread($thread);
-            $comment->setPostIndex($thread->getNumReplies() +1);
-            $thread->setLastComment($comment);
+            $comment->setUser($user)
+                ->setThread($thread)
+                ->setPostIndex($thread->getNumReplies() +1);
+            
+            $thread->setLastComment($comment)
+                ->setUpdatedAt(time());
             
             $em->persist($thread);
             $em->persist($comment);

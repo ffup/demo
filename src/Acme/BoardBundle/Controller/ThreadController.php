@@ -15,13 +15,13 @@ class ThreadController extends Controller
     public function indexAction(Request $request)
     {
         $pageSize = 20;
-        $page = (int) $request->query->get('page', 1);
+        $page = abs($request->query->get('page', 1));
         $moduleId = $request->get('module_id');
    
         $em = $this->getDoctrine()->getManager();
         
-        $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $moduleId);
-        if ($page < 1 || false == $module || $module->getEnableIndexing()) {
+        $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);
+        if (false == $module || $module->getEnableIndexing()) {
             throw new NotFoundHttpException();
         }
         
@@ -84,22 +84,21 @@ class ThreadController extends Controller
     public function viewAction(Request $request)
     {
         $pageSize = 20;
-        $page = (int) $request->query->get('page', 1);
+        $page = abs($request->query->get('page', 1));
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        if ($page < 1 || false == $thread) {
+        if (false == $thread) {
             throw new NotFoundHttpException();
         }
         
-        $user = $this->getUser();
-        $em->getRepository('AcmeBoardBundle:ThreadTrack')->create($user, $thread);
+        $em->getRepository('AcmeBoardBundle:ThreadTrack')->create($this->getUser(), $thread);
         
         // Pagnation            
         $pagination = $em->getRepository('AcmeBoardBundle:Comment')
-            ->paginationWithTracks($user, $thread, $page, $pageSize);
+            ->paginationWithTracks($this->getUser(), $thread, $page, $pageSize);
 
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);

@@ -7,6 +7,13 @@
   <p></p>
   <p><a href="{{ path('module_index') }}" class="btn btn-primary btn-lg" role="button">Board</a></p>
 </div>
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  <div class="container">
+    <div><span class="glyphicon glyphicon-globe"></span>
+{{ app.request.locale }} - <strong><a href="{{ path('locale') }}">change</a></strong>
+    </div>
+  </div>
+</nav>
 {% endblock %}
 
 

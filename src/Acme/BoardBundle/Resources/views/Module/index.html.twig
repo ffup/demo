@@ -4,7 +4,7 @@
 
 {% block body %}
 <ol class="breadcrumb">
-  <li><a href="/">Home</a></li>
+  <li><a href="{{ path('acme_homepage', {'_locale': app.request.locale } ) }}">Home</a></li>
   <li class="active">Board</li>
 </ol>
 

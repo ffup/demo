@@ -37,7 +37,31 @@
             <trans-unit id="9">
                 <source>Sign up</source>
                 <target>Sign up</target>
-            </trans-unit>                                        
+            </trans-unit>
+            <trans-unit id="10">
+                <source>1 min|%num% mins</source>
+                <target>1 min|%num% mins</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>1 hour|%num% hours</source>
+                <target>1 hour|%num% hours</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>1 day|%num% days</source>
+                <target>1 day|%num% days</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>1 week|%num% weeks</source>
+                <target>1 week|%num% weeks</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>1 month|%num% months</source>
+                <target>1 month|%num% months</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>1 year|%num% years</source>
+                <target>1 year|%num% years</target>
+            </trans-unit>                                                                         
         </body>
     </file>
 </xliff>

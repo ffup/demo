@@ -1,0 +1,15 @@
+{% extends "AcmeUserBundle::layout.html.twig" %}
+
+{% block title %}Locale change{% endblock %}
+
+{% block body %}
+<h1>Locale:change</h1>
+<dl class="dl-horizontal">
+  <dt>中国</dt>
+  <dd><a href="{{ path('acme_homepage', {'_locale': 'zh' } ) }}">简体中文</a></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>United States</dt>
+  <dd><a href="{{ path('acme_homepage', {'_locale': 'en' } ) }}">English</a></dd>
+</dl>
+{% endblock %}
