@@ -13,48 +13,42 @@ use Doctrine\ORM\EntityRepository;
 class MessageRepository extends EntityRepository
 {
     public function create(User $fromUser, Message $message)
-    {
-        $em = $this->getEntityManager();
-        
+    {      
         $message->setFromUser($fromUser);
         $toUser = $message->getToUser();
         $toUser->setUnreadMsg($toUser->getUnreadMsg() + 1);
 
-        $em->persist($toUser);        
-        $em->persist($message);
-        $em->flush();   
+        $this->_em->persist($toUser);        
+        $this->_em->persist($message);
+        $this->_em->flush();   
     }
     
     public function readOneByUser(User $user, Message $message)
-    {
-        $em = $this->getEntityManager();
-        
+    {    
         if (false == $message->getHasRead())  {
             $message->setHasRead(true);
             $user->setUnreadMsg($user->getUnreadMsg() - 1);
             
-            $em->persist($user);   
-            $em->persist($message);
-            $em->flush();
+            $this->_em->persist($user);   
+            $this->_em->persist($message);
+            $this->_em->flush();
         }
     }
     
     public function remove(User $user, Message $message)
     {
-        $em = $this->getEntityManager();
-    
         if ($message->getFromUser() == $user) {
             $user->removeSendMessage($message);
         } elseif ($message->getToUser() == $user) {
             $user->removeReceiveMessage($message);
             if (false == $message->getHasRead())  {
                 $user->setUnreadMsg($user->getUnreadMsg() - 1);
-                $em->persist($user);   
+                $this->_em->persist($user);   
             }
         }
         
-        $em->persist($message);
-        $em->flush();
+        $this->_em->persist($message);
+        $this->_em->flush();
     }
     
 }

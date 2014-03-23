@@ -16,11 +16,9 @@ class CommentRepository extends EntityRepository
 {
     public function create(\Acme\UserBundle\Entity\User $user, Thread $thread, Comment $comment)
     {
-        $em = $this->getEntityManager();
-
         try {
-            $em->beginTransaction(); // suspend auto-commit
-            $em->lock($thread, LockMode::PESSIMISTIC_WRITE);
+            $this->_em->beginTransaction(); // suspend auto-commit
+            $this->_em->lock($thread, LockMode::PESSIMISTIC_WRITE);
             // thread->numReplies ++;
             $thread->setNumReplies($thread->getNumReplies() + 1);
             
@@ -31,15 +29,15 @@ class CommentRepository extends EntityRepository
             $thread->setLastComment($comment)
                 ->setUpdatedAt(time());
             
-            $em->persist($thread);
-            $em->persist($comment);
+            $this->_em->persist($thread);
+            $this->_em->persist($comment);
                           
-            $em->flush();
-            $em->commit();     
+            $this->_em->flush();
+            $this->_em->commit();     
         
         } catch(OptimisticLockException $e) {
-            $em->rollback();
-            $em->close();
+            $this->_em->rollback();
+            $this->_em->close();
             throw $e;
         }    
         
@@ -47,11 +45,10 @@ class CommentRepository extends EntityRepository
     
     public function pagination($thread, $page, $pageSize)
     {
-        $em = $this->getEntityManager();
         $offset = ($page - 1) * $pageSize; 
         $dql = "SELECT c FROM AcmeBoardBundle:Comment c
             WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
-        $query = $em->createQuery($dql)
+        $query = $this->_em->createQuery($dql)
             ->setParameter('thread', $thread->getId())
             ->setParameter('start', $offset)
             ->setParameter('end', $offset + $pageSize + 1);
@@ -62,8 +59,7 @@ class CommentRepository extends EntityRepository
     public function paginationWithTracks($user, Thread $thread, $page, $pageSize)
     {
         $pagination = $this->pagination($thread, $page, $pageSize)->getResult();
-        $em = $this->getEntityManager();
-        $tracks = $em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
+        $tracks = $this->_em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
         
         $trackIds = array_map(function ($track) {
                 return $track->getComment()->getId();
@@ -78,10 +74,9 @@ class CommentRepository extends EntityRepository
     
     public function paginationByUser($user, $page, $pageSize)
     {
-        $em = $this->getEntityManager();
         $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 
             WHERE c.user = :user";
-        $query = $em->createQuery($dql)
+        $query = $this->_em->createQuery($dql)
             ->setParameter('user', $user)
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
@@ -91,10 +86,9 @@ class CommentRepository extends EntityRepository
     
     public function countByUser($user)
     {
-        $em = $this->getEntityManager();
         $dql = "SELECT COUNT(c) FROM AcmeBoardBundle:Comment c
             WHERE c.user = :user";
-        $query = $em->createQuery($dql)
+        $query = $this->_em->createQuery($dql)
             ->setParameter('user', $user);
         
         return $query->getSingleScalarResult();

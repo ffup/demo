@@ -16,7 +16,6 @@ class CommentTrackRepository extends EntityRepository
     
     public function create(User $user, Comment $comment)
     {
-        $em = $this->getEntityManager();
         $track = new \Acme\BoardBundle\Entity\CommentTrack();
         $track->setUser($user)
               ->setComment($comment)
@@ -24,9 +23,9 @@ class CommentTrackRepository extends EntityRepository
               ->setHasVoted(true);
               
         $comment->setVotes($comment->getVotes() + 1);
-        $em->persist($track);               
-        $em->persist($comment);        
-        $em->flush();
+        $this->_em->persist($track);               
+        $this->_em->persist($comment);        
+        $this->_em->flush();
     }
     
     public function findByUserAndThread(User $user = null, Thread $thread)
@@ -37,10 +36,9 @@ class CommentTrackRepository extends EntityRepository
             return $tracks;
         }
         
-        $em = $this->getEntityManager();
         $dql = "SELECT ct FROM AcmeBoardBundle:CommentTrack ct
             WHERE ct.user = :user AND ct.thread = :thread";
-        $query = $em->createQuery($dql)
+        $query = $this->_em->createQuery($dql)
             ->setParameter('user', $user)
             ->setParameter('thread', $thread);  
         $tracks = $query->getResult();

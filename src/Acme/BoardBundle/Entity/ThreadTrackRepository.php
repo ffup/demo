@@ -19,13 +19,10 @@ class ThreadTrackRepository extends EntityRepository
             return;
         }
     
-        $em = $this->getEntityManager();
-        $track = $em->getRepository('AcmeBoardBundle:ThreadTrack')
-            ->find(array(
-                      'user' => $user->getId(),
-                      'thread' => $thread->getId(),
-                  )
-              );
+        $track = $this->find(array(
+            'user' => $user->getId(),
+            'thread' => $thread->getId(),
+        ));
                 
         if (isset($track) && $track->getHasViewed()) {
             return;
@@ -39,8 +36,8 @@ class ThreadTrackRepository extends EntityRepository
               
         $thread->setNumViews($thread->getNumViews() + 1);
         
-        $em->persist($thread);
-        $em->persist($track);
-        $em->flush();       
+        $this->_em->persist($thread);
+        $this->_em->persist($track);
+        $this->_em->flush();       
     }
 }
