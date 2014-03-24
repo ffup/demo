@@ -1,10 +1,10 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
 {% block title %}Sign up{% endblock %}
 {% block body %}
-<h2>{% trans %}Sign up{% endtrans %}</h2>
+<h2>{{ 'sign.up'|trans }}</h2>
 <div class="row">
   <div class="col-xs-10 col-sm-8">
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-horizontal', 'role': 'form'}}) }}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal', 'role': 'form'}}) }}
       <div class="form-group">
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form) }}</div>
@@ -12,28 +12,28 @@
       <div class="form-group {{ form_errors(form.username) ? 'has-error' : null }}">  
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form.username) }}</div>  
-        <label for="username" class="col-sm-3 control-label">{% trans %}Username{% endtrans %}</label>
+        <label for="username" class="col-sm-3 control-label">{{ 'username'|trans }}</label>
         <div class="col-sm-9">{{ form_widget(form.username, {'attr': {'id': 'username', 'class': 'form-control', 'placeholder': 'Username'}}) }}</div>
       </div>
       
       <div class="form-group {{ form_errors(form.password.first) ? 'has-error has-feedback' : null }}">  
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form.password.first) }}</div>  
-        <label for="password" class="col-sm-3 control-label">{% trans %}Password{% endtrans %}</label>
+        <label for="password" class="col-sm-3 control-label">{{ 'password'|trans }}</label>
         <div class="col-sm-9">{{ form_widget(form.password.first, {'attr': {'id': 'password', 'class': 'form-control', 'placeholder': 'Password', 'type': 'password'}}) }}</div>
       </div>
       
       <div class="form-group {{ form_errors(form.password.second) ? 'has-error has-feedback' : null }}">  
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form.password.second) }}</div>  
-        <label for="repassword" class="col-sm-3 control-label">{% trans %}RePassword{% endtrans %}</label>
+        <label for="repassword" class="col-sm-3 control-label">{{ 're.password'|trans }}</label>
         <div class="col-sm-9">{{ form_widget(form.password.second, {'attr': {'id': 'repassword', 'class': 'form-control', 'placeholder': 'RePassword', 'type': 'password'}}) }}</div>
       </div>
       
       <div class="form-group {{ form_errors(form.email) ? 'has-error' : null }}">  
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form.email) }}</div>  
-        <label for="email" class="col-sm-3 control-label">{% trans %}Email{% endtrans %}</label>
+        <label for="email" class="col-sm-3 control-label">{{ 'email'|trans }}</label>
         <div class="col-sm-9">{{ form_widget(form.email, {'attr': {'id': 'email', 'class': 'form-control', 'placeholder': 'Email'}}) }}</div>
       </div>
       <div class="form-group">
@@ -59,7 +59,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-          <button type="submit" class="btn btn-primary">{% trans %}Sign up{% endtrans %}</button>
+          <button type="submit" class="btn btn-primary">{{ 'sign.up'|trans }}</button>
         </div>
       </div>
     {{ form_end(form) }}

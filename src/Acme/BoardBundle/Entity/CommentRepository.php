@@ -46,7 +46,7 @@ class CommentRepository extends EntityRepository
     public function pagination($thread, $page, $pageSize)
     {
         $offset = ($page - 1) * $pageSize; 
-        $dql = "SELECT c FROM AcmeBoardBundle:Comment c
+        $dql = "SELECT c, u FROM AcmeBoardBundle:Comment c JOIN c.user u
             WHERE c.thread = :thread AND c.postIndex > :start AND c.postIndex < :end";
         $query = $this->_em->createQuery($dql)
             ->setParameter('thread', $thread->getId())

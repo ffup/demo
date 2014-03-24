@@ -19,7 +19,9 @@ class ThreadController extends Controller
         $moduleId = $request->get('module_id');
    
         $em = $this->getDoctrine()->getManager();
-        
+        // Lazy load
+        $modules = $em->getRepository('AcmeBoardBundle:Module')->findAllModules();
+        // \Doctrine\Common\Util\Debug::dump($modules);
         $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);
         if (false == $module || $module->getEnableIndexing()) {
             throw new NotFoundHttpException();

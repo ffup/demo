@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class ModuleRepository extends EntityRepository
 {
+    public function findAllModules()
+    {   
+        $dql = 'SELECT m, c FROM AcmeBoardBundle:Module m LEFT JOIN m.children c
+            WHERE m.parent IS NULL';
+        $query = $this->_em->createQuery($dql);
+
+        return $query->getResult();
+    }
 }

@@ -58,11 +58,9 @@ class ThreadRepository extends EntityRepository
     public function paginationByUser($user, $page, $pageSize, $interval)
     {
         $dql = "SELECT t FROM AcmeBoardBundle:Thread t 
-            WHERE t.user = :user AND t.updatedAt > :interval
-            ORDER BY t.id DESC";
+            WHERE t.user = :user ORDER BY t.id DESC";
         $query = $this->_em->createQuery($dql)
             ->setParameter('user', $user)
-            ->setParameter('interval', strtotime($interval))            
             ->setFirstResult(($page - 1) * $pageSize)
             ->setMaxResults($pageSize);
             
@@ -72,10 +70,9 @@ class ThreadRepository extends EntityRepository
     public function countByUser($user, $interval)
     {
         $dql = "SELECT COUNT(t) FROM AcmeBoardBundle:Thread t 
-        WHERE t.user = :user AND t.updatedAt > :interval";
+        WHERE t.user = :user";
         $query = $this->_em->createQuery($dql)
-            ->setParameter('user', $user)
-            ->setParameter('interval', strtotime($interval));
+            ->setParameter('user', $user);
             
         return $query->getSingleScalarResult();  
     }
