@@ -38,19 +38,21 @@ Composer 将会安装所有的依赖组件到以下目录 `path/to/install`
 Web 服务器配置（如 Apache）
 
 重写规则
-    Options +FollowSymlinks
-    RewriteEngine On
 
-    # Explicitly disable rewriting for front controllers
-    RewriteRule ^app_dev.php - [L]
-    RewriteRule ^app.php - [L]
+    <IfModule mod_rewrite.c>
+        Options +FollowSymlinks
+        RewriteEngine On
 
-    RewriteCond %{REQUEST_FILENAME} !-f
+        # Explicitly disable rewriting for front controllers
+        RewriteRule ^app_dev.php - [L]
+        RewriteRule ^app.php - [L]
 
-    # Change below before deploying to production
-    #RewriteRule ^(.*)$ /app.php [QSA,L]
-    RewriteRule ^(.*)$ /app_dev.php [QSA,L]
+        RewriteCond %{REQUEST_FILENAME} !-f
 
+        # Change below before deploying to production
+        #RewriteRule ^(.*)$ /app.php [QSA,L]
+        RewriteRule ^(.*)$ /app_dev.php [QSA,L]
+    </IfModule>
 
 在开始运行之前，请确保你的本地系统正常配置。
 
