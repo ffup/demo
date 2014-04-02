@@ -284,10 +284,10 @@ class User implements UserInterface, \Serializable
      * @param \Acme\BoardBundle\Entity\Thread $threads
      * @return User
      */
-    public function addThread(\Acme\BoardBundle\Entity\Thread $threads)
+    public function addThread(\Acme\BoardBundle\Entity\Thread $thread)
     {
-        $this->threads[] = $threads;
-
+        $this->threads[] = $thread;
+        $thread->setUser($this);
         return $this;
     }
 
@@ -317,10 +317,10 @@ class User implements UserInterface, \Serializable
      * @param \Acme\BoardBundle\Entity\Comment $comments
      * @return User
      */
-    public function addComment(\Acme\BoardBundle\Entity\Comment $comments)
+    public function addComment(\Acme\BoardBundle\Entity\Comment $comment)
     {
-        $this->comments[] = $comments;
-
+        $this->comments[] = $comment;
+        $comment->setUser($this);
         return $this;
     }
 

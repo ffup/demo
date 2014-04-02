@@ -46,8 +46,6 @@ class CommentTrack
         $this->createdAt = time();
     }
 
-
-
     /**
      * Set hasVoted
      *

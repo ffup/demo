@@ -8,6 +8,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as Pagination;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\Null as PaginatorNullAdapter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ThreadController extends Controller
 {
@@ -15,15 +16,15 @@ class ThreadController extends Controller
     public function indexAction(Request $request)
     {
         $pageSize = 20;
-        $page = abs($request->query->get('page', 1));
+        $page = $request->query->get('page', 1);
         $moduleId = $request->get('module_id');
    
         $em = $this->getDoctrine()->getManager();
         // Lazy load
         $modules = $em->getRepository('AcmeBoardBundle:Module')->findAllModules();
-        // \Doctrine\Common\Util\Debug::dump($modules);
         $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);
-        if (false == $module || $module->getEnableIndexing()) {
+        
+        if ($page < 1 || false === $this->get('security.context')->isGranted('VIEW', $module)) {
             throw new NotFoundHttpException();
         }
         
@@ -49,13 +50,18 @@ class ThreadController extends Controller
     public function createAction(Request $request)
     {
         $thread = new \Acme\BoardBundle\Entity\Thread();
+        
+        if (false === $this->get('security.context')->isGranted('CREATE', $thread)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+        
         $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
         $form->handleRequest($request);
         
         $em = $this->getDoctrine()->getManager();
-        $module = $em->getRepository('AcmeBoardBundle:Module')->find((int) $request->query->get('module_id'));
+        $module = $em->getRepository('AcmeBoardBundle:Module')->find($request->query->get('module_id'));
         
-        if (false == $module || $module->getEnableIndexing()) {
+        if (false === $this->get('security.context')->isGranted('VIEW', $module)) {
             throw new NotFoundHttpException();
         }
         
@@ -86,13 +92,13 @@ class ThreadController extends Controller
     public function viewAction(Request $request)
     {
         $pageSize = 20;
-        $page = abs($request->query->get('page', 1));
+        $page = $request->query->get('page', 1);
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        if (false == $thread) {
+        if ($page < 1 || false == $thread) {
             throw new NotFoundHttpException();
         }
         
@@ -114,5 +120,52 @@ class ThreadController extends Controller
         );
 
         return $this->render('AcmeBoardBundle:Thread:view.html.twig', $params);
+    }
+    
+    public function editAction(Request $request)
+    {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
+        
+        if (false == $thread) {
+            throw new NotFoundHttpException();
+        }
+        
+        // keep in mind, this will call all registered security voters
+        if (false === $this->get('security.context')->isGranted('EDIT', $thread)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+        
+        $module = $thread->getModule();
+        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
+        $form->handleRequest($request);
+                
+        if ($form->isValid()) {
+            
+            $comment = $thread->getFirstComment();
+            $comment->setContent($thread->getContent());
+            $thread->setFirstComment($comment);
+            
+            $em->persist($thread);
+            $em->persist($comment);
+            $em->flush(); 
+            
+            $this->get('session')
+                ->getFlashBag()
+                ->add('notice', 'Successfully updated!');
+            
+            return $this->redirect($this->generateUrl('thread_index', array(
+                'module_id' => $module->getId(),
+            )));
+        }
+        
+        $params = array(
+            'thread' => $thread,
+            'form' => $form->createView(),
+            'module' => $module
+        );
+        
+        return $this->render('AcmeBoardBundle:Thread:edit.html.twig', $params);
     }
 }

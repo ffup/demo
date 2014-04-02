@@ -48,7 +48,7 @@ class Thread
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=65535)
+     * @ORM\Column(name="content", type="string", length=4095)
      */
     private $content;
 
@@ -122,6 +122,12 @@ class Thread
      * @ORM\JoinColumn(name="last_comment_id", nullable=true)
      */  
     private $lastComment;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Comment")
+     * @ORM\JoinColumn(name="first_comment_id", nullable=true)
+     */  
+    private $firstComment;
 
     /**
      * Get id
@@ -279,15 +285,7 @@ class Thread
         $this->createdAt = time();
         $this->updatedAt = $this->createdAt;
     }
-    
-    /**
-     * @ORM\PreUpdate 
-     */
-    public function doStuffOnPrepdate()
-    {
-        $this->updatedAt = time();
-    }
-    
+        
     /**
      * Set user
      *

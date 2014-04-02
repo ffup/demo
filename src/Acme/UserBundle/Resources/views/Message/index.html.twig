@@ -33,9 +33,9 @@
   <div class="tab-pane active" id="Inbox">
   <div class="list-group">
   {% for message in inbox %}
-    <a href="{{ path('user_read', {'id': message.id}) }}" class="list-group-item">
+    <a href="{{ path('user_read', {'id': message.id}) }}" class="list-group-item {{ message.hasRead ? null : 'active' }}">
       <h5 class="list-group-item-heading">{{ message.title }}</h5>
-      <p class="list-group-item-text {{ message.hasRead ? 'text-muted' : 'text-primary' }}">{{ message.content }}</p>
+      <p class="list-group-item-text text-muted">{{ message.content }}</p>
     </a>
   {% endfor %}
     </div>  
@@ -51,9 +51,6 @@
   <div class="tab-pane" id="messages">// TODO</div>
   <div class="tab-pane" id="settings">// TODO</div>
 </div>
-
-
-
 <!--
 <div id="inbox_pages"></div>
 <div class="clearfix"></div>

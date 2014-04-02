@@ -13,22 +13,19 @@ class BoardController extends Controller
     public function threadAction(Request $request)
     {
         $pageSize = 20;
-        $page = (int) $request->query->get('page', 1);
+        $page = $request->query->get('page', 1);
       
         if ($page < 1) {
             throw new NotFoundHttpException();
         }
-        
-        $interval = '-160 min';
-        
+             
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AcmeBoardBundle:Thread');
-        $query = $repo->paginationByUser($this->getUser(), $page, $pageSize, $interval);
+        $query = $repo->paginationByUser($this->getUser(), $page, $pageSize);
                     
         $pagination = $query->getResult();
         
-        $paginator = new Paginator(new PaginatorNullAdapter(
-            $repo->countByUser($this->getUser(), $interval)));
+        $paginator = new Paginator(new PaginatorNullAdapter($repo->countByUser($this->getUser())));
         $paginator->setItemCountPerPage($pageSize);
         $paginator->setCurrentPageNumber($page);
         
@@ -42,7 +39,7 @@ class BoardController extends Controller
     public function commentAction(Request $request)
     {
         $pageSize = 20;
-        $page = (int) $request->query->get('page', 1);
+        $page = $request->query->get('page', 1);
         
         if ($page < 1) {
             throw new NotFoundHttpException();

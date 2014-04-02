@@ -13,6 +13,12 @@ thread_view:
 thread_create:
     pattern: /thread/create
     defaults: { _controller: AcmeBoardBundle:Thread:create }
+    
+thread_edit:
+    pattern: /thread/edit/{id}
+    defaults: { _controller: AcmeBoardBundle:Thread:edit }
+    requirements:
+        id:  \d+    
 
 comment_create:
     pattern: /comment/create

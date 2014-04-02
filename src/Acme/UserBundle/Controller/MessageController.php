@@ -6,12 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class MessageController extends Controller
 {
     public function indexAction(Request $request)
     {
-        
         $outbox = $this->getUser()->getSendMessages();
         $inbox = $this->getUser()->getReceiveMessages();
               
@@ -25,6 +25,12 @@ class MessageController extends Controller
 
     public function sendAction(Request $request)
     {
+        if (false === $this->get('security.context')->isGranted(
+            'IS_AUTHENTICATED_FULLY'
+           )) {
+            throw new AccessDeniedException();
+        }
+    
         $em = $this->getDoctrine()->getManager();    
         $message = new \Acme\UserBundle\Entity\Message();
         $form = $this->createForm(
@@ -41,9 +47,7 @@ class MessageController extends Controller
             $em->getRepository('AcmeUserBundle:Message')
                 ->create($this->getUser(), $message);
             
-            return $this->redirect($this->generateUrl('user_message', array(
-                'test' => 1,
-            )));
+            return $this->redirect($this->generateUrl('user_message'));
         }
         
         $params = array(

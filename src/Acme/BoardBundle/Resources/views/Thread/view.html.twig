@@ -12,7 +12,8 @@
   </ol>
 </div>
 <div class="page-header">
-  <h1>{{ thread.title }} <small>Subtext for header</small></h1>
+  <h1>{{ thread.title }} <small><a href="{{ path('thread_edit', {'id' : thread.id }) }}">
+  {% if is_granted('EDIT', thread) %}EDIT{% endif %}</a></small></h1>
 </div>
 <div>
 <a class="btn btn-primary" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE COMMENT</strong></a>

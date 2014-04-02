@@ -19,14 +19,13 @@ class CommentRepository extends EntityRepository
         try {
             $this->_em->beginTransaction(); // suspend auto-commit
             $this->_em->lock($thread, LockMode::PESSIMISTIC_WRITE);
-            // thread->numReplies ++;
+
             $thread->setNumReplies($thread->getNumReplies() + 1);
             
             $comment->setUser($user)
-                ->setThread($thread)
                 ->setPostIndex($thread->getNumReplies() +1);
             
-            $thread->setLastComment($comment)
+            $thread->addComment($comment)
                 ->setUpdatedAt(time());
             
             $this->_em->persist($thread);

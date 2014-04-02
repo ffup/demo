@@ -25,23 +25,23 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th style="width: 5%">#</th>
-        <th style="width: 45%">Subject</th>
-        <th style="width: 15%">Author</th>
-        <th style="width: 10%">Replies</th>
-        <th style="width: 10%">Views</th>        
-        <th style="width: 15%">Last Post</th>
+        <th class="hidden">#</th>
+        <th class="col-xs-6 col-sm-6">Subject</th>
+        <th class="col-xs-2 col-sm-2">Author</th>
+        <th class="col-xs-1 col-sm-1 hidden-xs">Replies</th>
+        <th class="col-xs-1 col-sm-1 hidden-xs">Views</th>        
+        <th class="col-xs-2 col-sm-2">Last Post</th>
       </tr>
     </thead>
     <tbody>
       {% for thread in pagination %}
       <tr>
-        <td><span class="last_comment_id hidden">{{ thread.lastComment.id }}</span><span class="thread_id hidden">{{ thread.id }}</span></td>
-        <td>{% if thread.status == 0 %}<span class="label label-default">Default</span>{% endif %}
+        <td class="hidden"><span class="last_comment_id">{{ thread.lastComment.id }}</span><span class="thread_id">{{ thread.id }}</span></td>
+        <td>{% if thread.status == 0 %}<span class="label label-default hidden-xs">Default</span>{% endif %}
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a></td>
         <td>{{ thread.user.username }} </td>      
-        <td><span class="">{{ thread.numReplies|number_format }}</span></td>    
-        <td>{{ thread.numViews }}</td>  
+        <td class="hidden-xs"><span class="">{{ thread.numReplies|number_format }}</span></td>    
+        <td class="hidden-xs">{{ thread.numViews }}</td>  
         <td>{{ thread.updatedAt|human_time_diff }}</td>                  
       </tr>
       {% endfor %}
@@ -53,7 +53,6 @@
   {{ parent() }}
 {% endblock %}
 <input type="hidden" id="module_id" value="{{ module.id }}" />
-
 <script>
 // TODO
 if (!String.prototype.format) {

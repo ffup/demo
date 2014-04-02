@@ -124,6 +124,12 @@ class Thread
     private $lastComment;
 
     /**
+     * @ORM\OneToOne(targetEntity="Comment")
+     * @ORM\JoinColumn(name="first_comment_id", nullable=true)
+     */  
+    private $firstComment;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -319,8 +325,14 @@ class Thread
     public function addComment(\Acme\BoardBundle\Entity\Comment $comment)
     {
         $this->comments[] = $comment;
-        // $this->setLastComment = $comment;
+        
+        if ($this->numReplies == 0) {
+            $this->setFirstComment($comment);        
+        }
+        
+        $this->setLastComment($comment);
         $comment->setThread($this);
+        
         return $this;
     }
 
@@ -500,5 +512,28 @@ class Thread
     public function getLastComment()
     {
         return $this->lastComment;
+    }
+
+    /**
+     * Set firstComment
+     *
+     * @param \Acme\BoardBundle\Entity\Comment $firstComment
+     * @return Thread
+     */
+    public function setFirstComment(\Acme\BoardBundle\Entity\Comment $firstComment = null)
+    {
+        $this->firstComment = $firstComment;
+
+        return $this;
+    }
+
+    /**
+     * Get firstComment
+     *
+     * @return \Acme\BoardBundle\Entity\Comment 
+     */
+    public function getFirstComment()
+    {
+        return $this->firstComment;
     }
 }

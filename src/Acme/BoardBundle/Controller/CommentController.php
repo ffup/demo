@@ -6,13 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CommentController extends Controller
 {
 
     public function createAction(Request $request)
     {
-        $id = (int) $request->query->get('id');
+        $id = $request->query->get('id');
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
@@ -21,6 +22,11 @@ class CommentController extends Controller
         }
         
         $comment = new \Acme\BoardBundle\Entity\Comment();
+        
+        if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+        
         $form = $this->createForm(new \Acme\BoardBundle\Form\CommentType(), $comment);
         $form->handleRequest($request);
 
@@ -52,8 +58,8 @@ class CommentController extends Controller
         $pageSize = 10;
         $em = $this->getDoctrine()->getManager();
         
-        $id = (int) $request->request->get('id');
-        $moduleId = (int) $request->request->get('module_id');
+        $id = $request->request->get('id');
+        $moduleId = $request->request->get('module_id');
         
         $dql = "SELECT t, c, u FROM AcmeBoardBundle:Comment c 
             JOIN c.user u JOIN c.thread t

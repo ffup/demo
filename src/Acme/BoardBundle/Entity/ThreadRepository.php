@@ -14,18 +14,17 @@ use Acme\UserBundle\Entity\User;
 class ThreadRepository extends EntityRepository
 {
     public function create(User $user, Thread $thread)
-    {        
-        $thread->setUser($user);
-             
+    {                     
         $module = $thread->getModule();
         $module->setNumThreads($module->getNumThreads() + 1);
      
         $comment = new Comment();
-        $comment->setUser($user)
-            ->setContent($thread->getContent());
+        $comment->setContent($thread->getContent());
                 
         $thread->addComment($comment);
-        $thread->setLastComment($comment);
+        
+        $user->addThread($thread)
+            ->addComment($comment);         
         
         $this->_em->persist($module);
         $this->_em->persist($thread);                    
@@ -55,7 +54,7 @@ class ThreadRepository extends EntityRepository
         return $query->getSingleScalarResult();
     }
     
-    public function paginationByUser($user, $page, $pageSize, $interval)
+    public function paginationByUser($user, $page, $pageSize)
     {
         $dql = "SELECT t FROM AcmeBoardBundle:Thread t 
             WHERE t.user = :user ORDER BY t.id DESC";
@@ -67,7 +66,7 @@ class ThreadRepository extends EntityRepository
         return $query;
     }
     
-    public function countByUser($user, $interval)
+    public function countByUser($user)
     {
         $dql = "SELECT COUNT(t) FROM AcmeBoardBundle:Thread t 
         WHERE t.user = :user";
