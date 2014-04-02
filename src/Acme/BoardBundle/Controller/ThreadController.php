@@ -98,9 +98,13 @@ class ThreadController extends Controller
         
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         
-        if ($page < 1 || false == $thread) {
+        if ($page < 1 || !$thread) {
             throw new NotFoundHttpException();
         }
+        
+        // if (false === $this->get('security.context')->isGranted('VIEW', $thread)) {
+            // throw new AccessDeniedException('Unauthorised access!');
+        // }
         
         $em->getRepository('AcmeBoardBundle:ThreadTrack')->create($this->getUser(), $thread);
         

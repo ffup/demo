@@ -83,7 +83,7 @@ services:
       class: Acme\BoardBundle\Twig\AcmeExtension
       arguments: [@translator]
       tags:
-      - { name: twig.extension }
+          - { name: twig.extension }
 
 ewz_recaptcha:
     public_key:   6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt

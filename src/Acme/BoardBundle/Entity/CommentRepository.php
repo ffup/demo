@@ -58,6 +58,11 @@ class CommentRepository extends EntityRepository
     public function paginationWithTracks($user, Thread $thread, $page, $pageSize)
     {
         $pagination = $this->pagination($thread, $page, $pageSize)->getResult();
+        
+        uasort($pagination, function ($a, $b) {
+            return ($a->getId() < $b->getId()) ? -1 : 1;
+        });
+                
         $tracks = $this->_em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
         
         $trackIds = array_map(function ($track) {

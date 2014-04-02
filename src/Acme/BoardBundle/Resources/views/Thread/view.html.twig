@@ -1,6 +1,9 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% use '::page.html.twig' %}
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/default.min.css') }}">
+<script src="{{ asset('js/highlight.min.js') }}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 <div>
@@ -18,50 +21,21 @@
 <div>
 <a class="btn btn-primary" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE COMMENT</strong></a>
 </div>
-<!-- thread -->
-  <!-- Button trigger modal -->
-<!--
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>
--->
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!--
-<div class="pull-left">LEFT</div>
-<div class="pull-right">RIGHT</div>
--->
 <!-- comment -->
 <div class="table-condensed">
   <table class="table table-hover">
     <thead>
       <tr>
-        <th style="width: 10%" ></th>
-        <th style="width: 25%"></th>
-        <th style="width: 55%"></th>
-        <th style="width: 20%"></th>
+        <th style="width: 5%" ></th>
+        <th style="width: 15%"></th>
+        <th style="width: 70%"></th>
+        <th style="width: 10%"></th>
       </tr>
     </thead>
     <tbody>
       {% for comment in pagination %}
       <tr id="{{ comment.postIndex }}">
-        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ not app.user or comment._hasVoted ? 'disabled': null }}"><span class="glyphicon glyphicon-ok"></span> <span class="votes">{{ comment.votes }}</span>
+        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ not app.user or comment._hasVoted ? 'disabled': null }}"><span class=""></span> <span class="votes">{{ comment.votes }}</span>
 </button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>
@@ -76,32 +50,33 @@
   {{ parent() }}
 {% endblock %}
 <script>
+// hljs.configure({tabReplace: '<span class="indent">\t</span>'});
+// hljs.initHighlightingOnLoad();
+
 var path = Routing.generate('rate_increase');
 
-</script>
-<script>
-  $('.btn-vote').click(function () {
-    var btn = $(this);
-    // btn.button("loading");
-    $.ajax({
-      type: "POST",
-      url: path,
-      dataType: "json",
-      data: { comment_id: btn.attr('data') }
-    }).done(function(data) {
-      if (data.code == 100 && data.success) {
-        btn.addClass('disabled');
-        var span = btn.find("span.votes");
-        span.text(data.votes);
-        // btn.button('reset');
-      }
-      
-    }).fail(function() {
+$('.btn-vote').click(function () {
+  var btn = $(this);
+  // btn.button("loading");
+  $.ajax({
+    type: "POST",
+    url: path,
+    dataType: "json",
+    data: { comment_id: btn.attr('data') }
+  }).done(function(data) {
+    if (data.code == 100 && data.success) {
+      btn.addClass('disabled');
+      var span = btn.find("span.votes");
+      span.text(data.votes);
+      // btn.button('reset');
+    }
+    
+  }).fail(function() {
 
-    }).always(function () {
-      // btn.button('reset')
-    });
+  }).always(function () {
+    // btn.button('reset')
   });
+});
 </script>
 
 {% endblock %}

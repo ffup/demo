@@ -16,7 +16,7 @@
     <div class="form-group {{ form_errors(form.content) ? 'has-error' : null }}">  
       {{ form_errors(form.content) }}
       <label for="content" class="control-label">Content</label>
-      {{ form_widget(form.content, { 'attr': {'id': 'content', 'class': 'form-control', 'placeholder': 'Content' }}) }}
+      {{ form_widget(form.content, { 'attr': {'id': 'content', 'class': 'form-control', 'placeholder': 'Content', 'rows': 10 }}) }}
     </div>
     <div class="form-group">
       <div class="">
