@@ -68,7 +68,7 @@ class MessageController extends Controller
             throw new NotFoundHttpException();    
         }
         
-        $repo->readOneByUser($this->getUser(), $msg);
+        $repo->readByUser($this->getUser(), $msg);
         
         $params = array(
             'message' => $msg,

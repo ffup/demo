@@ -23,9 +23,10 @@ class MessageRepository extends EntityRepository
         $this->_em->flush();   
     }
     
-    public function readOneByUser(User $user, Message $message)
+    public function readByUser(User $user, Message $message)
     {    
-        if (false == $message->getHasRead())  {
+        if (false == $message->getHasRead() 
+            && $message->getToUser() == $user)  {
             $message->setHasRead(true);
             $user->setUnreadMsg($user->getUnreadMsg() - 1);
             
