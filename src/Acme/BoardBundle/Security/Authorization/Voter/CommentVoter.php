@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Acme\BoardBundle\Entity\Thread;
 
 class CommentVoter implements VoterInterface
 {
@@ -83,8 +84,9 @@ class CommentVoter implements VoterInterface
                 break;
 
             case 'CREATE':
-                return VoterInterface::ACCESS_GRANTED;
-
+                if (Thread::ITEM_LOCKED != $comment->getThread()->getStatus()) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
                 break;            
         }
     }

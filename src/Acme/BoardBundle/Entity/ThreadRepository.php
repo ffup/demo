@@ -13,7 +13,7 @@ use Acme\UserBundle\Entity\User;
  */
 class ThreadRepository extends EntityRepository
 {
-    public function create(User $user, Thread $thread)
+    public function create(Thread $thread)
     {                     
         $module = $thread->getModule();
         $module->setNumThreads($module->getNumThreads() + 1);
@@ -22,8 +22,9 @@ class ThreadRepository extends EntityRepository
         $comment->setContent($thread->getContent());
                 
         $thread->addComment($comment);
+        $thread->setAuthor($thread->getUser()->getUsername());
         
-        $user->addThread($thread)
+        $thread->getUser()->addThread($thread)
             ->addComment($comment);         
         
         $this->_em->persist($module);

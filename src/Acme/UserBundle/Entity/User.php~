@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable, EquatableInterface
 {
     /**
      * @var integer
@@ -53,7 +53,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
@@ -84,11 +84,35 @@ class User implements UserInterface, \Serializable
     /** 
      * @ORM\Column(name="unread_msg", type="smallint", options={"unsigned"=true})    
      */
-    private $unreadMsg = 0;
+    private $unreadMsg;
+    
+    /**
+     * @ORM\Column(name="credentials_expired", type="boolean")
+     */
+    private $credentialsExpired;
+
+    /**
+     * @ORM\Column(name="credentials_expire_at", type="integer", options={"unsigned"=true}, nullable=true)
+     */
+    private $credentialsExpireAt;
+    
+    /**
+     * @ORM\Column(name="is_locked", type="boolean")
+     */    
+    private $isLocked;
+    
+    /**
+     * @ORM\Column(name="is_expired", type="boolean")
+     */    
+    private $isExpired;
+    
+    /**
+     * @ORM\Column(name="last_signin_at", type="integer", options={"unsigned"=true}, nullable=true)
+     */    
+    private $lastSigninAt;
 
     public function __construct()
     {
-        $this->isActive = true;
         $this->threads = new ArrayCollection();
         $this->roles = new ArrayCollection();
         // may not be needed, see section on salt below
@@ -146,6 +170,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive,
+            $this->credentialsExpired,         
             // see section on salt below
             // $this->salt,
         ));
@@ -160,6 +186,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive,
+            $this->credentialsExpired,                    
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
@@ -177,7 +205,16 @@ class User implements UserInterface, \Serializable
     
     public function isCredentialsNonExpired()
     {
-    	return true;
+        if (true === $this->credentialsExpired) {
+            // return false;
+        }
+    
+        if (null !== $this->credentialsExpireAt && 
+            $this->credentialsExpireAt < time()) {
+            return false;
+        }
+        
+    	  return true;
     }
     
     public function isEnabled()
@@ -270,7 +307,19 @@ class User implements UserInterface, \Serializable
     
     public function isEqualTo(UserInterface $user)
     {
-    	return $this->id === $user->getId();
+    	  if ($this->id !== $user->getId()) {
+            return false;
+    	  }
+    	  
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function isPasswordLegal()
@@ -284,10 +333,10 @@ class User implements UserInterface, \Serializable
      * @param \Acme\BoardBundle\Entity\Thread $threads
      * @return User
      */
-    public function addThread(\Acme\BoardBundle\Entity\Thread $threads)
+    public function addThread(\Acme\BoardBundle\Entity\Thread $thread)
     {
-        $this->threads[] = $threads;
-
+        $this->threads[] = $thread;
+        $thread->setUser($this);
         return $this;
     }
 
@@ -317,10 +366,10 @@ class User implements UserInterface, \Serializable
      * @param \Acme\BoardBundle\Entity\Comment $comments
      * @return User
      */
-    public function addComment(\Acme\BoardBundle\Entity\Comment $comments)
+    public function addComment(\Acme\BoardBundle\Entity\Comment $comment)
     {
-        $this->comments[] = $comments;
-
+        $this->comments[] = $comment;
+        $comment->setUser($this);
         return $this;
     }
 
@@ -499,4 +548,73 @@ class User implements UserInterface, \Serializable
         return $this->receiveMessages;
     }
 
+
+    /**
+     * Set unreadMsg
+     *
+     * @param integer $unreadMsg
+     * @return User
+     */
+    public function setUnreadMsg($unreadMsg)
+    {
+        $this->unreadMsg = $unreadMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get unreadMsg
+     *
+     * @return integer 
+     */
+    public function getUnreadMsg()
+    {
+        return $this->unreadMsg;
+    }
+
+    /**
+     * Set credentialsExpired
+     *
+     * @param boolean $credentialsExpired
+     * @return User
+     */
+    public function setCredentialsExpired($credentialsExpired)
+    {
+        $this->credentialsExpired = $credentialsExpired;
+
+        return $this;
+    }
+
+    /**
+     * Get credentialsExpired
+     *
+     * @return boolean 
+     */
+    public function getCredentialsExpired()
+    {
+        return $this->credentialsExpired;
+    }
+
+    /**
+     * Set credentialsExpireAt
+     *
+     * @param integer $credentialsExpireAt
+     * @return User
+     */
+    public function setCredentialsExpireAt($credentialsExpireAt)
+    {
+        $this->credentialsExpireAt = $credentialsExpireAt;
+
+        return $this;
+    }
+
+    /**
+     * Get credentialsExpireAt
+     *
+     * @return integer 
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
+    }
 }

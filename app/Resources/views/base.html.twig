@@ -35,7 +35,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-        {% if app.user %}
+        {% if is_granted('ROLE_USER') %}
           <li class=""><a href="{{ path('user_message') }}"><!-- <span class="glyphicon glyphicon-envelope"></span>--> Message {% if app.user.unreadMsg > 0 %}<span class="badge">{{ app.user.unreadMsg }}</span>{% endif %}</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b> </a>

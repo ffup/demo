@@ -107,6 +107,11 @@ class Thread
     private $user;
 
     /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $author;
+
+    /**
      * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread", fetch="EXTRA_LAZY")
      */
     private $comments;
@@ -535,5 +540,28 @@ class Thread
     public function getFirstComment()
     {
         return $this->firstComment;
+    }
+
+    /**
+     * Set author
+     *
+     * @param string $author
+     * @return Thread
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return string 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

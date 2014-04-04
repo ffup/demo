@@ -37,9 +37,21 @@
       {% for thread in pagination %}
       <tr>
         <td class="hidden"><span class="last_comment_id">{{ thread.lastComment.id }}</span><span class="thread_id">{{ thread.id }}</span></td>
-        <td>{% if thread.status == 0 %}<span class="label label-default hidden-xs">Default</span>{% endif %}
+        <td>
+        {% if thread.status == 0 %}<span class="label label-default hidden-xs">Default</span>
+        {% elseif thread.status == 1 %}<span class="label label-primary hidden-xs">Locked</span>
+        <!--
+        <span class="label label-success hidden-xs">Success</span>
+        <span class="label label-info hidden-xs">Info</span>
+        <span class="label label-warning hidden-xs">Warning</span>
+        <span class="label label-danger hidden-xs">Danger</span>
+        -->
+        {% endif %}
+        {% if thread.type == 1 %}<span class="label label-warning hidden-xs">STICKY</span>
+        {% elseif thread.type == 2%}<span class="label label-danger hidden-xs">ANNOUNCE</span>
+        {% endif %}
         <a href="{{ path('thread_view', {'id': thread.id}) }}" data-toggle="tooltip" title="{{ thread.content }}">{{ thread.title|truncate(40) }}</a></td>
-        <td>{{ thread.user.username }} </td>      
+        <td>{{ thread.author }} </td>      
         <td class="hidden-xs"><span class="">{{ thread.numReplies|number_format }}</span></td>    
         <td class="hidden-xs">{{ thread.numViews }}</td>  
         <td>{{ thread.updatedAt|human_time_diff }}</td>                  

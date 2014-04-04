@@ -5,3 +5,10 @@ services:
 #    acme_user.example:
 #        class: %acme_user.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    signin_listener:
+        class: 'Acme\UserBundle\EventListener\SigninListener'
+        arguments: ['@security.context', '@doctrine.orm.entity_manager']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+

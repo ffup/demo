@@ -97,6 +97,38 @@ class SecuredController extends Controller
         ));
     }
 
+    /**
+     * @Route("/change_password", name="_change_password")
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(new \Acme\UserBundle\Form\ChangePasswordType(), $this->getUser());
+        
+        $form->handleRequest($request);
+        
+        if ($form->isValid()) {
+            // perform some action, such as saving the task to the database
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($user);
+            $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+            $user->setPassword($password);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            
+            // Here, "main" is the name of the firewall in your security.yml
+            // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+            // $this->get('security.context')->setToken($token);
+            
+            return $this->redirect($this->generateUrl('_signin'));
+        }
+        
+        return $this->render('AcmeUserBundle:Secured:change_password.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+    
     private function sendMailAction($user)
     {
         // Send Email

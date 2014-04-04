@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable, EquatableInterface
 {
     /**
      * @var integer
@@ -53,7 +53,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
@@ -85,10 +85,34 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="unread_msg", type="smallint", options={"unsigned"=true})    
      */
     private $unreadMsg = 0;
+    
+    /**
+     * @ORM\Column(name="credentials_expired", type="boolean")
+     */
+    private $credentialsExpired = false;
+
+    /**
+     * @ORM\Column(name="credentials_expire_at", type="integer", options={"unsigned"=true}, nullable=true)
+     */
+    private $credentialsExpireAt;
+    
+    /**
+     * @ORM\Column(name="is_locked", type="boolean")
+     */    
+    private $isLocked = false;
+    
+    /**
+     * @ORM\Column(name="is_expired", type="boolean")
+     */    
+    private $isExpired = false;
+    
+    /**
+     * @ORM\Column(name="last_signin_at", type="integer", options={"unsigned"=true}, nullable=true)
+     */    
+    private $lastSigninAt;
 
     public function __construct()
     {
-        $this->isActive = true;
         $this->threads = new ArrayCollection();
         $this->roles = new ArrayCollection();
         // may not be needed, see section on salt below
@@ -146,6 +170,10 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive,
+            $this->isLocked,
+            $this->isExpired,            
+            $this->credentialsExpired,         
             // see section on salt below
             // $this->salt,
         ));
@@ -160,6 +188,10 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive,
+            $this->isLocked,
+            $this->isExpired,                               
+            $this->credentialsExpired,                    
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
@@ -167,22 +199,31 @@ class User implements UserInterface, \Serializable
 
     public function isAccountNonExpired()
     {
-    	return true;
+    	  return !$this->isExpired;
     }
     
     public function isAccountNonLocked()
     {
-    	return true;
+    	  return !$this->isLocked;
     }
     
     public function isCredentialsNonExpired()
     {
-    	return true;
+        if (true === $this->credentialsExpired) {
+            return false;
+        }
+    
+        if (null !== $this->credentialsExpireAt && 
+            $this->credentialsExpireAt < time()) {
+            return false;
+        }
+        
+    	  return true;
     }
     
     public function isEnabled()
     {
-    	return $this->isActive;
+    	  return $this->isActive;
     }
     
 
@@ -270,7 +311,19 @@ class User implements UserInterface, \Serializable
     
     public function isEqualTo(UserInterface $user)
     {
-    	return $this->id === $user->getId();
+    	  if ($this->id !== $user->getId()) {
+            return false;
+    	  }
+    	  
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function isPasswordLegal()
@@ -521,5 +574,120 @@ class User implements UserInterface, \Serializable
     public function getUnreadMsg()
     {
         return $this->unreadMsg;
+    }
+
+    /**
+     * Set credentialsExpired
+     *
+     * @param boolean $credentialsExpired
+     * @return User
+     */
+    public function setCredentialsExpired($credentialsExpired)
+    {
+        $this->credentialsExpired = $credentialsExpired;
+
+        return $this;
+    }
+
+    /**
+     * Get credentialsExpired
+     *
+     * @return boolean 
+     */
+    public function getCredentialsExpired()
+    {
+        return $this->credentialsExpired;
+    }
+
+    /**
+     * Set credentialsExpireAt
+     *
+     * @param integer $credentialsExpireAt
+     * @return User
+     */
+    public function setCredentialsExpireAt($credentialsExpireAt)
+    {
+        $this->credentialsExpireAt = $credentialsExpireAt;
+
+        return $this;
+    }
+
+    /**
+     * Get credentialsExpireAt
+     *
+     * @return integer 
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
+    }
+
+    /**
+     * Set isLocked
+     *
+     * @param boolean $isLocked
+     * @return User
+     */
+    public function setIsLocked($isLocked)
+    {
+        $this->isLocked = $isLocked;
+
+        return $this;
+    }
+
+    /**
+     * Get isLocked
+     *
+     * @return boolean 
+     */
+    public function getIsLocked()
+    {
+        return $this->isLocked;
+    }
+
+    /**
+     * Set isExpired
+     *
+     * @param boolean $isExpired
+     * @return User
+     */
+    public function setIsExpired($isExpired)
+    {
+        $this->isExpired = $isExpired;
+
+        return $this;
+    }
+
+    /**
+     * Get isExpired
+     *
+     * @return boolean 
+     */
+    public function getIsExpired()
+    {
+        return $this->isExpired;
+    }
+
+    /**
+     * Set lastSigninAt
+     *
+     * @param integer $lastSigninAt
+     * @return User
+     */
+    public function setLastSigninAt($lastSigninAt)
+    {
+        $this->lastSigninAt = $lastSigninAt;
+
+        return $this;
+    }
+
+    /**
+     * Get lastSigninAt
+     *
+     * @return integer 
+     */
+    public function getLastSigninAt()
+    {
+        return $this->lastSigninAt;
     }
 }

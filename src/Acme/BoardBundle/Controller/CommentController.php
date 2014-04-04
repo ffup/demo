@@ -22,6 +22,7 @@ class CommentController extends Controller
         }
         
         $comment = new \Acme\BoardBundle\Entity\Comment();
+        $comment->setThread($thread);
         
         if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
@@ -32,8 +33,8 @@ class CommentController extends Controller
 
         if ($form->isValid()) {            
         
-            $em->getRepository('AcmeBoardBundle:Comment')
-               ->create($this->getUser(), $thread, $comment);
+            $comment->setUser($this->getUser());                
+            $em->getRepository('AcmeBoardBundle:Comment')->create($comment);
 
             // Notice
             $this->get('session')->getFlashBag()->add(

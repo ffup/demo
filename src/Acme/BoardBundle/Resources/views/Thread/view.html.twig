@@ -19,7 +19,7 @@
   {% if is_granted('EDIT', thread) %}EDIT{% endif %}</a></small></h1>
 </div>
 <div>
-<a class="btn btn-primary" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE COMMENT</strong></a>
+<a class="btn btn-primary {{ thread.status == 1 ? 'disabled' : null  }}" href="{{ path('comment_create', { 'id': thread.id }) }}" role="button"><!-- <span class="glyphicon glyphicon-plus"></span> --><strong>CREATE COMMENT</strong></a>
 </div>
 <!-- comment -->
 <div class="table-condensed">

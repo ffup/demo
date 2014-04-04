@@ -51,25 +51,27 @@ class ThreadController extends Controller
     {
         $thread = new \Acme\BoardBundle\Entity\Thread();
         
-        if (false === $this->get('security.context')->isGranted('CREATE', $thread)) {
+        $securityContext = $this->get('security.context');
+        if (false === $securityContext->isGranted('CREATE', $thread)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
         
-        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
+        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType($securityContext), $thread);
         $form->handleRequest($request);
         
         $em = $this->getDoctrine()->getManager();
         $module = $em->getRepository('AcmeBoardBundle:Module')->find($request->query->get('module_id'));
         
-        if (false === $this->get('security.context')->isGranted('VIEW', $module)) {
+        if (false === $securityContext->isGranted('VIEW', $module)) {
             throw new NotFoundHttpException();
         }
         
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
-            $thread->setModule($module);
+            $thread->setModule($module)
+                ->setUser($this->getUser());
             // $this->container->get('security.context')->getToken()->getUser()
-            $em->getRepository('AcmeBoardBundle:Thread')->create($this->getUser(), $thread);
+            $em->getRepository('AcmeBoardBundle:Thread')->create($thread);
             
             $this->get('session')
                 ->getFlashBag()
@@ -136,13 +138,15 @@ class ThreadController extends Controller
             throw new NotFoundHttpException();
         }
         
+        $securityContext = $this->get('security.context');
         // keep in mind, this will call all registered security voters
-        if (false === $this->get('security.context')->isGranted('EDIT', $thread)) {
+        if (false === $securityContext->isGranted('EDIT', $thread)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
         
         $module = $thread->getModule();
-        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType(), $thread);
+        
+        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType($securityContext), $thread);
         $form->handleRequest($request);
                 
         if ($form->isValid()) {

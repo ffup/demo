@@ -14,16 +14,15 @@ use Doctrine\ORM\OptimisticLockException;
  */
 class CommentRepository extends EntityRepository
 {
-    public function create(\Acme\UserBundle\Entity\User $user, Thread $thread, Comment $comment)
+    public function create(Comment $comment)
     {
         try {
             $this->_em->beginTransaction(); // suspend auto-commit
+            $thread = $comment->getThread();
             $this->_em->lock($thread, LockMode::PESSIMISTIC_WRITE);
 
             $thread->setNumReplies($thread->getNumReplies() + 1);
-            
-            $comment->setUser($user)
-                ->setPostIndex($thread->getNumReplies() +1);
+            $comment->setPostIndex($thread->getNumReplies() + 1);
             
             $thread->addComment($comment)
                 ->setUpdatedAt(time());
@@ -39,7 +38,6 @@ class CommentRepository extends EntityRepository
             $this->_em->close();
             throw $e;
         }    
-        
     }
     
     public function pagination($thread, $page, $pageSize)
