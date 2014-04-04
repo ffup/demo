@@ -27,7 +27,7 @@ Acme\UserBundle\Entity\User:
                 max:      25
                 minMessage:   user.username_min_length
                 maxMessage:   user.username_max_length
-        password:
+        plainPassword:
             - NotBlank:
                 message:  value.not_blank
             - Length:

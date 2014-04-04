@@ -110,6 +110,13 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      * @ORM\Column(name="last_signin_at", type="integer", options={"unsigned"=true}, nullable=true)
      */    
     private $lastSigninAt;
+    
+    /**
+     * Plain password. Used for model validation. Must not be persisted.
+     *
+     * @var string
+     */
+    protected $plainPassword;
 
     public function __construct()
     {
@@ -117,6 +124,18 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
         $this->roles = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+    
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+
+        return $this;
     }
 
     /**
@@ -159,6 +178,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      */
     public function eraseCredentials()
     {
+        $this->plainPassword = null;
     }
 
     /**

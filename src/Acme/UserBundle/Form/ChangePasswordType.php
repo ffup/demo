@@ -18,15 +18,15 @@ class ChangePasswordType extends AbstractType
             'constraints' => new UserPassword(),
         ));
         
-        $builder->add('password', 'repeated', array('type' => 'password', 
-            'invalid_message' => 'user.password.mismatch'));
+        $builder->add('plainPassword', 'repeated', array('type' => 'password', 
+            'invalid_message' => 'user.password.mismatch', ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acme\UserBundle\Entity\User',
-            'intention'  => 'change_password',
+            // 'intention'  => 'change_password',
         ));
     }
 

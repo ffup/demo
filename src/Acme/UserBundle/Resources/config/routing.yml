@@ -2,6 +2,10 @@ _user_secured:
     resource: "@AcmeUserBundle/Controller/SecuredController.php"
     type:     annotation
 
+change_password:
+    pattern: /user/change_password
+    defaults: { _controller: AcmeUserBundle:Secured:changePassword }
+
 user_thread:
     pattern: /user/thread
     defaults: { _controller: AcmeUserBundle:Board:thread }

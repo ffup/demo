@@ -70,7 +70,7 @@ class SecuredController extends Controller
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($user);
-            $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+            $password = $encoder->encodePassword($user->getPlainPassword(), $user->getSalt());
             $user->setPassword($password);
             
             $em = $this->getDoctrine()->getManager();
@@ -97,13 +97,10 @@ class SecuredController extends Controller
         ));
     }
 
-    /**
-     * @Route("/change_password", name="_change_password")
-     */
     public function changePasswordAction(Request $request)
     {
         $user = $this->getUser();
-        $form = $this->createForm(new \Acme\UserBundle\Form\ChangePasswordType(), $this->getUser());
+        $form = $this->createForm(new \Acme\UserBundle\Form\ChangePasswordType(), $user);
         
         $form->handleRequest($request);
         
@@ -111,7 +108,7 @@ class SecuredController extends Controller
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($user);
-            $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+            $password = $encoder->encodePassword($user->getPlainPassword(), $user->getSalt());
             $user->setPassword($password);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
