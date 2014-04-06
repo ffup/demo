@@ -32,11 +32,12 @@ module_index:
     pattern: /
     defaults: { _controller: AcmeBoardBundle:Module:index }
 
-rate_increase:
-    pattern: /rate/increase
-    defaults: { _controller: AcmeBoardBundle:Rate:increase }
+comment_vote:
+    pattern: /comment/vote
+    defaults: { _controller: AcmeBoardBundle:Asynchrony:vote }
     options:
         expose: true
+    methods:  [POST]        
         
 comment_check:
     pattern: /comment/check

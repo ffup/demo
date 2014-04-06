@@ -4,7 +4,7 @@ namespace Acme\BoardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\Tools\Pagination\Paginator as Pagination;
+// use Doctrine\ORM\Tools\Pagination\Paginator as Pagination;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\Null as PaginatorNullAdapter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

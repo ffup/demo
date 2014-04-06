@@ -3,7 +3,7 @@ acme_board:
     prefix:   /{_locale}/board
     defaults: { _locale: en }
     requirements:
-        culture:  _locale: en|zh
+        culture:  _locale: en
 
 acme_user:
     resource: "@AcmeUserBundle/Resources/config/routing.yml"
@@ -17,5 +17,5 @@ fos_js_routing:
 acme_homepage:
     pattern:  /{_locale}
     defaults: { _controller: AcmeBoardBundle:Default:index, _locale: en }
-    requirements:
-        culture:  _locale: en|zh
+    #requirements:
+        #culture:  _locale: en|zh
