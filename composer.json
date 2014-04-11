@@ -22,7 +22,8 @@
         "ircmaxell/password-compat": "~1.0.3",
         "zendframework/zendframework": "2.*",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "excelwebzone/recaptcha-bundle": "dev-master"
+        "excelwebzone/recaptcha-bundle": "dev-master",
+        "zendframework/zendservice-recaptcha": "2.0.*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "2.2.*",

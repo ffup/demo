@@ -13,9 +13,16 @@ acme_user:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-    
+  
+acme_privacy:
+    path: /privacy
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    'AcmeBoardBundle:Static:privacy.html.twig'
+        maxAge:       86400
+        sharedAge:    86400
+  
 acme_homepage:
     pattern:  /{_locale}
     defaults: { _controller: AcmeBoardBundle:Default:index, _locale: en }
-    #requirements:
-        #culture:  _locale: en|zh
+

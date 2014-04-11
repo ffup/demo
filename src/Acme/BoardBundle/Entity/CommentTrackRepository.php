@@ -18,9 +18,9 @@ class CommentTrackRepository extends EntityRepository
     {
         $track = new \Acme\BoardBundle\Entity\CommentTrack();
         $track->setUser($user)
-              ->setComment($comment)
-              ->setThread($comment->getThread())
-              ->setHasVoted(true);
+            ->setComment($comment)
+            ->setThread($comment->getThread())
+            ->setHasVoted(true);
               
         $comment->setVotes($comment->getVotes() + 1);
         $this->_em->persist($track);               
@@ -39,8 +39,8 @@ class CommentTrackRepository extends EntityRepository
         $dql = "SELECT ct FROM AcmeBoardBundle:CommentTrack ct
             WHERE ct.user = :user AND ct.thread = :thread";
         $query = $this->_em->createQuery($dql)
-            ->setParameter('user', $user)
-            ->setParameter('thread', $thread);  
+            ->setParameter('user', $user->getId())
+            ->setParameter('thread', $thread->getId());  
         $tracks = $query->getResult();
                 
         return $tracks;

@@ -42,10 +42,14 @@
             <label for="remember_me">{{ 'keep.logged'|trans }}</label>
           </div>
           <div class="col-xs-4 col-sm-4">
-            <button type="submit" class="btn btn-primary">{{ 'sign.in'|trans }}</button>
+
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ 'sign.in'|trans }}</button>
+      </div>
+      
       <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     </form>
     <div class="text-left"><a href="{{ path('_signup') }}">{{ 'create.account'|trans }}</a></div>

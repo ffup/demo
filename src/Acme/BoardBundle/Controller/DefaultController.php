@@ -8,6 +8,10 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('AcmeBoardBundle:Default:index.html.twig', array());
+        $response = $this->render('AcmeBoardBundle:Default:index.html.twig', array());
+            // set the shared max age - which also marks the response as public
+        $response->setSharedMaxAge(600);
+
+        return $response;
     }
 }

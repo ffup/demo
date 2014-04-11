@@ -7,7 +7,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 
 /**
  * @Route("/secured")
@@ -57,12 +56,6 @@ class SecuredController extends Controller
     {
         $user = new \Acme\UserBundle\Entity\User();
         $form = $this->createForm(new \Acme\UserBundle\Form\UserType(), $user);
-        $form->add('recaptcha', 'ewz_recaptcha', 
-            array(
-                'mapped' => false,
-                'constraints' => array(new Recaptcha()),
-            )
-        );
         
         $form->handleRequest($request);
         
@@ -113,11 +106,7 @@ class SecuredController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            
-            // Here, "main" is the name of the firewall in your security.yml
-            // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
-            // $this->get('security.context')->setToken($token);
-            
+                        
             return $this->redirect($this->generateUrl('_signin'));
         }
         
