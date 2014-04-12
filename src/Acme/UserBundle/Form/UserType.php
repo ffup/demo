@@ -25,7 +25,7 @@ class UserType extends AbstractType
                     'mapped' => false,
                     'constraints' => array(new Recaptcha()),
                 )
-        );
+            );
     }
     
     /**

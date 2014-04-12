@@ -37,10 +37,7 @@ class RecaptchaValidator extends ConstraintValidator
             );
 
             if (!$result->isValid()) {
-                $this->context->addViolation(
-                    $constraint->message,
-                    array()
-                );
+                $this->context->addViolation($constraint->message);
                 // Failed validation
             }
         }

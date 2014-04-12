@@ -10,7 +10,7 @@ web/uploads/*
 web/bundles/*
 
 # doctrine entities generation backup
-#*.php~
+*.php~
 
 # Configuration files
 #app/config/parameters.ini

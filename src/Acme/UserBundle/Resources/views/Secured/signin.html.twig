@@ -1,6 +1,17 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
+{% use '::recaptcha.html.twig' %}
 {% block title %}Sign in{% endblock %}
 {% block body %}
+<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+<script>
+Recaptcha.create("6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt",
+  "recaptcha_widget",
+  {
+    theme: "custom",
+    callback: Recaptcha.focus_response_field
+  }
+);
+</script>
 <h2>{{ 'sign.in'|trans }}</h2>
 <div class="row">
   <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
@@ -9,32 +20,31 @@
   {% endif %}
   <!-- Split button -->
     <form role="form" action="{{ path('_signin_check') }}" method="post">
+      {% if is_granted('ROLE_USER') %}
+      <!-- IS_AUTHENTICATED_ANONYMOUSLY -->
+      <div class="form-group">
+        <h4 class="text-center"><strong>{{ app.user.username }}</strong></h4>
+        <div class="text-center">{{ app.user.email }}</div>
+        <input type="hidden" name="_username" value="{{ app.user.username }}" />
+      </div>
+      {% else %}
       <div class="form-group">
         <label for="email">{{ 'username.email'|trans }}</label>
         <input type="text" value="{{ last_username }}" class="form-control" id="email" name="_username" placeholder="Enter username or email">
       </div>
+      {% endif %}
       <div class="form-group">
         <label for="password1">{{ 'password'|trans }}</label>
         <input type="password" class="form-control" id="password1" name="_password" placeholder="Password">
       </div>
-      {#
       <div class="form-group">
-        {{ form_errors(form.recaptcha) }}
-          <div id="recaptcha_widget">
-            <a title="Get another CAPTCHA" href="javascript:Recaptcha.reload()"><div id="recaptcha_image"></div></a>
-            <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
-            <span class="recaptcha_only_if_image">Prove you’re not a robot</span>
-            <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
-            <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" placeholder="Type the text" />
-            <!-- <div><a href="javascript:Recaptcha.reload()">Get another CAPTCHA</a></div>
-            <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Get an audio CAPTCHA</a></div>
-            <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Get an image CAPTCHA</a></div>
-            <div><a href="javascript:Recaptcha.showhelp()">Help</a></div> -->
-           </div>
-          {% form_theme form 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig' %}
-          {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom',},} }) }}
+        <label for="recaptcha_response_field">Recaptcha</label>
+        <div>
+          {% block recaptcha %}
+            {{ parent() }}
+          {% endblock %}
+        </div>
       </div>
-      #}
       <div class="form-group">
         <div class="row">
           <div class="col-xs-8 col-sm-8">
@@ -52,7 +62,11 @@
       
       <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     </form>
-    <div class="text-left"><a href="{{ path('_signup') }}">{{ 'create.account'|trans }}</a></div>
+    {% if is_granted('ROLE_USER') %}
+    <div class="text-left"><a href="{{ path('_signout') }}">Sign in with a different account</a></div>
+    {% else %}
+    <div class="text-left"><a href="{{ path('_signup') }}">{{ 'create.account'|trans }}</a></div>    
+    {% endif %}
   </div>
   <div class="col-xs-2 col-sm-7 col-md-8 col-lg-8"></div>
   <!-- Add the extra clearfix for only the required viewport -->

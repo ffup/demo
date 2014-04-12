@@ -44,6 +44,15 @@
               <li><a href="{{ path('user_comment') }}">Last comments</a></li>
               <li class="divider"></li>
               <li><a href="{{ path('_signout') }}">Signout</a></li>
+              {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+              <li class="divider"></li>
+              <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_switch_user': 'testuser'})) }}">SWITCH TO testuser</a></li>
+              <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_switch_user': 'testadmin'})) }}">SWITCH TO testadmin</a></li>
+              {% endif %}
+              {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+              <li class="divider"></li>
+              <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_switch_user': '_exit'})) }}">Exit impersonation</a></li>
+              {% endif %}
             </ul>
           </li>
         {% else %}

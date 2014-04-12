@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Security\Core\SecurityContext;
 use Acme\BoardBundle\Entity\Thread;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 
 class ThreadType extends AbstractType
 {
@@ -33,8 +34,14 @@ class ThreadType extends AbstractType
                 'choices' => array(
                     Thread::ITEM_UNLOCKED => 'Default', 
                     Thread::ITEM_LOCKED => 'Locked'),
-                'required' => false,
-            ));
+                'required' => false,)
+            )
+            ->add('recaptcha', 'ewz_recaptcha', 
+                array(
+                    'mapped' => false,
+                    'constraints' => array(new Recaptcha()),
+                )
+            );
             
         // grab the user, do a quick sanity check that one exists
         // $user = $this->securityContext->getToken()->getUser();
@@ -57,6 +64,8 @@ class ThreadType extends AbstractType
                     Thread::POST_ANNOUNCE => 'ANNOUNCE'),
                 'required' => false,
             ));
+        } else {
+        
         }
     }
     

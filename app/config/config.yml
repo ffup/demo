@@ -74,6 +74,9 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+parameters:
+    security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener
+
 services:
   twig.extension.text:
       class: Twig_Extensions_Extension_Text

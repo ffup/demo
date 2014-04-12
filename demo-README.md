@@ -106,8 +106,11 @@ mysqldump 文件目录
 
     demo-mysqldump.sql
 
-在无网络链接的情况下需要禁用验证码 `app/config.yml`
-
+当验证码无法显示或者 GET http://www.google.com/recaptcha/api/js/recaptcha_ajax.js net::ERR_CONNECTION_RESET 错误时需要修改 `app/config.yml`
+    
+    parameters:
+        #security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener
+        
     ewz_recaptcha:
         enabled:      false
 

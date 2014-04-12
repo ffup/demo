@@ -1,9 +1,10 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
+{% use '::recaptcha.html.twig' %}
 {% block title %}Sign up{% endblock %}
 {% block body %}
 <h2>{{ 'sign.up'|trans }}</h2>
 <div class="row">
-  <div class="col-xs-10 col-sm-8">
+  <div class="col-xs-10 col-sm-6">
     {{ form_start(form, {'attr': {'class': 'form-horizontal', 'role': 'form'}}) }}
       <div class="form-group">
         <div class="col-sm-3"></div>
@@ -38,23 +39,13 @@
       </div>
       <div class="form-group">
         <div class="col-sm-3"></div>
-        <div class="col-sm-9">{{ form_errors(form.recaptcha) }}</div>
-      
-        <div class="col-sm-3"></div>
+        <div class="col-sm-9">{{ form_errors(form.recaptcha) }}</div>      
+        <label for="email" class="col-sm-3 control-label">Recaptcha</label>
         <div class="col-sm-9">
-          <div id="recaptcha_widget">
-            <a title="Get another CAPTCHA" href="javascript:Recaptcha.reload()"><div id="recaptcha_image"></div></a>
-            <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
-            <span class="recaptcha_only_if_image">Prove you’re not a robot</span>
-            <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
-            <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" placeholder="Type the text" />
-            <!-- <div><a href="javascript:Recaptcha.reload()">Get another CAPTCHA</a></div>
-            <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Get an audio CAPTCHA</a></div>
-            <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Get an image CAPTCHA</a></div>
-            <div><a href="javascript:Recaptcha.showhelp()">Help</a></div> -->
-           </div>
-          {% form_theme form 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig' %}
-          {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom',},} }) }}
+        {% block recaptcha %}
+          {{ parent() }}
+          {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom'}} }) }}
+        {% endblock %}
         </div>
       </div>
       <div class="form-group">
@@ -65,5 +56,5 @@
     {{ form_end(form) }}
   </div>
 </div>
-<div class="col-xs-2 col-sm-4"></div>
+<div class="col-xs-2 col-sm-6"></div>
 {% endblock %}

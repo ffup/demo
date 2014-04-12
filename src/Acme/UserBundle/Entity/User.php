@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * User
@@ -336,6 +337,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     	  }
     	  
         if ($this->password !== $user->getPassword()) {
+            throw new BadCredentialsException('Password has been changed!');
             return false;
         }
 
