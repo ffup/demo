@@ -113,7 +113,7 @@ class ThreadController extends Controller
         
         // Pagnation            
         $pagination = $em->getRepository('AcmeBoardBundle:Comment')
-            ->paginationWithTracks($this->getUser(), $thread, $page, $pageSize);
+            ->pagination($thread, $page, $pageSize);
 
         $paginator = new Paginator(new PaginatorNullAdapter($thread->getNumReplies() + 1));
         $paginator->setItemCountPerPage($pageSize);

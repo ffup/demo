@@ -53,6 +53,8 @@ Web 服务器配置（如 Apache）
         #RewriteRule ^(.*)$ /app.php [QSA,L]
         RewriteRule ^(.*)$ /app_dev.php [QSA,L]
     </IfModule>
+    
+HTTPS 配置 (可选)
 
 在开始运行之前，请确保你的本地系统正常配置。
 
@@ -106,7 +108,16 @@ mysqldump 文件目录
 
     demo-mysqldump.sql
 
-当验证码无法显示或者 GET http://www.google.com/recaptcha/api/js/recaptcha_ajax.js net::ERR_CONNECTION_RESET 错误时需要修改 `app/config.yml`
+HTTPS 配置 如果没有配置需要修改 `app/routing.yml` 中 `schemes` 选项
+
+    acme_user:
+    resource: "@AcmeUserBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
+    requirements:
+        culture:  _locale: en|zh
+    schemes:  [http]
+
+验证码 无法显示或者 GET http://www.google.com/recaptcha/api/js/recaptcha_ajax.js net::ERR_CONNECTION_RESET 或者 HTTPS 安全证书不受信任 错误时需要修改 `app/config.yml`
     
     parameters:
         #security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener

@@ -1,9 +1,6 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
 {% use '::page.html.twig' %}
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/default.min.css') }}">
-<script src="{{ asset('js/highlight.min.js') }}"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 <div>
@@ -35,7 +32,7 @@
     <tbody>
       {% for comment in pagination %}
       <tr id="{{ comment.postIndex }}">
-        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ not app.user or comment._hasVoted ? 'disabled': null }}"><span class=""></span> <span class="votes">{{ comment.votes }}</span>
+        <td><div class="pull-right"><button type="button" data="{{ comment.id }}" data-loading-text="Loading" class="btn btn-default btn-sm btn-vote {{ not is_granted('ROLE_USER') ? 'disbaled' : null }}}"><span class=""></span> <span class="votes">{{ comment.votes }}</span>
 </button></div></td>
         <td>{{ comment.user.username }}</td>
         <td>{{ comment.content|nl2br }}</td>
@@ -50,6 +47,13 @@
   {{ parent() }}
 {% endblock %}
 <script>
+function m(n,d){x=(''+n).length,p=Math.pow,d=p(10,d)
+x-=x%3
+return Math.round(n*d/p(10,x))/d+" kMGTPE"[x/3]}
+$('.votes').each(function(index,element) {
+  $(this).text(m($(this).text(), 1));
+});
+
 // hljs.configure({tabReplace: '<span class="indent">\t</span>'});
 // hljs.initHighlightingOnLoad();
 
@@ -65,9 +69,10 @@ $('.btn-vote').click(function () {
     data: { comment_id: btn.attr('data') }
   }).done(function(data) {
     if (data.code == 100 && data.success) {
-      btn.addClass('disabled');
+      // btn.addClass('disabled');
       var span = btn.find("span.votes");
-      span.text(data.votes);
+      var votes = m(data.votes, 1);
+      span.text(votes);
       // btn.button('reset');
     }
     

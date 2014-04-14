@@ -22,6 +22,10 @@ class FormAuthenticationListener extends UsernamePasswordFormAuthenticationListe
         $response = $request->request->get('recaptcha_response_field');
         $challenge = $request->request->get('recaptcha_challenge_field');
         
+        if (empty($challenge)) {
+            throw new BadCredentialsException('Captcha ERR_CONNECTION_RESET');
+        }
+        
         if (empty($response)) {
             throw new BadCredentialsException('Captcha should not be blank');
         }

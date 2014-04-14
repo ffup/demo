@@ -50,30 +50,15 @@ class CommentRepository extends EntityRepository
             ->setParameter('start', $offset)
             ->setParameter('end', $offset + $pageSize + 1);
         // $query->setResultCacheLifetime(60);
-        return $query;
-    }
-    
-    public function paginationWithTracks($user, Thread $thread, $page, $pageSize)
-    {
-        $pagination = $this->pagination($thread, $page, $pageSize)->getResult();
+        $pagination = $query->getResult();
         
         uasort($pagination, function ($a, $b) {
             return ($a->getId() < $b->getId()) ? -1 : 1;
         });
-                
-        $tracks = $this->_em->getRepository('AcmeBoardBundle:CommentTrack')->findByUserAndThread($user, $thread);
-        
-        $trackIds = array_map(function ($track) {
-                return $track->getComment()->getId();
-            }, $tracks);
-                    
-        foreach ($pagination as $comment) {
-            $comment->_hasVoted  = in_array($comment->getId(), $trackIds);
-        }
         
         return $pagination;
     }
-    
+        
     public function paginationByUser($user, $page, $pageSize)
     {
         $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 

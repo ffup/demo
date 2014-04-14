@@ -15,7 +15,7 @@ class CommentTrackRepository extends EntityRepository
 {
     
     public function create(User $user, Comment $comment)
-    {
+    {  
         $track = new \Acme\BoardBundle\Entity\CommentTrack();
         $track->setUser($user)
             ->setComment($comment)
@@ -28,21 +28,31 @@ class CommentTrackRepository extends EntityRepository
         $this->_em->flush();
     }
     
-    public function findByUserAndThread(User $user = null, Thread $thread)
-    {
-        $tracks = array();
+    public function vote(\Acme\BoardBundle\Entity\CommentTrack $track)
+    {  
+        $track->setHasVoted(true);
+        $comment = $track->getComment();
+        $comment->setVotes($comment->getVotes() + 1);
         
-        if (!isset($user)) {
-            return $tracks;
+        $this->_em->persist($track);               
+        $this->_em->persist($comment);        
+        $this->_em->flush();
+    }
+    
+    public function undoVote(\Acme\BoardBundle\Entity\CommentTrack $track)
+    {
+        $track->setHasVoted(false);
+        $comment = $track->getComment();
+        $votes = $comment->getVotes();
+        
+        if ($votes == 0) {
+            throw new UnexpectedValueException();
         }
         
-        $dql = "SELECT ct FROM AcmeBoardBundle:CommentTrack ct
-            WHERE ct.user = :user AND ct.thread = :thread";
-        $query = $this->_em->createQuery($dql)
-            ->setParameter('user', $user->getId())
-            ->setParameter('thread', $thread->getId());  
-        $tracks = $query->getResult();
-                
-        return $tracks;
+        $comment->setVotes($comment->getVotes() - 1);
+        
+        $this->_em->persist($track);               
+        $this->_em->persist($comment);        
+        $this->_em->flush();
     }
 }

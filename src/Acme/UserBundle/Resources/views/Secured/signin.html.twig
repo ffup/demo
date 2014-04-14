@@ -1,6 +1,6 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
 {% use '::recaptcha.html.twig' %}
-{% block title %}Sign in{% endblock %}
+{% block title %}{{ 'sign.in'|trans }}{% endblock %}
 {% block body %}
 <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 <script>
@@ -30,7 +30,7 @@ Recaptcha.create("6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt",
       {% else %}
       <div class="form-group">
         <label for="email">{{ 'username.email'|trans }}</label>
-        <input type="text" value="{{ last_username }}" class="form-control" id="email" name="_username" placeholder="Enter username or email">
+        <input type="text" value="{{ last_username }}" class="form-control" id="email" name="_username" placeholder="Enter username or email" data-title="Username and password" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="testuser/testadmin/testsuperadmin password">
       </div>
       {% endif %}
       <div class="form-group">

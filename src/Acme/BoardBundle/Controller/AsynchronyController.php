@@ -31,15 +31,21 @@ class AsynchronyController extends Controller
         }
         
         $repo = $em->getRepository('AcmeBoardBundle:CommentTrack');
-        $track = $repo->find(array('user' => $this->getUser()->getId(),
-            'comment' => $comment->getId(),));
-     
-        if (isset($track) && $track->getHasVoted()) {
-            return $response;
+        $track = $repo->find(array(
+            'user' => $this->getUser()->getId(),
+            'comment' => $comment->getId()
+        ));
+        
+        if (isset($track)) {
+            if ($track->getHasVoted()) {
+                $repo->undoVote($track);
+            } else {
+                $repo->vote($track);            
+            }
+        } else {
+            $repo->create($this->getUser(), $comment);
         }
-          
-        $repo->create($this->getUser(), $comment);
-              
+                
         $data = array(
                     "code"    => 100, 
                     "success" => true, 

@@ -1,4 +1,5 @@
 {% block pagingwrapper %}
+{% if pages.pageCount %}
 <div class="pull-right">
   <ul class="pagination">
     {% if pages.firstPageInRange > 1 %}
@@ -14,4 +15,5 @@
     {% endif %}
   </ul>
 </div>
+{% endif %}
 {% endblock %}

@@ -4,12 +4,14 @@ acme_board:
     defaults: { _locale: en }
     requirements:
         culture:  _locale: en
+    schemes:  [http]
 
 acme_user:
     resource: "@AcmeUserBundle/Resources/config/routing.yml"
     prefix:   /{_locale}
     requirements:
         culture:  _locale: en|zh
+    #schemes:  [https]
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
@@ -21,8 +23,11 @@ acme_privacy:
         template:    'AcmeBoardBundle:Static:privacy.html.twig'
         maxAge:       86400
         sharedAge:    86400
+    schemes:  [http]
   
 acme_homepage:
     pattern:  /{_locale}
     defaults: { _controller: AcmeBoardBundle:Default:index, _locale: en }
+    schemes:  [http]
+
 
