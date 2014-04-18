@@ -1,7 +1,9 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
+
 {% use '::page.html.twig' %}
+
 {% block body %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ asset('static/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 <div>
   <ol class="breadcrumb">

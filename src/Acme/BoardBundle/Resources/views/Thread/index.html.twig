@@ -1,9 +1,8 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
-{% use '::page.html.twig' %}
-{% block body %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
+{% use '::page.html.twig' %}
+
+{% block body %}
 <ol class="breadcrumb">
   <li><a href="/">Home</a></li>
   <li><a href="{{ path('module_index') }}">Board</a></li>
@@ -79,43 +78,5 @@ if (!String.prototype.format) {
   };
 }
 // "{0} is dead, but {1} is alive! {0} {2}".format("ASP", "ASP.NET")
-
-var path = Routing.generate('comment_check');
-var curPage = {
-    moduleId: $("#module_id").val(), 
-    lastCommentId: $('.last_comment_id:first').html(),
-    hasNew : false,
-    threadIds : []
-  };
-
-$(".thread_id").each(function () {
-  curPage.threadIds.push($(this).html());
-});
-
-curPage.threadIds.sort(function (a, b) { return a - b; });
-// console.log(curPage, curPage.threadIds);
-
-if (curPage.lastCommentId != null || 
-  curPage.lastCommentId !== undefined) {
-  // check();
-}
-
-function check() {
-  $.ajax({
-    type: "POST",
-    url: path,
-    dataType: "json",
-    data: { module_id: curPage.moduleId, id: 1 }
-  }).done(function(data) {
-    if (data.code == 100 && data.success) {  
-        $.each(data.comments, function(key, val) {  
-
-        });
-        console.log(data.comments);
-    }
-  }).fail(function() {
-  }).always(function () {
-  });
-}
 </script>
 {% endblock %}
