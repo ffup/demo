@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class UserType extends AbstractType
 {
@@ -26,6 +28,13 @@ class UserType extends AbstractType
                     'constraints' => array(new Recaptcha()),
                 )
             );
+    }
+    
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+         
+        // TODO
     }
     
     /**

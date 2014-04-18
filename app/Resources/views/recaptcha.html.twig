@@ -1,10 +1,4 @@
 {% block recaptcha %}
-<script type="text/javascript">
-var RecaptchaOptions = {
-  theme : 'custom',
-  custom_theme_widget: 'recaptcha_widget'
-};
-</script>
 <div id="recaptcha_widget">
   <a tabindex="-1" title="Get another CAPTCHA" href="javascript:Recaptcha.reload()"><div id="recaptcha_image"></div></a>
   <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>

@@ -62,13 +62,10 @@ class SecuredController extends Controller
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($user);
-            $password = $encoder->encodePassword($user->getPlainPassword(), $user->getSalt());
-            $user->setPassword($password);
-            
             $em = $this->getDoctrine()->getManager();
-            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
+            $em->getRepository('AcmeUserBundle:User')->updatePassword($user, $factory);
             
+            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
             $user->addRole($role);
             $em->persist($user);
             $em->flush();
@@ -100,10 +97,8 @@ class SecuredController extends Controller
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($user);
-            $password = $encoder->encodePassword($user->getPlainPassword(), $user->getSalt());
-            $user->setPassword($password);
             $em = $this->getDoctrine()->getManager();
+            $em->getRepository('AcmeUserBundle:User')->updatePassword($user, $factory);
             $em->persist($user);
             $em->flush();
                         

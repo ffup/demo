@@ -35,14 +35,7 @@ class ThreadType extends AbstractType
                     Thread::ITEM_UNLOCKED => 'Default', 
                     Thread::ITEM_LOCKED => 'Locked'),
                 'required' => false,)
-            )
-            ->add('recaptcha', 'ewz_recaptcha', 
-                array(
-                    'mapped' => false,
-                    'constraints' => array(new Recaptcha()),
-                )
-            );
-            
+            );     
         // grab the user, do a quick sanity check that one exists
         // $user = $this->securityContext->getToken()->getUser();
             
@@ -65,7 +58,12 @@ class ThreadType extends AbstractType
                 'required' => false,
             ));
         } else {
-        
+            $form->add('recaptcha', 'ewz_recaptcha', 
+                array(
+                    'mapped' => false,
+                    'constraints' => array(new Recaptcha()),
+                )
+            );
         }
     }
     

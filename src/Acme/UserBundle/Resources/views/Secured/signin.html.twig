@@ -1,17 +1,9 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
+
 {% use '::recaptcha.html.twig' %}
+
 {% block title %}{{ 'sign.in'|trans }}{% endblock %}
 {% block body %}
-<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-<script>
-Recaptcha.create("6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt",
-  "recaptcha_widget",
-  {
-    theme: "custom",
-    callback: Recaptcha.focus_response_field
-  }
-);
-</script>
 <h2>{{ 'sign.in'|trans }}</h2>
 <div class="row">
   <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
@@ -41,7 +33,24 @@ Recaptcha.create("6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt",
         <label for="recaptcha_response_field">Recaptcha</label>
         <div>
           {% block recaptcha %}
-            {{ parent() }}
+          <script type="text/javascript">
+          var RecaptchaOptions = {
+            theme : 'custom',
+            custom_theme_widget: 'recaptcha_widget'
+          };
+          </script>
+          {{ parent() }}
+          <script type="text/javascript"
+  src="http://www.google.com/recaptcha/api/challenge?k=6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt">
+          </script>
+          <noscript>
+            <iframe src="http://www.google.com/recaptcha/api/noscript?k=6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt"
+                height="300" width="500" frameborder="0"></iframe><br>
+            <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+            </textarea>
+            <input type="hidden" name="recaptcha_response_field"
+                value="manual_challenge">
+          </noscript>
           {% endblock %}
         </div>
       </div>

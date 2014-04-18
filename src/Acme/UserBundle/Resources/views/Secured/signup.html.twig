@@ -1,5 +1,7 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
+
 {% use '::recaptcha.html.twig' %}
+
 {% block title %}Sign up{% endblock %}
 {% block body %}
 <h2>{{ 'sign.up'|trans }}</h2>
@@ -37,6 +39,7 @@
         <label for="email" class="col-sm-3 control-label">{{ 'email'|trans }}</label>
         <div class="col-sm-9">{{ form_widget(form.email, {'attr': {'id': 'email', 'class': 'form-control', 'placeholder': 'Email'}}) }}</div>
       </div>
+      {% if form.recaptcha is defined %}      
       <div class="form-group">
         <div class="col-sm-3"></div>
         <div class="col-sm-9">{{ form_errors(form.recaptcha) }}</div>      
@@ -48,6 +51,7 @@
         {% endblock %}
         </div>
       </div>
+      {% endif %}
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
           <button type="submit" class="btn btn-primary">{{ 'sign.up'|trans }}</button>

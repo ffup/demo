@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * UserRepository
@@ -17,6 +18,7 @@ use Doctrine\ORM\NoResultException;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
+
     public function loadUserByUsername($username)
     {
         $q = $this
@@ -64,9 +66,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             || is_subclass_of($class, $this->getEntityName());
     }
     
-    public function updatePassword()
+    protected function getEncoder(UserInterface $user, EncoderFactoryInterface $encoderFactory)
     {
-        // TODO
+        return $encoderFactory->getEncoder($user);
+    }
+    
+    public function updatePassword(UserInterface $user, EncoderFactoryInterface $encoderFactory)
+    {
+        if (0 !== strlen($password = $user->getPlainPassword())) {
+            $encoder = $this->getEncoder($user, $encoderFactory);
+            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+            $user->eraseCredentials();
+        }
     }
 }
 

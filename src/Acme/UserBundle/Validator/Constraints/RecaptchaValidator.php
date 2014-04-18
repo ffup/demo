@@ -6,6 +6,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\HttpFoundation\Request;
 use ZendService\ReCaptcha\ReCaptcha;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 class RecaptchaValidator extends ConstraintValidator
 {
