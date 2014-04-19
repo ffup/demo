@@ -22,12 +22,12 @@
       {% else %}
       <div class="form-group">
         <label for="email">{{ 'username.email'|trans }}</label>
-        <input type="text" value="{{ last_username }}" class="form-control" id="email" name="_username" placeholder="Enter username or email" data-title="Username and password" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="testuser/testadmin/testsuperadmin password">
+        <input type="text" value="{{ last_username }}" class="form-control" id="email" name="_username" placeholder="Enter username or email" data-title="Username and password" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="testuser/testadmin/testsuperadmin password" required />
       </div>
       {% endif %}
       <div class="form-group">
         <label for="password1">{{ 'password'|trans }}</label>
-        <input type="password" class="form-control" id="password1" name="_password" placeholder="Password">
+        <input type="password" class="form-control" id="password1" name="_password" placeholder="Password" required />
       </div>
       {% if form.recaptcha is defined %}      
       <div class="form-group">

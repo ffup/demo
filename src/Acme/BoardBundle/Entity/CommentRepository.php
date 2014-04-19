@@ -5,6 +5,7 @@ namespace Acme\BoardBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\OptimisticLockException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * CommentRepository
@@ -14,6 +15,7 @@ use Doctrine\ORM\OptimisticLockException;
  */
 class CommentRepository extends EntityRepository
 {
+
     public function create(Comment $comment)
     {
         try {
@@ -59,7 +61,7 @@ class CommentRepository extends EntityRepository
         return $pagination;
     }
         
-    public function paginationByUser($user, $page, $pageSize)
+    public function paginationByUser(UserInterface $user, $page, $pageSize)
     {
         $dql = "SELECT c, t FROM AcmeBoardBundle:Comment c JOIN c.thread t 
             WHERE c.user = :user";
@@ -71,7 +73,7 @@ class CommentRepository extends EntityRepository
         return $query;
     }
     
-    public function countByUser($user)
+    public function countByUser(UserInterface $user)
     {
         $dql = "SELECT COUNT(c) FROM AcmeBoardBundle:Comment c
             WHERE c.user = :user";

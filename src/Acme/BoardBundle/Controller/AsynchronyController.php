@@ -37,11 +37,7 @@ class AsynchronyController extends Controller
         ));
         
         if (isset($track)) {
-            if ($track->getHasVoted()) {
-                $repo->undoVote($track);
-            } else {
-                $repo->vote($track);            
-            }
+            $repo->vote($track);            
         } else {
             $repo->create($this->getUser(), $comment);
         }

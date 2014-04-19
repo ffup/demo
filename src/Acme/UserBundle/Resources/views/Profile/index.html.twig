@@ -4,7 +4,12 @@
 
 {% block body %}
 <script src="{{ asset('static/js/validator.js') }}"></script>
-
+<script src="{{ asset('static/js/hinclude.js') }}"></script>
+hinclude start
+<div>
+{{ render_hinclude(url('thread_index', {'module_id': 2} )) }}
+</div>
+hinclude end
 <form data-toggle="validator" role="form">
   <div class="form-group">
     <label for="inputName" class="control-label">Name</label>

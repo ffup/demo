@@ -22,15 +22,15 @@ class ThreadController extends Controller
    
         $em = $this->getDoctrine()->getManager();
         // Lazy load
-        $modules = $em->getRepository('AcmeBoardBundle:Module')->findAllModules();
-        $module = $em->getRepository('AcmeBoardBundle:Module')->find($moduleId);
+        $moduleRepo = $em->getRepository('AcmeBoardBundle:Module');
+        $modules = $moduleRepo->findAllModules();
+        $module = $moduleRepo->find($moduleId);
         
         if ($page < 1 || false === $this->get('security.context')->isGranted('VIEW', $module)) {
             throw new NotFoundHttpException();
         }
         
-        $repo = $em->getRepository('AcmeBoardBundle:Thread');
-        $query = $repo->pagination($module, $page, $pageSize);
+        $query = $em->getRepository('AcmeBoardBundle:Thread')->pagination($module, $page, $pageSize);
         
         $pagination = $query->getResult();
         // $pagination = new Pagination($query);
@@ -132,8 +132,11 @@ class ThreadController extends Controller
     public function editAction(Request $request)
     {
         $id = $request->get('id');
+        
         $em = $this->getDoctrine()->getManager();
-        $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
+        $threadRepo = $em->getRepository('AcmeBoardBundle:Thread');
+        
+        $thread = $threadRepo->find($id);
         
         if (false == $thread) {
             throw new NotFoundHttpException();
@@ -152,14 +155,8 @@ class ThreadController extends Controller
                 
         if ($form->isValid()) {
             
-            $comment = $thread->getFirstComment();
-            $comment->setContent($thread->getContent());
-            $thread->setFirstComment($comment);
-            
-            $em->persist($thread);
-            $em->persist($comment);
-            $em->flush(); 
-            
+            $threadRepo->update($thread);
+                        
             $this->get('session')
                 ->getFlashBag()
                 ->add('notice', 'Successfully updated!');

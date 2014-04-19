@@ -29,6 +29,15 @@ class CommentTrackRepository extends EntityRepository
     }
     
     public function vote(\Acme\BoardBundle\Entity\CommentTrack $track)
+    {
+        if ($track->getHasVoted()) {
+            $this->undoVote($track);
+        } else {
+            $this->doVote($track);        
+        }
+    }
+    
+    private function doVote(\Acme\BoardBundle\Entity\CommentTrack $track)
     {  
         $track->setHasVoted(true);
         $comment = $track->getComment();
@@ -39,14 +48,14 @@ class CommentTrackRepository extends EntityRepository
         $this->_em->flush();
     }
     
-    public function undoVote(\Acme\BoardBundle\Entity\CommentTrack $track)
+    private function undoVote(\Acme\BoardBundle\Entity\CommentTrack $track)
     {
         $track->setHasVoted(false);
         $comment = $track->getComment();
         $votes = $comment->getVotes();
         
         if ($votes == 0) {
-            throw new UnexpectedValueException();
+            throw new \UnexpectedValueException();
         }
         
         $comment->setVotes($comment->getVotes() - 1);
