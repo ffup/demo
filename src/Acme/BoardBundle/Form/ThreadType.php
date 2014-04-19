@@ -82,6 +82,6 @@ class ThreadType extends AbstractType
      */
     public function getName()
     {
-        return 'acme_boardbundle_thread';
+        return 'thread';
     }
 }

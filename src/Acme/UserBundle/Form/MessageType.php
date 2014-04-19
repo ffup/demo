@@ -58,6 +58,6 @@ class MessageType extends AbstractType
      */
     public function getName()
     {
-        return 'acme_userbundle_message';
+        return 'message';
     }
 }

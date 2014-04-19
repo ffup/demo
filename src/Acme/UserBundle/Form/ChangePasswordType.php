@@ -32,7 +32,7 @@ class ChangePasswordType extends AbstractType
 
     public function getName()
     {
-        return 'acme_userbundle_change_password';
+        return 'change_password';
     }
 }
 

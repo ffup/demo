@@ -38,6 +38,6 @@ class ModuleType extends AbstractType
      */
     public function getName()
     {
-        return 'acme_boardbundle_module';
+        return 'module';
     }
 }

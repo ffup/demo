@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 
 /**
  * @Route("/secured")
@@ -25,9 +26,19 @@ class SecuredController extends Controller
             $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
         
+        $form = $this->createFormBuilder()
+            ->add('recaptcha', 'ewz_recaptcha', 
+                array(
+                    'mapped' => false,
+                    'constraints' => array(new Recaptcha()),
+                )
+            )
+            ->getForm();
+
         $params = array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error' => $error
+            'error' => $error,
+            'form' => $form->createView(),
         );
         
         return $this->render('AcmeUserBundle:Secured:signin.html.twig', $params);
@@ -76,10 +87,10 @@ class SecuredController extends Controller
                 ->add('notice', 'Successful registration!');
             
             // Here, "main" is the name of the firewall in your security.yml
-            // $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
-            // $this->get('security.context')->setToken($token);
+            $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+            $this->get('security.context')->setToken($token);
             
-            return $this->redirect($this->generateUrl('_signin'));
+            return $this->redirect($this->generateUrl('module_index'));
         }
         
         return $this->render('AcmeUserBundle:Secured:signup.html.twig', array(

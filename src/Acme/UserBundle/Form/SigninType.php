@@ -9,7 +9,7 @@ use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-class UserType extends AbstractType
+class SigninType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -19,33 +19,23 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('plainPassword', 'repeated', array('type' => 'password', 
-                'invalid_message' => 'user.password.mismatch'))
-            ->add('email');
-            
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
-    }
-    
-    public function onPreSetData(FormEvent $event)
-    {
-        $form = $event->getForm();
-        
-        $form->add('recaptcha', 'ewz_recaptcha', 
+            ->add('password', 'password')
+            ->add('recaptcha', 'ewz_recaptcha', 
                 array(
                     'mapped' => false,
                     'constraints' => array(new Recaptcha()),
                 )
             );
-        // TODO
     }
-    
+       
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\UserBundle\Entity\User'
+            'data_class' => 'Acme\UserBundle\Entity\User',
+            'validation_groups' => array('Signin'),
         ));
     }
 
@@ -54,6 +44,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'signup';
+        return 'signin';
     }
 }

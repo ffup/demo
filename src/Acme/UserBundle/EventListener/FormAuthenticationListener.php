@@ -15,6 +15,7 @@ class FormAuthenticationListener extends UsernamePasswordFormAuthenticationListe
 
     protected function attemptAuthentication(Request $request)
     {
+        // TODO
         $recaptcha = new ReCaptcha();
         $recaptcha->setPublicKey($this->pubKey);
         $recaptcha->setPrivateKey($this->privKey);

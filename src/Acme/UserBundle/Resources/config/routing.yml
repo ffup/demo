@@ -29,7 +29,11 @@ user_read:
     defaults: { _controller: AcmeUserBundle:Message:read }
     requirements:
         id:  \d+
-        
+
+user_profile:
+    pattern: /user/profile
+    defaults: { _controller: AcmeUserBundle:Profile:index }
+
 user_exp:
     pattern: /user/exp
     defaults: { _controller: AcmeUserBundle:Message:exp }

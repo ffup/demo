@@ -29,31 +29,17 @@
         <label for="password1">{{ 'password'|trans }}</label>
         <input type="password" class="form-control" id="password1" name="_password" placeholder="Password">
       </div>
+      {% if form.recaptcha is defined %}      
       <div class="form-group">
         <label for="recaptcha_response_field">Recaptcha</label>
         <div>
-          {% block recaptcha %}
-          <script type="text/javascript">
-          var RecaptchaOptions = {
-            theme : 'custom',
-            custom_theme_widget: 'recaptcha_widget'
-          };
-          </script>
+        {% block recaptcha %}
           {{ parent() }}
-          <script type="text/javascript"
-  src="http://www.google.com/recaptcha/api/challenge?k=6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt">
-          </script>
-          <noscript>
-            <iframe src="http://www.google.com/recaptcha/api/noscript?k=6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt"
-                height="300" width="500" frameborder="0"></iframe><br>
-            <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-            </textarea>
-            <input type="hidden" name="recaptcha_response_field"
-                value="manual_challenge">
-          </noscript>
-          {% endblock %}
+          {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom'}} }) }}
+        {% endblock %}
         </div>
       </div>
+      {% endif %}
       <div class="form-group">
         <div class="row">
           <div class="col-xs-8 col-sm-8">
@@ -83,14 +69,6 @@
 </div>
 
 <!--
-<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-<script type="text/javascript">
-function showRecaptcha(element) {
- Recaptcha.create("6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt", element, {
-   theme: "red",
-   callback: Recaptcha.focus_response_field});
-}
-</script>
 <div id="recaptcha_div"></div>
 <input type="button" value="Show reCAPTCHA" onclick="showRecaptcha('recaptcha_div');"></input>
 -->

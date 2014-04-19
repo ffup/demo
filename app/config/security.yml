@@ -48,7 +48,7 @@ security:
                 always_use_default_target_path: false
                 default_target_path:            /
                 target_path_parameter:          _target_path
-                use_referer:                    true
+                #use_referer:                    true
             
             switch_user:  true
             

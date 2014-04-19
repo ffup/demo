@@ -22,6 +22,7 @@ Acme\UserBundle\Entity\User:
 
             - NotBlank:
                 message:  user.username.not_blank
+                groups:   [Signin]
             - Length:
                 min:      4
                 max:      25
@@ -30,6 +31,7 @@ Acme\UserBundle\Entity\User:
         plainPassword:
             - NotBlank:
                 message:  value.not_blank
+                groups:   [Signin]                
             - Length:
                 min:      4
         email:

@@ -7,15 +7,17 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
       {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('static/bootstrap-3.1.1-dist/css/bootstrap.min.css') }}" />
-      <!--[if IE 6]><![endif]-->
-      <!--[if IE 7]><![endif]-->
       <link rel="stylesheet" href="{{ asset('static/css/demo.css') }}" />
       {% block style %}{% endblock %}
       {% endblock %}
       {% block javascripts %}
       <script src="{{ asset('static/js/jquery-1.11.0.min.js') }}"></script>
       <script src="{{ asset('static/bootstrap-3.1.1-dist/js/bootstrap.min.js') }}"></script>
-      <!--[if lt IE 9]><script src="{{ asset('static/js/respond.js') }}"></script>]><![endif]-->
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="{{ asset('static/js/html5shiv.js') }}"></script>
+        <script src="{{ asset('static/js/respond.js') }}"></script>
+      <![endif]-->
       {% endblock %}
   </head>
   <body>

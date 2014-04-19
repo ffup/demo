@@ -5,11 +5,11 @@ namespace Acme\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class ProfileController extends Controller
 {
     public function indexAction(Request $request)
     {
-        $name = null;
-        return $this->render('AcmeUserBundle:Default:index.html.twig', array('name' => $name));
+
+        return $this->render('AcmeUserBundle:Profile:index.html.twig', array());
     }
 }
