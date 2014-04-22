@@ -1,3 +1,16 @@
 resetting_request:
-    pattern: /request
+    pattern:  /request
     defaults: { _controller: AcmeUserBundle:Resetting:request }
+    
+resetting_send_email:
+    pattern:  /send-email
+    defaults: { _controller: AcmeUserBundle:Resetting:sendEmail }
+
+resetting_check_email:
+    pattern:  /check-email
+    defaults: { _controller: AcmeUserBundle:Resetting:checkEmail }
+
+resetting_reset:
+    pattern:  /reset/{token}
+    defaults: { _controller: AcmeUserBundle:Resetting:reset }
+

@@ -76,5 +76,6 @@ security:
             
     access_control:
         - { path: /user, roles: ROLE_USER }
+        #- { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }        
         #- { path: create$, roles: ROLE_USER }                                 
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

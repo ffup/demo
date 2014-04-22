@@ -1,9 +1,33 @@
 parameters:
-
+    acme_user.resetting.token_ttl: 3600
+    acme_user.resetting.email.template: 'AcmeUserBundle:Resetting:email.txt.twig'
+    acme_user.resetting.email.from_email: 'webmaster@example.com'
+    
 services:
     signin_listener:
         class: 'Acme\UserBundle\EventListener\SigninListener'
         arguments: ['@security.context', '@doctrine.orm.entity_manager']
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
-
+            
+    acme_user.util.token_generator:
+        class: 'Acme\UserBundle\Util\TokenGenerator'
+        arguments: ['@logger']
+        
+    acme_user.listener.resetting:
+        class: 'Acme\UserBundle\EventListener\ResettingListener'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+        arguments: ['@router', '%acme_user.resetting.token_ttl%']
+        
+    acme_user.mailer: 
+        class: 'Acme\UserBundle\Mailer\Mailer'
+        arguments: 
+            - '@mailer'
+            - '@router'
+            - '@templating'
+            -
+                resetting.template:  %acme_user.resetting.email.template%
+                from_email:
+                    confirmation: ~
+                    resetting: %acme_user.resetting.email.from_email%

@@ -1,10 +1,10 @@
-<form action="" method="POST" class="t">
-  <div>
+<form action="{{ path('resetting_send_email') }}" method="POST">
+  <div class="form-group {{ invalid_username is defined ? 'has-error': null }}">
     {% if invalid_username is defined %}
-    <p>invalid_username {{ invalid_username }}</p>
+    <p class="text-danger">invalid_username {{ invalid_username }}</p>
     {% endif %}
-    <label for="username">Username or email</label>
-    <input type="text" id="username" name="username" required="required" />
+    <label for="username" class="control-label">Username or email</label>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username or email" required="required" />
   </div>
   <div>
     <input type="submit" class="btn btn-primary" value="submit" />

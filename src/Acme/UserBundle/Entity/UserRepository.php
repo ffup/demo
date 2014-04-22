@@ -44,7 +44,16 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $user;
     }
+    
+    public function findUserByUsernameOrEmail($usernameOrEmail)
+    {
+        if (filter_var($usernameOrEmail, FILTER_VALIDATE_EMAIL)) {
+            return $this->findOneByEmail($usernameOrEmail);
+        }
 
+        return $this->findOneByUsername($usernameOrEmail);
+    }
+    
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);

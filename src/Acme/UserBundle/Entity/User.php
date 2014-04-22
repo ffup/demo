@@ -768,4 +768,10 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     {
         return $this->passwordRequestedAt;
     }
+    
+    public function isPasswordRequestNonExpired($ttl)
+    {
+        return is_int($this->getPasswordRequestedAt()) &&
+            $this->getPasswordRequestedAt() + $ttl > time();
+    }
 }

@@ -92,18 +92,4 @@ class SecuredController extends Controller
             'form' => $form->createView()
         ));
     }
-
-    private function sendMail($user)
-    {
-        // TODO
-        // Send Email
-        $message = \Swift_Message::newInstance()->setSubject('Hello Email')
-            ->setFrom('send@example.com')
-            ->setTo($user->getEmail())
-            ->setBody($this->renderView('AcmeDemoBundle:Demo:hello.html.twig', array(
-            'name' => $user->getUsername()
-        )));
-        
-        $this->get('mailer')->send($message);
-    }
 }
