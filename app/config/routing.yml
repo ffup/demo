@@ -1,5 +1,5 @@
 acme_board:
-    resource: "@AcmeBoardBundle/Resources/config/routing.yml"
+    resource: "@AcmeBoardBundle/Resources/config/routing/routing.yml"
     prefix:   /{_locale}/board
     defaults: { _locale: en }
     requirements:
@@ -7,7 +7,7 @@ acme_board:
     schemes:  [http]
 
 acme_user:
-    resource: "@AcmeUserBundle/Resources/config/routing.yml"
+    resource: "@AcmeUserBundle/Resources/config/routing/routing.yml"
     prefix:   /{_locale}
     requirements:
         culture:  _locale: en|zh

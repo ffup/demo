@@ -1,0 +1,12 @@
+<form action="" method="POST" class="t">
+  <div>
+    {% if invalid_username is defined %}
+    <p>invalid_username {{ invalid_username }}</p>
+    {% endif %}
+    <label for="username">Username or email</label>
+    <input type="text" id="username" name="username" required="required" />
+  </div>
+  <div>
+    <input type="submit" class="btn btn-primary" value="submit" />
+  </div>
+</form>

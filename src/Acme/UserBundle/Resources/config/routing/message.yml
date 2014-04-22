@@ -1,0 +1,15 @@
+user_message:
+    pattern: /message
+    defaults: { _controller: AcmeUserBundle:Message:index }
+    
+user_send:
+    pattern: /send
+    defaults: { _controller: AcmeUserBundle:Message:send }
+    requirements:
+        id:  \d+
+        
+user_read:
+    pattern: /read/{id}
+    defaults: { _controller: AcmeUserBundle:Message:read }
+    requirements:
+        id:  \d+

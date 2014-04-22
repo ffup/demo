@@ -119,6 +119,16 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      */
     protected $plainPassword;
 
+    /**
+     * @ORM\Column(name="confirmation_token", type="string", nullable=true)
+     */
+    private $confirmationToken;
+
+    /**
+     * @ORM\Column(name="password_requested_at", type="integer", options={"unsigned"=true}, nullable=true)
+     */     
+    private $passwordRequestedAt;
+
     public function __construct()
     {
         $this->threads = new ArrayCollection();
@@ -711,5 +721,51 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function getLastSigninAt()
     {
         return $this->lastSigninAt;
+    }
+
+    /**
+     * Set confirmationToken
+     *
+     * @param string $confirmationToken
+     * @return User
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmationToken
+     *
+     * @return string 
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Set passwordRequestedAt
+     *
+     * @param integer $passwordRequestedAt
+     * @return User
+     */
+    public function setPasswordRequestedAt($passwordRequestedAt)
+    {
+        $this->passwordRequestedAt = $passwordRequestedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordRequestedAt
+     *
+     * @return integer 
+     */
+    public function getPasswordRequestedAt()
+    {
+        return $this->passwordRequestedAt;
     }
 }

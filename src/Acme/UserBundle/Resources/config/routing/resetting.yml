@@ -1,0 +1,3 @@
+resetting_request:
+    pattern: /request
+    defaults: { _controller: AcmeUserBundle:Resetting:request }

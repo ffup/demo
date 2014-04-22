@@ -1,0 +1,21 @@
+thread_index:
+    pattern:  /{module_id}
+    defaults: { _controller: AcmeBoardBundle:Thread:index }
+    requirements:
+        module_id:  \d+
+        
+thread:
+    resource: "thread.yml"
+    prefix:   /thread
+
+comment:
+    resource: "comment.yml"
+    prefix:   /comment
+
+#search:
+#    pattern:  /search
+#    defaults: { _controller: AcmeBoardBundle:Search:index }
+
+module_index:
+    pattern:  /
+    defaults: { _controller: AcmeBoardBundle:Module:index }

@@ -1,0 +1,34 @@
+_user_secured:
+    resource: "@AcmeUserBundle/Controller/SecuredController.php"
+    type:     annotation
+
+message:
+    resource: "message.yml"
+    prefix:   /user    
+
+board:
+    resource: "board.yml"
+    prefix:   /user
+
+user_profile:
+    pattern:  /user/profile
+    defaults: { _controller: AcmeUserBundle:Profile:index }
+
+user_exp:
+    pattern:  /user/exp
+    defaults: { _controller: AcmeUserBundle:Message:exp }
+    options:
+        expose: true
+
+locale:
+    pattern:  /locale
+    defaults: { _controller: AcmeUserBundle:Locale:change }
+
+change_password:
+    pattern:  /user/changePassword
+    defaults: { _controller: AcmeUserBundle:ChangePassword:changePassword }
+
+resetting:
+    resource: "resetting.yml"
+    prefix:   /resetting
+

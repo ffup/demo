@@ -1,0 +1,15 @@
+thread_view:
+    pattern:  /{id}
+    defaults: { _controller: AcmeBoardBundle:Thread:view } 
+    requirements:
+        id:  \d+
+ 
+thread_create:
+    pattern:  /create
+    defaults: { _controller: AcmeBoardBundle:Thread:create }
+    
+thread_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: AcmeBoardBundle:Thread:edit }
+    requirements:
+        id:  \d+

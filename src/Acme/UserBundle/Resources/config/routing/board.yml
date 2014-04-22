@@ -1,0 +1,7 @@
+user_thread:
+    pattern: /thread
+    defaults: { _controller: AcmeUserBundle:Board:thread }
+
+user_comment:
+    pattern: /comment
+    defaults: { _controller: AcmeUserBundle:Board:comment }
