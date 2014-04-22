@@ -3,9 +3,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: null
-    database_name: demo
-    database_user: demouser
-    database_password: demopassword
+    database_name: null
+    database_user: null
+    database_password: null
     mailer_transport: smtp
     mailer_host: null
     mailer_user: null
