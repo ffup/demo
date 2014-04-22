@@ -6,9 +6,9 @@ parameters:
     database_name: demo
     database_user: demouser
     database_password: demopassword
-    mailer_transport: gmail
+    mailer_transport: smtp
     mailer_host: null
-    mailer_user: gcnbeta@gmail.com
-    mailer_password: nintendo3ds
+    mailer_user: null
+    mailer_password: null
     locale: en
     secret: a46559981890ef41956059dc3b89773bb35b3446
