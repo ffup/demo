@@ -10,7 +10,6 @@ use Zend\Paginator\Adapter\Null as PaginatorNullAdapter;
 
 class BoardController extends Controller
 {
-
     public function threadAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();

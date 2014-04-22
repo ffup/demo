@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ChangePasswordType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('current_password', 'password', array(
@@ -35,4 +34,3 @@ class ChangePasswordType extends AbstractType
         return 'change_password';
     }
 }
-

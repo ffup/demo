@@ -5,7 +5,6 @@ namespace Acme\BoardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
 /**
  * Comment
  *

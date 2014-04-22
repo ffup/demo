@@ -16,5 +16,4 @@ class ModuleController extends Controller
         $params = array('modules' => $modules);
         return $this->render('AcmeBoardBundle:Module:index.html.twig', $params);
     }
-
 }

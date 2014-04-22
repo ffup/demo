@@ -42,6 +42,9 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b> </a>
             <ul class="dropdown-menu">
+              <!-- Profile -->
+              <li><a href="{{ path('user_profile') }}">View profile</a></li>
+              <!-- ./ Profile -->
               <li><a href="{{ path('user_thread') }}">Last threads</a></li>
               <li><a href="{{ path('user_comment') }}">Last comments</a></li>
               <li class="divider"></li>

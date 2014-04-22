@@ -10,5 +10,4 @@ class LocaleController extends Controller
     {
         return $this->render('AcmeUserBundle:Locale:change.html.twig', array());  
     }
-
 }

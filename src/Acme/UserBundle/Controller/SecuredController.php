@@ -14,7 +14,6 @@ use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
  */
 class SecuredController extends Controller
 {
-
     /**
      * @Route("/signin", name="_signin")
      */
@@ -74,13 +73,9 @@ class SecuredController extends Controller
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
             $em = $this->getDoctrine()->getManager();
-            $em->getRepository('AcmeUserBundle:User')->updatePassword($user, $factory);
-            
-            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
-            $user->addRole($role);
-            $em->persist($user);
-            $em->flush();
-            
+            $userRepo = $em->getRepository('AcmeUserBundle:User');
+            $userRepo->create($user, $factory);
+            $userRepo->updateUser($user);                        
             // Notice
             $this->get('session')
                 ->getFlashBag()
@@ -109,9 +104,9 @@ class SecuredController extends Controller
             // perform some action, such as saving the task to the database
             $factory = $this->get('security.encoder_factory');
             $em = $this->getDoctrine()->getManager();
-            $em->getRepository('AcmeUserBundle:User')->updatePassword($user, $factory);
-            $em->persist($user);
-            $em->flush();
+            $userRepo = $em->getRepository('AcmeUserBundle:User');            
+            $userRepo->updatePassword($user, $factory);
+            $userRepo->updateUser($user);
                         
             return $this->redirect($this->generateUrl('_signin'));
         }
@@ -121,8 +116,9 @@ class SecuredController extends Controller
         ));
     }
     
-    private function sendMailAction($user)
+    private function sendMail($user)
     {
+        // TODO
         // Send Email
         $message = \Swift_Message::newInstance()->setSubject('Hello Email')
             ->setFrom('send@example.com')

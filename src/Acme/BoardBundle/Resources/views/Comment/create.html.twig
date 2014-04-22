@@ -1,4 +1,7 @@
 {% extends 'AcmeBoardBundle::layout.html.twig' %}
+
+{% use '::recaptcha.html.twig' %}
+
 {% block body %}
 <div>
   <ol class="breadcrumb">
@@ -18,6 +21,18 @@
       <label for="content" class="control-label">Content</label>
       {{ form_widget(form.content, { 'attr': {'id': 'content', 'class': 'form-control', 'placeholder': 'Content', 'rows': 10 }}) }}
     </div>
+    {% if form.recaptcha is defined %}    
+    <div class="form-group {{ form_errors(form.recaptcha) ? 'has-error' : null }}">
+      <div>{{ form_errors(form.recaptcha) }}</div>      
+      <label for="recaptcha_response_field" class="control-label">Recaptcha</label>
+      <div>
+      {% block recaptcha %}
+        {{ parent() }}
+        {{ form_widget(form.recaptcha, {'attr': {'options' : {'theme' : 'custom'}} }) }}
+      {% endblock %}
+      </div>
+    </div>
+    {% endif %}
     <div class="form-group">
       <div class="">
         <button type="submit" class="btn btn-primary ">Create</button>

@@ -12,5 +12,4 @@ class SearchController extends Controller
         $params = array();
         return $this->render('AcmeBoardBundle:Search:index.html.twig', $params);
     }
-
 }

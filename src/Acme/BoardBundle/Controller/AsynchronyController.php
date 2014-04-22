@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AsynchronyController extends Controller
 {
-
     public function voteAction(Request $request)
     {
         if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
@@ -52,5 +51,4 @@ class AsynchronyController extends Controller
         
         return $response;
     }
-
 }

@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CommentController extends Controller
 {
-
     public function createAction(Request $request)
     {
         $id = $request->query->get('id');
@@ -24,11 +23,13 @@ class CommentController extends Controller
         $comment = new \Acme\BoardBundle\Entity\Comment();
         $comment->setThread($thread);
         
-        if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
+        $securityContext = $this->get('security.context');
+        
+        if (false === $securityContext->isGranted('CREATE', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
         
-        $form = $this->createForm(new \Acme\BoardBundle\Form\CommentType(), $comment);
+        $form = $this->createForm(new \Acme\BoardBundle\Form\CommentType($securityContext), $comment);
         $form->handleRequest($request);
 
         if ($form->isValid()) {            
@@ -86,5 +87,4 @@ class CommentController extends Controller
         
         // TODO
     }
-
 }

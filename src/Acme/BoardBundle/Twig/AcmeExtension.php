@@ -1,6 +1,8 @@
 <?php
 namespace Acme\BoardBundle\Twig;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 class AcmeExtension extends \Twig_Extension
 {
 
@@ -11,7 +13,7 @@ class AcmeExtension extends \Twig_Extension
      *
      * @param IdentityTranslator $translator            
      */
-    public function __construct($translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

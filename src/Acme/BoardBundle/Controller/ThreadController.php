@@ -5,7 +5,6 @@ namespace Acme\BoardBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-// use Doctrine\ORM\Tools\Pagination\Paginator as Pagination;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\Null as PaginatorNullAdapter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,7 +12,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ThreadController extends Controller
 {
-
     public function indexAction(Request $request)
     {
         $pageSize = 20;
@@ -33,7 +31,6 @@ class ThreadController extends Controller
         $query = $em->getRepository('AcmeBoardBundle:Thread')->pagination($module, $page, $pageSize);
         
         $pagination = $query->getResult();
-        // $pagination = new Pagination($query);
         
         $paginator = new Paginator(new PaginatorNullAdapter($module->getNumThreads()));
         $paginator->setItemCountPerPage($pageSize);
@@ -79,8 +76,8 @@ class ThreadController extends Controller
                 ->add('notice', 'Successfully created!');
             
             return $this->redirect($this->generateUrl('thread_index', array(
-                'module_id' => $module->getId()
-            )));
+                'module_id' => $module->getId())
+            ));
         }
         
         $params = array(

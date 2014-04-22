@@ -79,5 +79,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             $user->eraseCredentials();
         }
     }
+    
+    public function updateUser(UserInterface $user)
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+    
+    public function create(UserInterface $user, EncoderFactoryInterface $encoderFactory)
+    {
+        $this->updatePassword($user, $encoderFactory);
+        $role = $this->_em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
+        $user->addRole($role);        
+    }
 }
 
