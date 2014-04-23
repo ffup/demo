@@ -1,0 +1,7 @@
+user_profile:
+    pattern:  /profile
+    defaults: { _controller: AcmeUserBundle:Profile:index }
+    
+change_password:
+    pattern:  /change_password
+    defaults: { _controller: AcmeUserBundle:ChangePassword:changePassword }

@@ -16,10 +16,6 @@ class ResettingController extends Controller
 {
     public function requestAction(Request $request)
     {
-        // TODO
-
-        // $tokenGenerator = $this->container->get('acme_user.util.token_generator');
-        // $tokenGenerator->generateToken();
         return $this->render('AcmeUserBundle:Resetting:request.html.twig', array());
     }
     
@@ -83,8 +79,6 @@ class ResettingController extends Controller
      */
     public function resetAction(Request $request, $token)
     {
-        // $formFactory = $this->container->get('acme_user.resetting.form.factory');
-
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AcmeUserBundle:User');
         

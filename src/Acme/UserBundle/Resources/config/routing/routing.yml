@@ -10,9 +10,9 @@ board:
     resource: "board.yml"
     prefix:   /user
 
-user_profile:
-    pattern:  /user/profile
-    defaults: { _controller: AcmeUserBundle:Profile:index }
+settings:
+    resource: "settings.yml"
+    prefix:   /settings
 
 user_exp:
     pattern:  /user/exp
@@ -23,10 +23,6 @@ user_exp:
 locale:
     pattern:  /locale
     defaults: { _controller: AcmeUserBundle:Locale:change }
-
-change_password:
-    pattern:  /user/changePassword
-    defaults: { _controller: AcmeUserBundle:ChangePassword:changePassword }
 
 resetting:
     resource: "resetting.yml"
