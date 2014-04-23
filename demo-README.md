@@ -104,10 +104,6 @@ HTTPS 配置 (可选)
 5) 故障排除及参考
 --------------------------------
 
-mysqldump 文件目录
-
-    demo-mysqldump.sql
-
 HTTPS 配置 如果没有配置需要修改 `app/routing.yml` 中 `schemes` 选项
 
     acme_user:
@@ -117,7 +113,7 @@ HTTPS 配置 如果没有配置需要修改 `app/routing.yml` 中 `schemes` 选�
         culture:  _locale: en|zh
     schemes:  [http]
 
-验证码 无法显示或者 GET http://www.google.com/recaptcha/api/js/recaptcha_ajax.js net::ERR_CONNECTION_RESET 或者 HTTPS 安全证书不受信任 错误时需要修改 `app/config.yml`
+验证码 无法显示 错误时需要修改 `app/config.yml`
     
     parameters:
         #security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener
