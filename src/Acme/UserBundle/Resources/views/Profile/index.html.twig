@@ -4,7 +4,12 @@
 
 {% block body %}
 
-<div><label>last login at</label> {{ app.user.lastSigninAt|date("m/d/Y H:i:s")}}</div>
+<div>
+<label>last login at</label>
+{% if app.user.lastSigninAt %}
+{{ app.user.lastSigninAt|date("m/d/Y H:i:s")}}
+{% endif %}
+</div>
 <div><a href="{{ path('change_password') }}">change password</a></div>
 
 {% endblock %}
