@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity repository-class="Acme\BoardBundle\Entity\ModuleRepository" name="Acme\BoardBundle\Entity\Module" table="module">
+    <indexes>
+      <index name="0" columns="enable_indexing"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="255" precision="0" scale="0" unique="1" nullable="false"/>
+    <field name="description" type="string" column="description" length="255" precision="0" scale="0" nullable="false"/>
+    <field name="enableIndexing" type="boolean" column="enable_indexing" precision="0" scale="0" nullable="false"/>
+    <field name="numThreads" type="integer" column="num_threads" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <one-to-many field="threadTracks" target-entity="Acme\BoardBundle\Entity\ThreadTrack" mapped-by="module"/>
+    <one-to-many field="children" target-entity="Acme\BoardBundle\Entity\Module" mapped-by="parent"/>
+    <one-to-many field="threads" target-entity="Acme\BoardBundle\Entity\Thread" mapped-by="module"/>
+    <many-to-one field="parent" target-entity="Acme\BoardBundle\Entity\Module" inversed-by="children">
+      <join-columns>
+        <join-column name="parent_id" referenced-column-name="id" nullable="1"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity repository-class="Acme\UserBundle\Entity\RoleRepository" name="Acme\UserBundle\Entity\Role" table="role" read-only="true">
+    <id name="id" type="smallint" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="30" precision="0" scale="0" nullable="false"/>
+    <field name="role" type="string" column="role" length="20" precision="0" scale="0" unique="1" nullable="false"/>
+    <many-to-many field="users" target-entity="Acme\UserBundle\Entity\User" mapped-by="roles"/>
+  </entity>
+</doctrine-mapping>

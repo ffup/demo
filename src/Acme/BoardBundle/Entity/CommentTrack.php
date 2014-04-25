@@ -2,45 +2,33 @@
 
 namespace Acme\BoardBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * ThreadTrack
- *
- * @ORM\Table(name="comment_track")
- * @ORM\Entity(repositoryClass="CommentTrackRepository")
- * @ORM\HasLifecycleCallbacks()
- */
 class CommentTrack
 {
-
-    /** @ORM\Id @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="commentTracks") */
-    private $user;
-    
-    /** @ORM\Id @ORM\ManyToOne(targetEntity="Comment", inversedBy="userTracks")) */
-    private $comment;
-    
     /**
-     * @ORM\Column(name="has_voted", type="boolean") 
+     * @var boolean
      */
     private $hasVoted = false;
-        
-    /**
-     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentTracks") 
-     * @ORM\JoinColumn(nullable=false)               
-     */        
-    private $thread;
-    
+
     /**
      * @var integer
-     *
-     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
-    
+
     /**
-     * @ORM\PrePersist
+     * @var \Acme\BoardBundle\Entity\Thread
      */
+    private $thread;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Comment
+     */
+    private $comment;
+
+    /**
+     * @var \Acme\UserBundle\Entity\User
+     */
+    private $user;
+
     public function doStuffOnPrePersist()
     {
         $this->createdAt = time();

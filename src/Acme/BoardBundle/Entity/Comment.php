@@ -2,74 +2,54 @@
 
 namespace Acme\BoardBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Comment
- *
- * @ORM\Table(name="comment", uniqueConstraints={@ORM\UniqueConstraint(columns={"thread_id", "post_index"})})
- * @ORM\Entity(repositoryClass="CommentRepository")
- * @ORM\HasLifecycleCallbacks() 
- */
 class Comment
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(name="post_index", type="integer")
      */
     private $postIndex = 1;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="content", type="string", length=4095)
      */
     private $content;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="updated_at", type="integer", options={"unsigned"=true})
      */
     private $updatedAt;
 
     /**
-     * @ORM\Column(name="votes", type="integer")
+     * @var integer
      */
-    private $votes = 0;    
-    
-    /**
-     * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="comment")
-     */      
-    private $userTracks;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)     
-     */
-    private $user;
+    private $votes = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)     
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $userTracks;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Thread
      */
     private $thread;
+
+    /**
+     * @var \Acme\UserBundle\Entity\User
+     */
+    private $user;
 
     /**
      * Get id
@@ -195,10 +175,7 @@ class Comment
     {
         return $this->thread;
     }
-    
-    /**
-     * @ORM\PrePersist
-     */
+
     public function doStuffOnPrePersist()
     {
         $this->createdAt = time();

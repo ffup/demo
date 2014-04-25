@@ -2,18 +2,8 @@
 
 namespace Acme\BoardBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Thread
- *
- * @ORM\Table(name="thread", indexes={@ORM\Index(columns={"module_id", "updated_at"})})
- * @ORM\Entity(repositoryClass="ThreadRepository")
- * @ORM\HasLifecycleCallbacks()
- */
 class Thread
 {
-
     const 
         ITEM_UNLOCKED = 0, 
         
@@ -30,109 +20,89 @@ class Thread
         POST_GLOBAL = 3;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="content", type="string", length=4095)
      */
     private $content;
 
     /**
-     * @ORM\Column(name="status", type="smallint", options={"unsigned"=true})
+     * @var integer
      */
     private $status = 0;
-    
+
     /**
-     * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
-     */    
+     * @var integer
+     */
     private $type = 0;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="num_replies", type="integer", options={"unsigned"=true})
      */
     private $numReplies = 0;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="num_views", type="integer", options={"unsigned"=true})
      */
     private $numViews = 0;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="updated_at", type="integer", options={"unsigned"=true})
      */
     private $updatedAt;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="CommentTrack", mappedBy="thread", fetch="EXTRA_LAZY")
-     **/    
-    private $commentTracks;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="thread", fetch="EXTRA_LAZY")
-     */      
-    private $userTracks;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threads")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */
-    private $user;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @var string
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="thread", fetch="EXTRA_LAZY")
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Comment
+     */
+    private $lastComment;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Comment
+     */
+    private $firstComment;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $commentTracks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Module", inversedBy="threads")
-     * @ORM\JoinColumn(nullable=false)          
-     */    
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $userTracks;
+
+    /**
+     * @var \Acme\UserBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Module
+     */
     private $module;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Comment")
-     * @ORM\JoinColumn(name="last_comment_id", nullable=true)
-     */  
-    private $lastComment;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Comment")
-     * @ORM\JoinColumn(name="first_comment_id", nullable=true)
-     */  
-    private $firstComment;
 
     /**
      * Get id
@@ -281,10 +251,7 @@ class Thread
     {
         return $this->updatedAt;
     }
-      
-    /**
-     * @ORM\PrePersist
-     */
+
     public function doStuffOnPrePersist()
     {
         $this->createdAt = time();

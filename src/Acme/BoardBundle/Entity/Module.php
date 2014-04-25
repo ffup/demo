@@ -2,66 +2,53 @@
 
 namespace Acme\BoardBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Module
- *
- * @ORM\Table(name="module", indexes={@ORM\Index(columns={"enable_indexing"})})
- * @ORM\Entity(repositoryClass="ModuleRepository")
- */
 class Module
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Module", mappedBy="parent")
-     **/
-    private $children;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Module", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
-     **/
-    private $parent;
-
-    /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(name="description", type="string", length=255)
+     * @var string
      */
     private $description;
-          
+
     /**
-     * @ORM\Column(name="enable_indexing", type="boolean")
-     */    
+     * @var boolean
+     */
     private $enableIndexing;
-        
+
     /**
-     * @ORM\OneToMany(targetEntity="ThreadTrack", mappedBy="module")
-     **/
+     * @var integer
+     */
+    private $numThreads;
+
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
     private $threadTracks;
 
     /**
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="module")
-     **/
-    private $threads;
-   
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $children;
+
     /**
-     * @ORM\Column(name="num_threads", type="integer", options={"unsigned"=true})
-     */   
-    private $numThreads;
-    
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $threads;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Module
+     */
+    private $parent;
+
     /**
      * Constructor
      */

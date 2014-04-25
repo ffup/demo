@@ -2,132 +2,120 @@
 
 namespace Acme\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;     
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="UserRepository")
- */
 class User implements AdvancedUserInterface, \Serializable, EquatableInterface
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @var string
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @var string
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @var string
      */
     private $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\ThreadTrack", mappedBy="user")
-     */    
-    private $threadTracks;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\CommentTrack", mappedBy="user")
-     */    
-    private $commentTracks;
-
-    /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @var boolean
      */
     private $isActive = true;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     *
-     */
-    private $roles;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Thread", mappedBy="user")
-     */
-    private $threads;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Acme\BoardBundle\Entity\Comment", mappedBy="user", fetch="EXTRA_LAZY")
-     */
-    private $comments;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="fromUser", fetch="EXTRA_LAZY")
-     */  
-    private $sendMessages;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="toUser", fetch="EXTRA_LAZY")
-     */      
-    private $receiveMessages;
-
-    /** 
-     * @ORM\Column(name="unread_msg", type="smallint", options={"unsigned"=true})    
+     * @var integer
      */
     private $unreadMsg = 0;
-    
+
     /**
-     * @ORM\Column(name="credentials_expired", type="boolean")
+     * @var boolean
      */
     private $credentialsExpired = false;
 
     /**
-     * @ORM\Column(name="credentials_expire_at", type="integer", options={"unsigned"=true}, nullable=true)
+     * @var integer
      */
     private $credentialsExpireAt;
-    
+
     /**
-     * @ORM\Column(name="is_locked", type="boolean")
-     */    
+     * @var boolean
+     */
     private $isLocked = false;
-    
+
     /**
-     * @ORM\Column(name="is_expired", type="boolean")
-     */    
+     * @var boolean
+     */
     private $isExpired = false;
-    
+
     /**
-     * @ORM\Column(name="last_signin_at", type="integer", options={"unsigned"=true}, nullable=true)
-     */    
+     * @var integer
+     */
     private $lastSigninAt;
-    
+
+    /**
+     * @var string
+     */
+    private $confirmationToken;
+
+    /**
+     * @var integer
+     */
+    private $passwordRequestedAt;
+
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $sendMessages;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $receiveMessages;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $comments;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $threads;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $threadTracks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $commentTracks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $roles;
+
     /**
      * Plain password. Used for model validation. Must not be persisted.
      *
      * @var string
      */
-    protected $plainPassword;
-
-    /**
-     * @ORM\Column(name="confirmation_token", type="string", nullable=true)
-     */
-    private $confirmationToken;
-
-    /**
-     * @ORM\Column(name="password_requested_at", type="integer", options={"unsigned"=true}, nullable=true)
-     */     
-    private $passwordRequestedAt;
+    private $plainPassword;
 
     public function __construct()
     {

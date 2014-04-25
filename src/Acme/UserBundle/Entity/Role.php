@@ -4,35 +4,26 @@ namespace Acme\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Role
- *
- * @ORM\Table(name="role")
- * @ORM\Entity(repositoryClass="RoleRepository", readOnly=true)
- */
 class Role implements RoleInterface
 {
-/**
-     * @ORM\Column(name="id", type="smallint", options={"unsigned"=true})
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
     /**
-     * @ORM\Column(name="name", type="string", length=30)
+     * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(name="role", type="string", length=20, unique=true)
+     * @var string
      */
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles", fetch="EXTRA_LAZY")
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $users;
 

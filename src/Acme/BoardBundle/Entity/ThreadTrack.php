@@ -2,45 +2,37 @@
 
 namespace Acme\BoardBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * ThreadTrack
- *
- * @ORM\Table(name="thread_track")
- * @ORM\Entity(repositoryClass="ThreadTrackRepository")
- * @ORM\HasLifecycleCallbacks()
- */
 class ThreadTrack
 {
-
-    /** @ORM\Id @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="threadTracks") */
-    private $user;
-    
-    /** @ORM\Id @ORM\ManyToOne(targetEntity="Thread", inversedBy="userTracks")) */
-    private $thread;
-    
-    /**
-     * @ORM\Column(name="has_viewed", type="boolean") 
+   /**
+     * @var boolean
      */
     private $hasViewed = false;
-    
+
     /**
-     * @ORM\Column(name="has_favored", type="boolean") 
-     */    
+     * @var boolean
+     */
     private $hasFavored = false;
-    
-    /** @ORM\ManyToOne(targetEntity="Module", inversedBy="threadTracks") @ORM\JoinColumn(nullable=false) */
-    private $module;
-    
+
     /**
      * @var integer
-     *
-     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
      */
     private $createdAt;
-    
-   
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Module
+     */
+    private $module;
+
+    /**
+     * @var \Acme\BoardBundle\Entity\Thread
+     */
+    private $thread;
+
+    /**
+     * @var \Acme\UserBundle\Entity\User
+     */
+    private $user;
 
     /**
      * Set hasViewed

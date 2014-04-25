@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity repository-class="Acme\BoardBundle\Entity\ThreadRepository" name="Acme\BoardBundle\Entity\Thread" table="thread">
+    <indexes>
+      <index name="0" columns="module_id,updated_at"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="title" type="string" column="title" length="255" precision="0" scale="0" nullable="false"/>
+    <field name="content" type="string" column="content" length="4095" precision="0" scale="0" nullable="false"/>
+    <field name="status" type="smallint" column="status" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="type" type="smallint" column="type" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="numReplies" type="integer" column="num_replies" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="numViews" type="integer" column="num_views" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="createdAt" type="integer" column="created_at" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="updatedAt" type="integer" column="updated_at" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="author" type="string" column="author" length="25" precision="0" scale="0" nullable="false"/>
+    <one-to-one field="lastComment" target-entity="Acme\BoardBundle\Entity\Comment">
+      <join-columns>
+        <join-column name="last_comment_id" referenced-column-name="id" nullable="1"/>
+      </join-columns>
+    </one-to-one>
+    <one-to-one field="firstComment" target-entity="Acme\BoardBundle\Entity\Comment">
+      <join-columns>
+        <join-column name="first_comment_id" referenced-column-name="id" nullable="1"/>
+      </join-columns>
+    </one-to-one>
+    <one-to-many field="commentTracks" target-entity="Acme\BoardBundle\Entity\CommentTrack" mapped-by="thread"/>
+    <one-to-many field="comments" target-entity="Acme\BoardBundle\Entity\Comment" mapped-by="thread"/>
+    <one-to-many field="userTracks" target-entity="Acme\BoardBundle\Entity\ThreadTrack" mapped-by="thread"/>
+    <many-to-one field="user" target-entity="Acme\UserBundle\Entity\User" inversed-by="threads">
+      <join-columns>
+        <join-column name="user_id" referenced-column-name="id" nullable=""/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="module" target-entity="Acme\BoardBundle\Entity\Module" inversed-by="threads">
+      <join-columns>
+        <join-column name="module_id" referenced-column-name="id" nullable=""/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks>
+      <lifecycle-callback type="prePersist" method="doStuffOnPrePersist"/>
+    </lifecycle-callbacks>
+  </entity>
+</doctrine-mapping>

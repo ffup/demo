@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity repository-class="Acme\UserBundle\Entity\UserRepository" name="Acme\UserBundle\Entity\User" table="user">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="username" type="string" column="username" length="25" precision="0" scale="0" unique="1" nullable="false"/>
+    <field name="password" type="string" column="password" length="64" precision="0" scale="0" nullable="false"/>
+    <field name="email" type="string" column="email" length="60" precision="0" scale="0" unique="1" nullable="false"/>
+    <field name="isActive" type="boolean" column="is_active" precision="0" scale="0" nullable="false"/>
+    <field name="unreadMsg" type="smallint" column="unread_msg" precision="0" scale="0" nullable="false">
+      <options unsigned="1"/>
+    </field>
+    <field name="credentialsExpired" type="boolean" column="credentials_expired" precision="0" scale="0" nullable="false"/>
+    <field name="credentialsExpireAt" type="integer" column="credentials_expire_at" precision="0" scale="0" nullable="true">
+      <options unsigned="1"/>
+    </field>
+    <field name="isLocked" type="boolean" column="is_locked" precision="0" scale="0" nullable="false"/>
+    <field name="isExpired" type="boolean" column="is_expired" precision="0" scale="0" nullable="false"/>
+    <field name="lastSigninAt" type="integer" column="last_signin_at" precision="0" scale="0" nullable="true">
+      <options unsigned="1"/>
+    </field>
+    <field name="confirmationToken" type="string" column="confirmation_token" precision="0" scale="0" nullable="true"/>
+    <field name="passwordRequestedAt" type="integer" column="password_requested_at" precision="0" scale="0" nullable="true">
+      <options unsigned="1"/>
+    </field>
+    <one-to-many field="sendMessages" target-entity="Acme\UserBundle\Entity\Message" mapped-by="fromUser"/>
+    <one-to-many field="receiveMessages" target-entity="Acme\UserBundle\Entity\Message" mapped-by="toUser"/>
+    <one-to-many field="comments" target-entity="Acme\BoardBundle\Entity\Comment" mapped-by="user"/>
+    <one-to-many field="threads" target-entity="Acme\BoardBundle\Entity\Thread" mapped-by="user"/>
+    <one-to-many field="threadTracks" target-entity="Acme\BoardBundle\Entity\ThreadTrack" mapped-by="user"/>
+    <one-to-many field="commentTracks" target-entity="Acme\BoardBundle\Entity\CommentTrack" mapped-by="user"/>
+    <many-to-many field="roles" target-entity="Acme\UserBundle\Entity\Role" inversed-by="users">
+      <join-table name="user_role">
+        <join-columns>
+          <join-column name="user_id" referenced-column-name="id" on-delete="CASCADE"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="role_id" referenced-column-name="id" on-delete="CASCADE"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

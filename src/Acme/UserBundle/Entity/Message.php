@@ -2,62 +2,47 @@
 
 namespace Acme\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Message
- *
- * @ORM\Table(name="message")
- * @ORM\Entity(repositoryClass="Acme\UserBundle\Entity\MessageRepository")
- * @ORM\HasLifecycleCallbacks()  
- */
 class Message
 {
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @var boolean
+     */
+    private $hasRead = false;
+
+    /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $createdAt;
+
+    /**
+     * @var integer
+     */
+    private $type = 0;
+
+    /**
+     * @var integer
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="receiveMessages")
-     * @ORM\JoinColumn(name="to_user_id", nullable=false)     
-     */
-    private $toUser;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="sendMessages")
-     * @ORM\JoinColumn(name="from_user_id", nullable=false)     
+     * @var \Acme\UserBundle\Entity\User
      */
     private $fromUser;
-    
-    /** 
-     * @ORM\Column(name="title", type="string")
-     */
-    private $title;
-    
-    /** 
-     * @ORM\Column(name="content", type="string")
-     */    
-    private $content;
-    
-    /** 
-     * @ORM\Column(name="has_read", type="boolean")
-     */    
-    private $hasRead = false;
-    
+
     /**
-     * @ORM\Column(name="created_at", type="integer", options={"unsigned"=true})
+     * @var \Acme\UserBundle\Entity\User
      */
-    private $createdAt;    
-    
-    /**
-     * @ORM\Column(name="type", type="smallint", options={"unsigned"=true})
-     */    
-    private $type = 0;
+    private $toUser;
     
     /**
      * Get id
@@ -230,9 +215,6 @@ class Message
         return $this->fromUser;
     }
     
-    /**
-     * @ORM\PrePersist
-     */
     public function doStuffOnPrePersist()
     {
         $this->createdAt = time();
