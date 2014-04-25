@@ -12,7 +12,7 @@ class CommentController extends Controller
 {
     public function createAction(Request $request)
     {
-        $id = $request->query->get('id');
+        $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('AcmeBoardBundle:Thread')->find($id);
         

@@ -1,16 +1,16 @@
 comment_create:
-    pattern:  /create
+    pattern:  /thread/{id}/new-post
     defaults: { _controller: AcmeBoardBundle:Comment:create }
 
 comment_vote:
-    pattern:  /vote
+    pattern:  /comment/vote
     defaults: { _controller: AcmeBoardBundle:Asynchrony:vote }
     options:
         expose: true
     methods:  [POST]
         
 comment_check:
-    pattern:  /check
+    pattern:  /comment/check
     defaults: { _controller: AcmeBoardBundle:Comment:check }
     options:
         expose: true

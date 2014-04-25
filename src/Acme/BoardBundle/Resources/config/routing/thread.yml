@@ -1,15 +1,23 @@
+thread_index:
+    pattern:  /{module_id}
+    defaults: { _controller: AcmeBoardBundle:Thread:index }
+    requirements:
+        module_id:  \d+
+
+thread_create:
+    pattern:  /{module_id}/create
+    defaults: { _controller: AcmeBoardBundle:Thread:create }
+    requirements:
+        module_id:  \d+
+
 thread_view:
-    pattern:  /{id}
+    pattern:  /thread/{id}
     defaults: { _controller: AcmeBoardBundle:Thread:view } 
     requirements:
         id:  \d+
- 
-thread_create:
-    pattern:  /create
-    defaults: { _controller: AcmeBoardBundle:Thread:create }
-    
+     
 thread_edit:
-    pattern:  /edit/{id}
+    pattern:  /thread/{id}/edit
     defaults: { _controller: AcmeBoardBundle:Thread:edit }
     requirements:
         id:  \d+

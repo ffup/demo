@@ -58,7 +58,7 @@ class ThreadController extends Controller
         $form->handleRequest($request);
         
         $em = $this->getDoctrine()->getManager();
-        $module = $em->getRepository('AcmeBoardBundle:Module')->find($request->query->get('module_id'));
+        $module = $em->getRepository('AcmeBoardBundle:Module')->find($request->get('module_id'));
         
         if (false === $securityContext->isGranted('VIEW', $module)) {
             throw new NotFoundHttpException();
