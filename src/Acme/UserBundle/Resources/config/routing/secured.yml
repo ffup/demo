@@ -1,0 +1,16 @@
+_signin:
+    pattern:  /signin
+    defaults: { _controller: AcmeUserBundle:Secured:signin }
+    
+_signin_check:
+    pattern:  /signin_check
+    defaults: { _controller: AcmeUserBundle:Secured:securityCheck }
+    
+_signout:
+    pattern:  /signout
+    defaults: { _controller: AcmeUserBundle:Secured:signout }
+    
+_signup:
+    pattern:  /signup
+    defaults: { _controller: AcmeUserBundle:Secured:signup }
+

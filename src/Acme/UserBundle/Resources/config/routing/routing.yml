@@ -1,6 +1,6 @@
 _user_secured:
-    resource: "@AcmeUserBundle/Controller/SecuredController.php"
-    type:     annotation
+    resource: "secured.yml"
+    prefix:   /secured
 
 message:
     resource: "message.yml"

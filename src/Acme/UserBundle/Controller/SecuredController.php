@@ -5,20 +5,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 use Acme\UserBundle\Event\GetResponseUserEvent;
 use Acme\UserBundle\AcmeUserEvents;
 
-/**
- * @Route("/secured")
- */
 class SecuredController extends Controller
 {
-    /**
-     * @Route("/signin", name="_signin")
-     */
     public function signinAction(Request $request)
     {
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
@@ -45,25 +37,16 @@ class SecuredController extends Controller
         return $this->render('AcmeUserBundle:Secured:signin.html.twig', $params);
     }
 
-    /**
-     * @Route("/signin_check", name="_signin_check")
-     */
     public function securityCheckAction()
     {
         // The security layer will intercept this request
     }
 
-    /**
-     * @Route("/signout", name="_signout")
-     */
     public function signoutAction()
     {
         // The security layer will intercept this request
     }
 
-    /**
-     * @Route("/signup", name="_signup")
-     */
     public function signupAction(Request $request)
     {
         $userManager = $this->container->get('user_manager');
