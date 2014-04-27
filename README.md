@@ -1,171 +1,130 @@
-Symfony Standard Edition
+Board demo
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+[![Build Status](https://secure.travis-ci.org/ffup/demo.png?branch=master)](http://travis-ci.org/ffup/demo)
 
-This document contains information on how to download, install, and start
-using Symfony. For a more detailed explanation, see the [Installation][1]
-chapter of the Symfony Documentation.
+本文件包含有关如何下载，安装，并启动信息 。如需更详细的说明，请参阅[安装][1] 章的文档中。
 
-1) Installing the Standard Edition
+1) 安装
 ----------------------------------
 
-When it comes to installing the Symfony Standard Edition, you have the
-following options.
+当涉及到安装, 你可以按照下列步骤。
 
-### Use Composer (*recommended*)
+### 使用 Composer (*推荐*)
 
-As Symfony uses [Composer][2] to manage its dependencies, the recommended way
-to create a new project is to use it.
+演示 使用 [Composer][2] 来管理依赖关系, 创建一个新的项目使用它。
 
-If you don't have Composer yet, download it following the instructions on
-http://getcomposer.org/ or just run the following command:
+如果你还没有 Composer，下载它下面的说明 http://getcomposer.org/ 或者只是运行以下命令：
 
     curl -s http://getcomposer.org/installer | php
 
-Then, use the `create-project` command to generate a new Symfony application:
+Composer 将会安装所有的依赖组件到以下目录 `path/to/install`
 
-    php composer.phar create-project symfony/framework-standard-edition path/to/install
+### 下载的存档文件
 
-Composer will install Symfony and all its dependencies under the
-`path/to/install` directory.
+快速测试 demo，你也可以下载压缩包 https://github.com/ffup/demo 
 
-### Download an Archive File
+或者是邮件附件中的 demo.zip 并且在 Web 服务器的根目录下它解压。
 
-To quickly test Symfony, you can also download an [archive][3] of the Standard
-Edition and unpack it somewhere under your web server root directory.
+或者从 git 上获取 https://github.com/ffup/demo.git
 
-If you downloaded an archive "without vendors", you also need to install all
-the necessary dependencies. Download composer (see above) and run the
-following command:
+如果下载的文件没有 vendor 目录，你还需要安装所有必要的依赖。下载 Composer（见上文），
+然后运行 下面的命令：
 
     php composer.phar install
 
-2) Checking your System Configuration
+2) 检查你的系统配置
 -------------------------------------
 
-Before starting coding, make sure that your local system is properly
-configured for Symfony.
+Web 服务器配置（如 Apache）
 
-Execute the `check.php` script from the command line:
+重写规则
+
+    <IfModule mod_rewrite.c>
+        Options +FollowSymlinks
+        RewriteEngine On
+
+        # Explicitly disable rewriting for front controllers
+        RewriteRule ^app_dev.php - [L]
+        RewriteRule ^app.php - [L]
+
+        RewriteCond %{REQUEST_FILENAME} !-f
+
+        # Change below before deploying to production
+        #RewriteRule ^(.*)$ /app.php [QSA,L]
+        RewriteRule ^(.*)$ /app_dev.php [QSA,L]
+    </IfModule>
+    
+HTTPS 配置 (可选)
+
+在开始运行之前，请确保你的本地系统正常配置。
+
+在命令行中执行`check.php`脚本：
 
     php app/check.php
 
-The script returns a status code of `0` if all mandatory requirements are met,
-`1` otherwise.
+该脚本返回的`0`一个状态代码，如果满足所有强制性要求， `1`则反之。
 
-Access the `config.php` script from a browser:
+从浏览器访问的`config.php`脚本：
 
-    http://localhost/path/to/symfony/app/web/config.php
+    http://localhost/path/to/demo/app/web/config.php
 
-If you get any warnings or recommendations, fix them before moving on.
+如果你得到任何警告或建议，在移动之前解决这些问题。
 
-3) Browsing the Demo Application
+设置权限
+ 
+一个常见的​​问题是，app/cache 和 app/logs 目录必须是可写
+
+    APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data' | grep -v root | head -1 | cut -d\  -f1`
+    sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX app/cache app/logs
+    sudo setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX app/cache app/logs
+ 
+3) 配置数据库
+--------------------------------
+	
+在上文页面，你也可以通过点击使用基于 Web 的配置器 
+"Configure your Symfony Application online" 链接到配置页面。
+
+在真正开始，你需要配置你的数据库连接信息。按照惯例，
+这些信息通常被配置在一个 app/config/parameters.yml 文件：
+
+现在让 Doctrine 创建数据库
+
+    php app/console doctrine:database:create
+
+导入数据
+
+    php app/console doctrine:schema:update --force
+    php app/console doctrine:fixtures:load
+
+4) 浏览演示应用
 --------------------------------
 
-Congratulations! You're now ready to use Symfony.
+现在，就可以使用 demo 了。
 
-From the `config.php` page, click the "Bypass configuration and go to the
-Welcome page" link to load up your first Symfony page.
+5) 故障排除及参考
+--------------------------------
 
-You can also use a web-based configurator by clicking on the "Configure your
-Symfony Application online" link of the `config.php` page.
+HTTPS 配置 如果没有配置需要修改 `app/routing.yml` 中 `schemes` 选项
 
-To see a real-live Symfony page in action, access the following page:
+    acme_user:
+    resource: "@AcmeUserBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
+    requirements:
+        culture:  _locale: en|zh
+    schemes:  [http]
 
-    web/app_dev.php/demo/hello/Fabien
+验证码 无法显示 错误时需要修改 `app/config.yml`
+    
+    parameters:
+        #security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener
+        
+    ewz_recaptcha:
+        enabled:      false
 
-4) Getting started with Symfony
--------------------------------
+如果出现错误，错误和异常记录日志
 
-This distribution is meant to be the starting point for your Symfony
-applications, but it also contains some sample code that you can learn from
-and play with.
+    tail -f app/logs/prod.log
+    tail -f app/logs/dev.log
 
-A great way to start learning Symfony is via the [Quick Tour][4], which will
-take you through all the basic features of Symfony2.
 
-Once you're feeling good, you can move onto reading the official
-[Symfony2 book][5].
-
-A default bundle, `AcmeDemoBundle`, shows you Symfony2 in action. After
-playing with it, you can remove it by following these steps:
-
-  * delete the `src/Acme` directory;
-
-  * remove the routing entry referencing AcmeDemoBundle in `app/config/routing_dev.yml`;
-
-  * remove the AcmeDemoBundle from the registered bundles in `app/AppKernel.php`;
-
-  * remove the `web/bundles/acmedemo` directory;
-
-  * remove the `security.providers`, `security.firewalls.login` and
-    `security.firewalls.secured_area` entries in the `security.yml` file or
-    tweak the security configuration to fit your needs.
-
-What's inside?
----------------
-
-The Symfony Standard Edition is configured with the following defaults:
-
-  * Twig is the only configured template engine;
-
-  * Doctrine ORM/DBAL is configured;
-
-  * Swiftmailer is configured;
-
-  * Annotations for everything are enabled.
-
-It comes pre-configured with the following bundles:
-
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **AcmeDemoBundle** (in dev/test env) - A demo bundle with some example
-    code
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.4/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://symfony.com/download
-[4]:  http://symfony.com/doc/2.4/quick_tour/the_big_picture.html
-[5]:  http://symfony.com/doc/2.4/index.html
-[6]:  http://symfony.com/doc/2.4/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.4/book/doctrine.html
-[8]:  http://symfony.com/doc/2.4/book/templating.html
-[9]:  http://symfony.com/doc/2.4/book/security.html
-[10]: http://symfony.com/doc/2.4/cookbook/email.html
-[11]: http://symfony.com/doc/2.4/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.4/cookbook/assetic/asset_management.html
-[13]: http://symfony.com/doc/2.4/bundles/SensioGeneratorBundle/index.html
