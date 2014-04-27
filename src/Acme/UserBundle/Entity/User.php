@@ -23,6 +23,16 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     /**
      * @var string
      */
+    private $usernameCanonical;
+
+    /**
+     * @var string
+     */
+    private $emailCanonical;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -348,7 +358,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
 
     public function isPasswordLegal()
     {
-        return $this->username != $this->password;
+        return $this->username != $this->plainPassword;
     }
 
     /**
@@ -761,5 +771,51 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     {
         return is_int($this->getPasswordRequestedAt()) &&
             $this->getPasswordRequestedAt() + $ttl > time();
+    }
+
+    /**
+     * Set usernameCanonical
+     *
+     * @param string $usernameCanonical
+     * @return User
+     */
+    public function setUsernameCanonical($usernameCanonical)
+    {
+        $this->usernameCanonical = $usernameCanonical;
+
+        return $this;
+    }
+
+    /**
+     * Get usernameCanonical
+     *
+     * @return string 
+     */
+    public function getUsernameCanonical()
+    {
+        return $this->usernameCanonical;
+    }
+
+    /**
+     * Set emailCanonical
+     *
+     * @param string $emailCanonical
+     * @return User
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
+
+        return $this;
+    }
+
+    /**
+     * Get emailCanonical
+     *
+     * @return string 
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
     }
 }

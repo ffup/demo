@@ -10,7 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Acme\UserBundle\Entity\User;
 
-class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadUserData extends AbstractFixture implements 
+    FixtureInterface, 
+    ContainerAwareInterface, 
+    OrderedFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -30,50 +33,37 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
      */
     public function load(ObjectManager $manager)
     {
+        $userManager = $this->container->get('user_manager');
         // User
         $user = new User();
-        $user->setUsername('testuser');
+        $user->setUsername('testuser')
+            ->setEmail('testuser@email.com')
+            ->setPlainPassword('password');
         // $user->setSalt(md5(uniqid()));
         $user->addRole($this->getReference('role-user'));
-        
-        $encoder = $this->container
-            ->get('security.encoder_factory')
-            ->getEncoder($user)
-        ;
-        $user->setPassword($encoder->encodePassword('password', $user->getSalt()));
-        $user->setEmail('testuser@email.com');
+          
+        $userManager->updateUser($user);
         
         // Admin
         $admin = new User();
-        $admin->setUsername('testadmin');
+        $admin->setUsername('testadmin')
+            ->setEmail('testadmin@email.com')
+            ->setPlainPassword('password');
+            
         $admin->addRole($this->getReference('role-admin'));
         
-        $encoder = $this->container
-            ->get('security.encoder_factory')
-            ->getEncoder($admin)
-        ;
-        $admin->setPassword($encoder->encodePassword('password', $admin->getSalt()));
-        $admin->setEmail('testadmin@email.com');
-        
+        $userManager->updateUser($admin);
+             
         // Super admin
         $super = new User();
-        $super->setUsername('testsuperadmin');
+        $super->setUsername('testsuperadmin')
+            ->setEmail('testsuperadmin@email.com')
+            ->setPlainPassword('password');
+            
         $super->addRole($this->getReference('role-super-admin'));
         
-        $encoder = $this->container
-            ->get('security.encoder_factory')
-            ->getEncoder($super)
-        ;
-        $super->setPassword($encoder->encodePassword('password', $super->getSalt()));
-        $super->setEmail('testsuperadmin@email.com');        
-        
-        // Persist
-        $manager->persist($user);
-        $manager->persist($admin);        
-        $manager->persist($super);        
-        $manager->flush();
+        $userManager->updateUser($super);            
     }
-    
     
     /**
      * {@inheritDoc}

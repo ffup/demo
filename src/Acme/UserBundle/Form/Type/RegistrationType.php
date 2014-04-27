@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\UserBundle\Form;
+namespace Acme\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,9 +9,9 @@ use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-class UserType extends AbstractType
+class RegistrationType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -30,13 +30,7 @@ class UserType extends AbstractType
     {
         $form = $event->getForm();
         
-        $form->add('recaptcha', 'ewz_recaptcha', 
-                array(
-                    'mapped' => false,
-                    'constraints' => array(new Recaptcha()),
-                )
-            );
-        // TODO
+        $this->buildRecaptchaForm($form);
     }
     
     /**
@@ -45,7 +39,11 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\UserBundle\Entity\User'
+            'data_class' => 'Acme\UserBundle\Entity\User',
+            'intention'  => 'registration',
+            'error_mapping' => array(
+                'passwordLegal' => 'plainPassword',
+            ),            
         ));
     }
 
@@ -54,6 +52,23 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'signup';
+        return 'registration';
+    }
+    
+    /**
+     * Builds the embedded form representing the Recaptcha.
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
+    protected function buildRecaptchaForm(\Symfony\Component\Form\Form $form)
+    {
+        $form->add('recaptcha', 'ewz_recaptcha', 
+            array(
+                'mapped' => false,
+                'constraints' => array(new Recaptcha()),
+            )
+        );
+        // TODO           
     }
 }

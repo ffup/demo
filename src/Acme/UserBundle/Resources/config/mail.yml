@@ -1,0 +1,16 @@
+parameters:
+    acme_user.resetting.email.template: 'AcmeUserBundle:Resetting:email.txt.twig'
+    acme_user.resetting.email.from_email: 'webmaster@example.com'
+    
+services:
+   acme_user.mailer: 
+        class: 'Acme\UserBundle\Mailer\Mailer'
+        arguments: 
+            - '@mailer'
+            - '@router'
+            - '@templating'
+            -
+                resetting.template:  %acme_user.resetting.email.template%
+                from_email:
+                    confirmation: ~
+                    resetting: %acme_user.resetting.email.from_email%

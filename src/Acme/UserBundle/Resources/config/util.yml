@@ -1,0 +1,8 @@
+parameters:
+        
+services:
+    acme_user.util.token_generator:
+        class: 'Acme\UserBundle\Util\TokenGenerator'
+        arguments: ['@logger']
+    acme_user.util.canonicalizer:
+        class: 'Acme\UserBundle\Util\Canonicalizer'

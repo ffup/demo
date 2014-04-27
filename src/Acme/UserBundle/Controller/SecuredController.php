@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
+use Acme\UserBundle\Event\GetResponseUserEvent;
+use Acme\UserBundle\AcmeUserEvents;
 
 /**
  * @Route("/secured")
@@ -64,18 +66,33 @@ class SecuredController extends Controller
      */
     public function signupAction(Request $request)
     {
-        $user = new \Acme\UserBundle\Entity\User();
-        $form = $this->createForm(new \Acme\UserBundle\Form\UserType(), $user);
+        $userManager = $this->container->get('user_manager');
+        $dispatcher = $this->container->get('event_dispatcher');
+        $formFactory = $this->container->get('acme_user.registration.form.factory');
+        
+        $user = $userManager->createUser();
+        
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(AcmeUserEvents::REGISTRATION_INITIALIZE, $event);
+
+        if (null !== $event->getResponse()) {
+            return $event->getResponse();
+        }
+
+        // $form = $this->createForm(new \Acme\UserBundle\Form\Type\RegistrationType(), $user);
+        $form = $formFactory->createForm();
+        $form->setData($user);
         
         $form->handleRequest($request);
         
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
-            $factory = $this->get('security.encoder_factory');
+            // TODO
             $em = $this->getDoctrine()->getManager();
-            $userRepo = $em->getRepository('AcmeUserBundle:User');
-            $userRepo->create($user, $factory);
-            $userRepo->updateUser($user);                        
+            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
+            $user->addRole($role);
+            
+            $userManager->updateUser($user);                     
             // Notice
             $this->get('session')
                 ->getFlashBag()

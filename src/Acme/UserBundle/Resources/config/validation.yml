@@ -1,63 +1,75 @@
 # Acme/UserBundle/Resources/config/validation.yml
 Acme\UserBundle\Entity\User:
+
     group_sequence:
         - User
         - Strict
+
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
-            fields:       username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields:       usernameCanonical
+            errorPath:    username
             message:      value.exist
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
-            fields:       email
-            message:      value.exist  
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields:       emailCanonical
+            errorPath:    email
+            message:      value.exist
                        
     properties:
         username:
-            # in order to avoid multiple error messages     
+            # in order to avoid multiple error messages
             - Regex:
                 pattern:  /^[a-zA-Z0-9]+([_\s\-]?[a-zA-Z0-9])*$/
                 match:    true
                 message:  user.username.illegal
-                groups:   [Strict]
-
+                groups:   [Registration, Profile]
             - NotBlank:
                 message:  user.username.not_blank
-                groups:   [Signin]
+                groups:   [Registration, Profile]
             - Length:
                 min:      4
                 max:      25
                 minMessage:   user.username_min_length
                 maxMessage:   user.username_max_length
+                groups:   [Registration, Profile]
+                
         plainPassword:
             - NotBlank:
                 message:  value.not_blank
-                groups:   [Signin]                
+                groups:   [Registration, Profile, ResetPassword, ChangePassword]
             - Length:
                 min:      4
+                max:      60
+                groups:   [Registration, Profile, ResetPassword, ChangePassword]
+                
         email:
-            - NotBlank:  
+            - NotBlank:
                 message:  value.not_blank
-            - Email: 
+                groups:   [Registration, Profile]
+            - Length:
+                max:      60
+                groups:   [Registration, Profile]
+            - Email:
                 message:  user.email.invalid
-                checkMX:  true
+                #checkMX:  true
 
     getters:
         passwordLegal:
-            - "True": 
+            - "True":
                 message:  user.password.passwordLegal
                 groups:   [Strict]
 
 Acme\UserBundle\Entity\Message:
     properties:
         toUser:
-            - NotBlank: ~        
+            - NotBlank: ~
         title:
             - NotBlank: ~        
             - Length:
                 min: 5
-                max: 255     
+                max: 255    
         content:
-            - NotBlank: ~        
+            - NotBlank: ~
             - Length:
                 min: 5
-                max: 255      
+                max: 255     

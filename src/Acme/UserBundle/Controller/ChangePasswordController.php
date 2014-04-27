@@ -16,11 +16,8 @@ class ChangePasswordController extends Controller
         
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
-            $factory = $this->get('security.encoder_factory');
-            $em = $this->getDoctrine()->getManager();
-            $userRepo = $em->getRepository('AcmeUserBundle:User');            
-            $userRepo->updatePassword($user, $factory);
-            $userRepo->updateUser($user);
+            $userManager = $this->container->get('user_manager');
+            $userManager->updateUser($user);
                         
             return $this->redirect($this->generateUrl('_signin'));
         }

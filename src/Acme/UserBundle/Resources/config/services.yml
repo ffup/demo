@@ -1,8 +1,6 @@
 parameters:
     acme_user.resetting.token_ttl: 3600
-    acme_user.resetting.email.template: 'AcmeUserBundle:Resetting:email.txt.twig'
-    acme_user.resetting.email.from_email: 'webmaster@example.com'
-    
+        
 services:
     signin_listener:
         class: 'Acme\UserBundle\EventListener\SigninListener'
@@ -10,24 +8,33 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
             
-    acme_user.util.token_generator:
-        class: 'Acme\UserBundle\Util\TokenGenerator'
-        arguments: ['@logger']
-        
     acme_user.listener.resetting:
         class: 'Acme\UserBundle\EventListener\ResettingListener'
+        arguments: ['@router', '%acme_user.resetting.token_ttl%']        
         tags:
             - { name: 'kernel.event_subscriber' }
-        arguments: ['@router', '%acme_user.resetting.token_ttl%']
-        
-    acme_user.mailer: 
-        class: 'Acme\UserBundle\Mailer\Mailer'
-        arguments: 
-            - '@mailer'
-            - '@router'
-            - '@templating'
-            -
-                resetting.template:  %acme_user.resetting.email.template%
-                from_email:
-                    confirmation: ~
-                    resetting: %acme_user.resetting.email.from_email%
+    
+    acme_user.user_manager:
+        class: Acme\UserBundle\Doctrine\UserManager
+        arguments:
+            - @security.encoder_factory
+            - @acme_user.util.canonicalizer
+            - @acme_user.util.canonicalizer
+            - @doctrine.orm.entity_manager
+            - 'Acme\UserBundle\Entity\User'
+    
+    user_manager: "@acme_user.user_manager"
+    
+    acme_user_provider:
+        class: Acme\UserBundle\Security\EmailUserProvider
+        arguments: [@user_manager]
+    
+    acme_user.validator.initializer:
+        class: Acme\UserBundle\Validator\Initializer
+        arguments: [@user_manager]
+        tags: 
+            - { name: 'validator.initializer' }
+        public: false
+       
+ 
+

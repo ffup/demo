@@ -27,10 +27,9 @@ class ResettingController extends Controller
         $username = $request->request->get('username', 'username');
 
         /** @var $user UserInterface */
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AcmeUserBundle:User');
-        $user = $repo->findUserByUsernameOrEmail($username);
-        
+        $userManager = $this->container->get('user_manager');
+        $user = $userManager->findUserByUsernameOrEmail($username);
+                
         if (null === $user) {
             return $this->render('AcmeUserBundle:Resetting:request.html.twig', array('invalid_username' => $username));
         }
@@ -48,7 +47,7 @@ class ResettingController extends Controller
         
         $this->container->get('acme_user.mailer')->sendResettingEmailMessage($user);
         $user->setPasswordRequestedAt(time());
-        $repo->updateUser($user);
+        $userManager->updateUser($user);
 
         return new RedirectResponse($this->generateUrl('resetting_check_email',
             array('email' => $this->getObfuscatedEmail($user))
@@ -79,13 +78,12 @@ class ResettingController extends Controller
      */
     public function resetAction(Request $request, $token)
     {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AcmeUserBundle:User');
+        $userManager = $this->container->get('user_manager');
         
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->container->get('event_dispatcher');
 
-        $user = $repo->findOneByConfirmationToken($token);
+        $user = $userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
             throw new NotFoundHttpException(sprintf('The user with "confirmation token" does not exist for value "%s"', $token));
@@ -108,9 +106,7 @@ class ResettingController extends Controller
             $dispatcher->dispatch(AcmeUserEvents::RESETTING_RESET_SUCCESS, $event);
 
             // TODO
-            $factory = $this->get('security.encoder_factory');
-            $repo->updatePassword($user, $factory);
-            $repo->updateUser($user);
+            $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
                 $url = $this->generateUrl('user_profile');

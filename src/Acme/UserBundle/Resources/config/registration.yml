@@ -1,0 +1,17 @@
+parameters:
+    
+services:
+    acme_user.registration.form.factory:
+        class: Acme\UserBundle\Form\Factory\FormFactory
+        arguments:
+            - @form.factory
+            - registration
+            - @acme_user.registration.form.type
+            - [Registration, Default]
+            
+    acme_user.registration.form.type:
+        class: Acme\UserBundle\Form\Type\RegistrationType
+        tags: 
+            - { name: form.type, alias: acme_user_registration }
+
+ 

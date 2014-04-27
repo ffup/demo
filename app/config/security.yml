@@ -13,7 +13,8 @@ security:
 
     providers:
         user_db:
-            entity: { class: Acme\UserBundle\Entity\User } 
+            id: acme_user_provider
+            #entity: { class: Acme\UserBundle\Entity\User } 
             #entity: { class: Acme\UserBundle\Entity\User, property: username } 
     firewalls:
         dev:

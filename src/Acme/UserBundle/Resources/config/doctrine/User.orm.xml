@@ -4,9 +4,11 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="username" type="string" column="username" length="25" precision="0" scale="0" unique="1" nullable="false"/>
+    <field name="username" type="string" column="username" length="25" precision="0" scale="0" unique="0" nullable="false"/>
+    <field name="usernameCanonical" column="username_canonical" type="string" length="25" unique="1" />
     <field name="password" type="string" column="password" length="64" precision="0" scale="0" nullable="false"/>
-    <field name="email" type="string" column="email" length="60" precision="0" scale="0" unique="1" nullable="false"/>
+    <field name="email" type="string" column="email" length="60" precision="0" scale="0" unique="0" nullable="false"/>
+    <field name="emailCanonical" column="email_canonical" type="string" length="60" unique="1" />
     <field name="isActive" type="boolean" column="is_active" precision="0" scale="0" nullable="false"/>
     <field name="unreadMsg" type="smallint" column="unread_msg" precision="0" scale="0" nullable="false">
       <options unsigned="1"/>

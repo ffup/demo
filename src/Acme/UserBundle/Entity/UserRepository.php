@@ -18,28 +18,14 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-
     public function loadUserByUsername($username)
     {
-        $q = $this
-            ->createQueryBuilder('u')
-            ->select('u, r')
-            ->leftJoin('u.roles', 'r')
-            ->where('u.username = :username OR u.email = :email')
-            ->setParameter('username', $username)
-            ->setParameter('email', $username)
-            ->getQuery();
+        $user = $this->findUserByUsernameOrEmail($username);
 
-        try {
-            // The Query::getSingleResult() method throws an exception
-            // if there is no record matching the criteria.
-            $user = $q->getSingleResult();
-        } catch (NoResultException $e) {
-            $message = sprintf(
-                'Unable to find an active admin AcmeUserBundle:User object identified by "%s".',
-                $username
+        if (!$user) {
+            throw new UsernameNotFoundException(
+                sprintf('Username "%s" does not exist.', $username)
             );
-            throw new UsernameNotFoundException($message, 0, $e);
         }
 
         return $user;
@@ -97,6 +83,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     
     public function create(UserInterface $user, EncoderFactoryInterface $encoderFactory)
     {
+        trigger_error(sprintf('%s is deprecated. Extend Acme\UserBundle\Doctrine\UserManager directly.', __CLASS__), E_USER_DEPRECATED);
+
         $this->updatePassword($user, $encoderFactory);
         $role = $this->_em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
         $user->addRole($role);        
