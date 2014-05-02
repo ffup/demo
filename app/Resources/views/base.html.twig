@@ -69,7 +69,7 @@
   </nav>
   {% endblock %}
   {% block notice %}
-    {% for flashMessage in app.session.flashbag.get('notice') %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
     <div class="flash-message text-center">
       <span class="glyphicon glyphicon-saved"></span> <em>{{ flashMessage }}</em>
     </div>

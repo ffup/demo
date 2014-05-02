@@ -73,7 +73,7 @@ class ThreadController extends Controller
             
             $this->get('session')
                 ->getFlashBag()
-                ->add('notice', 'Successfully created!');
+                ->add('success', 'Successfully created!');
             
             return $this->redirect($this->generateUrl('thread_index', array(
                 'module_id' => $module->getId())
@@ -156,7 +156,7 @@ class ThreadController extends Controller
                         
             $this->get('session')
                 ->getFlashBag()
-                ->add('notice', 'Successfully updated!');
+                ->add('success', 'Successfully updated!');
             
             return $this->redirect($this->generateUrl('thread_index', array(
                 'module_id' => $module->getId(),

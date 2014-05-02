@@ -1,0 +1,9 @@
+parameters:
+        
+services:
+    acme_user.listener.flash:
+        class: Acme\UserBundle\EventListener\FlashListener
+        tags:
+            - { name: kernel.event_subscriber }
+        arguments:  [@session, @translator]
+

@@ -39,7 +39,7 @@ class CommentController extends Controller
 
             // Notice
             $this->get('session')->getFlashBag()->add(
-                'notice',
+                'success',
                 'Successfully created!'
             );
 

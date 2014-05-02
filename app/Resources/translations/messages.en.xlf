@@ -61,7 +61,13 @@
             <trans-unit id="15">
                 <source>1 year|%num% years</source>
                 <target>1 year|%num% years</target>
-            </trans-unit>                                                                         
+            </trans-unit>
+            <!--
+            <trans-unit id="16">
+                <source>registration.flash.user_created</source>
+                <target>The user has been created successfully</target>
+            </trans-unit>
+            -->
         </body>
     </file>
 </xliff>

@@ -2,12 +2,14 @@
 namespace Acme\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True as Recaptcha;
 use Acme\UserBundle\Event\GetResponseUserEvent;
 use Acme\UserBundle\AcmeUserEvents;
+use Acme\UserBundle\Event\FilterUserResponseEvent;
 
 class SecuredController extends Controller
 {
@@ -75,17 +77,20 @@ class SecuredController extends Controller
             $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
             $user->addRole($role);
             
-            $userManager->updateUser($user);                     
+            $userManager->updateUser($user);
+                     
+            if (null === $response = $event->getResponse()) {
+                $url = $this->generateUrl('module_index');
+                $response = new RedirectResponse($url);
+            }     
             // Notice
-            $this->get('session')
-                ->getFlashBag()
-                ->add('notice', 'Successful registration!');
-            
+            $dispatcher->dispatch(AcmeUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
             // Here, "main" is the name of the firewall in your security.yml
             $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
             $this->get('security.context')->setToken($token);
             
-            return $this->redirect($this->generateUrl('module_index'));
+            return $response;
         }
         
         return $this->render('AcmeUserBundle:Secured:signup.html.twig', array(
