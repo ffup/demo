@@ -1,0 +1,30 @@
+parameters:
+
+
+services:
+    acme_board.form.thread.type:
+        class: Acme\BoardBundle\Form\Type\ThreadType
+        arguments: [@security.context]
+        tags:
+            - { name: form.type }
+                 
+    acme_board.form_factory.thread:
+        class: Acme\BoardBundle\Form\Factory\ThreadFormFactory
+        arguments:
+            - @form.factory
+            - @acme_board.form.thread.type
+            - thread
+            
+    acme_board.form.comment.type:
+        class: Acme\BoardBundle\Form\Type\CommentType
+        arguments: [@security.context]
+        tags:
+            - { name: form.type }
+                 
+    acme_board.form_factory.comment:
+        class: Acme\BoardBundle\Form\Factory\CommentFormFactory
+        arguments:
+            - @form.factory
+            - @acme_board.form.comment.type
+            - comment            
+    

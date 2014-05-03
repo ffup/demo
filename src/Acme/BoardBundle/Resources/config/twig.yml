@@ -10,4 +10,4 @@ services:
       arguments: [@translator]
       tags:
           - { name: twig.extension }
-      public: false          
+      public: false

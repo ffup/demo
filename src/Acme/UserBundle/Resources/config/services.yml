@@ -15,10 +15,3 @@ services:
     acme_user_provider:
         class: Acme\UserBundle\Security\EmailUserProvider
         arguments: [@user_manager]
-    
-    acme_user.validator.initializer:
-        class: Acme\UserBundle\Validator\Initializer
-        arguments: [@user_manager]
-        tags: 
-            - { name: 'validator.initializer' }
-        public: false

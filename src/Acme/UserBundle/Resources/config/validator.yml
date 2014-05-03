@@ -1,0 +1,9 @@
+parameters:
+        
+services:
+    acme_user.validator.initializer:
+        class: Acme\UserBundle\Validator\Initializer
+        arguments: [@user_manager]
+        tags:
+            - { name: 'validator.initializer' }
+        public: false

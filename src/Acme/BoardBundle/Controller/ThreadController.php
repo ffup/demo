@@ -54,7 +54,10 @@ class ThreadController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
         
-        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType($securityContext), $thread);
+        $formFactory = $this->container->get('acme_board.form_factory.thread');
+        $form = $formFactory->createForm();
+        $form->setData($thread);
+        
         $form->handleRequest($request);
         
         $em = $this->getDoctrine()->getManager();
@@ -147,7 +150,10 @@ class ThreadController extends Controller
         
         $module = $thread->getModule();
         
-        $form = $this->createForm(new \Acme\BoardBundle\Form\ThreadType($securityContext), $thread);
+        $formFactory = $this->container->get('acme_board.form_factory.thread');
+        $form = $formFactory->createForm();
+        $form->setData($thread);
+        
         $form->handleRequest($request);
                 
         if ($form->isValid()) {

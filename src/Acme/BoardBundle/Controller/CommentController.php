@@ -29,7 +29,10 @@ class CommentController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
         
-        $form = $this->createForm(new \Acme\BoardBundle\Form\CommentType($securityContext), $comment);
+        $formFactory = $this->container->get('acme_board.form_factory.comment');
+        $form = $formFactory->createForm();
+        $form->setData($comment);
+        
         $form->handleRequest($request);
 
         if ($form->isValid()) {            
@@ -52,39 +55,12 @@ class CommentController extends Controller
                       'form' => $form->createView(),
                       'thread' => $thread,
                   );
+                  
         return $this->render('AcmeBoardBundle:Comment:create.html.twig', $params);  
     }
 
     public function checkAction(Request $request)
     {
-        $pageSize = 10;
-        $em = $this->getDoctrine()->getManager();
-        
-        $id = $request->request->get('id');
-        $moduleId = $request->request->get('module_id');
-        
-        $dql = "SELECT t, c, u FROM AcmeBoardBundle:Comment c 
-            JOIN c.user u JOIN c.thread t
-            WHERE t.module = :module_id AND c.id > :id";
-        $query = $em->createQuery($dql)
-            ->setParameter('module_id', $moduleId)
-            ->setParameter('id', $id)
-            ->setMaxResults($pageSize);
-            
-        $res = $query->getArrayResult();
-        
-        // \Doctrine\Common\Util\Debug::dump($res);
-        
-        $response = new JsonResponse();
-        $data = array(
-            "code"    => 100, 
-            "success" => true, 
-            "comments" => $res,
-        );   
-           
-        $response->setData($data);
-        return $response;
-        
         // TODO
     }
 }

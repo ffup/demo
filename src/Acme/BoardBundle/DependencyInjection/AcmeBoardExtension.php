@@ -26,5 +26,6 @@ class AcmeBoardExtension extends Extension
         $loader->load('services.yml');
         $loader->load('voter.yml');
         $loader->load('twig.yml');
+        $loader->load('form.yml');        
     }
 }
