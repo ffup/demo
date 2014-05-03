@@ -77,17 +77,6 @@ swiftmailer:
 parameters:
     security.authentication.listener.form.class:  Acme\UserBundle\EventListener\FormAuthenticationListener
 
-services:
-  twig.extension.text:
-      class: Twig_Extensions_Extension_Text
-      tags:
-          - { name: twig.extension }
-  acme.twig.acme_extension:
-      class: Acme\BoardBundle\Twig\AcmeExtension
-      arguments: [@translator]
-      tags:
-          - { name: twig.extension }
-
 ewz_recaptcha:
     public_key:   6Lck-cwSAAAAAEsR9fjwcbnF-vnS201EIm7u3hHt
     private_key:  6Lck-cwSAAAAAGS8YFI3DJGNgoDEzlavglTFJkWT

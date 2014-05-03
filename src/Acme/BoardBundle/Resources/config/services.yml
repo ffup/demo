@@ -1,23 +1,7 @@
 parameters:
 #    acme_board.example.class: Acme\BoardBundle\Example
 
-services:
-    security.access.thread_voter:
-        class:      Acme\BoardBundle\Security\Authorization\Voter\ThreadVoter
-        public:     false
-        tags:
-           - { name: security.voter }
-    security.access.comment_voter:
-        class:      Acme\BoardBundle\Security\Authorization\Voter\CommentVoter
-        public:     false
-        tags:
-           - { name: security.voter }
-    security.access.module_voter:
-        class:      Acme\BoardBundle\Security\Authorization\Voter\ModuleVoter
-        public:     false
-        tags:
-           - { name: security.voter }
-           
+services:           
 #    acme_board.example:
 #        class: %acme_board.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

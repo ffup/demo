@@ -7,7 +7,7 @@ Acme\BoardBundle\Entity\Thread:
                 min: 4
                 max: 64
         content:
-            - NotBlank: ~        
+            - NotBlank: ~ 
             - Length:
                 min: 10
                 max: 1024
@@ -15,8 +15,7 @@ Acme\BoardBundle\Entity\Thread:
 Acme\BoardBundle\Entity\Comment:
     properties:
         content:
-            - NotBlank: ~        
+            - NotBlank: ~ 
             - Length:
                 min: 10
-                max: 1024               
-            
+                max: 1024
