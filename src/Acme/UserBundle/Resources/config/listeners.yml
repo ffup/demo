@@ -1,0 +1,15 @@
+parameters:
+    acme_user.resetting.token_ttl: 3600
+        
+services:
+    signin_listener:
+        class: 'Acme\UserBundle\EventListener\SigninListener'
+        arguments: ['@security.context', '@doctrine.orm.entity_manager']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+            
+    acme_user.listener.resetting:
+        class: 'Acme\UserBundle\EventListener\ResettingListener'
+        arguments: ['@router', '%acme_user.resetting.token_ttl%']        
+        tags:
+            - { name: 'kernel.event_subscriber' }

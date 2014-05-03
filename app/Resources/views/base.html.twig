@@ -38,15 +38,21 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
         {% if is_granted('ROLE_USER') %}
+          {% block message %}
           <li class=""><a href="{{ path('user_message') }}"><!-- <span class="glyphicon glyphicon-envelope"></span>--> Message {% if app.user.unreadMsg > 0 %}<span class="badge">{{ app.user.unreadMsg }}</span>{% endif %}</a></li>
+          {% endblock %}
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b> </a>
             <ul class="dropdown-menu">
+              {% block profile %}            
               <!-- Profile -->
               <li><a href="{{ path('user_profile') }}">View profile</a></li>
               <!-- ./ Profile -->
+              {% endblock %}              
+              {% block history %}
               <li><a href="{{ path('user_thread') }}">Last threads</a></li>
               <li><a href="{{ path('user_comment') }}">Last comments</a></li>
+              {% endblock %}
               <li class="divider"></li>
               <li><a href="{{ path('_signout') }}">Signout</a></li>
               {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}

@@ -1,6 +1,14 @@
 {% extends "::base.html.twig" %}
+
 {% use '::page.html.twig' %}
+
+{% block history %}
+<li><a href="{{ path('user_thread') }}">Last threads</a></li>
+<li class="active"><a href="{{ path('user_comment') }}">Last comments</a></li>
+{% endblock %}
+
 {% block title %}My comments{% endblock %}
+
 {% block body %}
 <div class="page-header">
   <h1>My comments <small>Subtext for header</small></h1>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\BoardBundle\Utility;
+namespace Acme\BoardBundle\Util;
 
 class Calculator
 {

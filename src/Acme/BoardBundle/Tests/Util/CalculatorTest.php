@@ -1,8 +1,8 @@
 <?php
 
-namespace Acme\BoardBundle\Tests\Utility;
+namespace Acme\BoardBundle\Tests\Util;
 
-use Acme\BoardBundle\Utility\Calculator;
+use Acme\BoardBundle\Util\Calculator;
 
 class CalculatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,6 +1,12 @@
 {% extends "AcmeUserBundle::layout.html.twig" %}
 
-{% block title 'User Bundle' %}
+{% block title 'Profile' %}
+
+{% block profile %}            
+<!-- Profile -->
+<li class="active"><a href="{{ path('user_profile') }}">View profile</a></li>
+<!-- ./ Profile -->
+{% endblock %}
 
 {% block body %}
 

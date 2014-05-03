@@ -1,0 +1,7 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Message{% endblock %}
+
+{% block message %}
+<li class="active"><a href="{{ path('user_message') }}"><!-- <span class="glyphicon glyphicon-envelope"></span>--> Message {% if app.user.unreadMsg > 0 %}<span class="badge">{{ app.user.unreadMsg }}</span>{% endif %}</a></li>
+{% endblock %}
