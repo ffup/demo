@@ -1,0 +1,17 @@
+parameters:
+    
+services:
+    acme_user.resetting.form.factory:
+        class: Acme\UserBundle\Form\Factory\FormFactory
+        arguments:
+            - @form.factory
+            - resetting
+            - @acme_user.resetting.form.type
+            - [ResetPassword]
+            
+    acme_user.resetting.form.type:
+        class: Acme\UserBundle\Form\Type\ResettingType
+        tags: 
+            - { name: form.type }
+
+ 

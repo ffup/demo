@@ -1,0 +1,20 @@
+parameters:
+    
+services:
+    acme_user.user_to_username_transformer:
+        class: Acme\UserBundle\Form\DataTransformer\UserToUsernameTransformer
+        arguments: [@user_manager]
+ 
+    acme_user.message.form.type:
+        class: Acme\UserBundle\Form\Type\MessageType
+        arguments: [@acme_user.user_to_username_transformer]
+        tags:
+            - { name: form.type }
+
+    acme_user.message.form.factory:
+        class: Acme\UserBundle\Form\Factory\FormFactory
+        arguments:
+            - @form.factory
+            - message
+            - @acme_user.message.form.type
+            - []

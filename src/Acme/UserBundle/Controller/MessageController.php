@@ -31,11 +31,14 @@ class MessageController extends Controller
             throw new AccessDeniedException();
         }
     
-        $em = $this->getDoctrine()->getManager();    
+        $em = $this->getDoctrine()->getManager();
+        
         $message = new \Acme\UserBundle\Entity\Message();
-        $form = $this->createForm(
-            new \Acme\UserBundle\Form\MessageType(), $message, array('em' => $em));
-            
+        
+        $formFactory = $this->container->get('acme_user.message.form.factory');
+        $form = $formFactory->createForm();
+        $form->setData($message);
+        
         $form->handleRequest($request);
         /* $toUser = $em->getRepository('AcmeUserBundle:User')->find((int) $request->get('id'));
         if (false == $toUser) {

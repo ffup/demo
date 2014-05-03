@@ -28,6 +28,9 @@ class AcmeUserExtension extends Extension
         $loader->load('util.yml');
         $loader->load('mail.yml');
         $loader->load('registration.yml');
+        $loader->load('change_password.yml');
+        $loader->load('resetting.yml');
+        $loader->load('message.yml');                     
         $loader->load('flash_notifications.yml');
     }
 }

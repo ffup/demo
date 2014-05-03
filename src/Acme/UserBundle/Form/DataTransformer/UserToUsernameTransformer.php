@@ -4,22 +4,19 @@ namespace Acme\UserBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Acme\UserBundle\Entity\User;
+use Acme\UserBundle\Entity\UserManagerInterface;
 
 class UserToUsernameTransformer implements DataTransformerInterface
 {
     /**
-     * @var ObjectManager
+     * @var UserManagerInterface
      */
-    private $om;
+    protected $userManager;
 
-    /**
-     * @param ObjectManager $om
-     */
-    public function __construct(ObjectManager $om)
+    public function __construct(UserManagerInterface $userManager)
     {
-        $this->om = $om;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -52,10 +49,7 @@ class UserToUsernameTransformer implements DataTransformerInterface
             return null;
         }
 
-        $user = $this->om
-            ->getRepository('AcmeUserBundle:User')
-            ->findOneBy(array('username' => $username))
-        ;
+        $user = $this->userManager->findUserByUsername($username);
 
         if (null === $user) {
             throw new TransformationFailedException(sprintf(

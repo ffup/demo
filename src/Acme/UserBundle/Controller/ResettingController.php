@@ -96,8 +96,9 @@ class ResettingController extends Controller
             return $event->getResponse();
         }
         
-        // $form = $formFactory->createForm();
-        $form = $this->createForm(new \Acme\UserBundle\Form\ResettingFormType(), $user);
+        $formFactory = $this->container->get('acme_user.resetting.form.factory');
+        $form = $formFactory->createForm();
+        $form->setData($user);
         
         $form->handleRequest($request);
         

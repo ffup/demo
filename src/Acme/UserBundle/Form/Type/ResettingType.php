@@ -1,12 +1,12 @@
 <?php
 
-namespace Acme\UserBundle\Form;
+namespace Acme\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ResettingFormType extends AbstractType
+class ResettingType extends AbstractType
 {
     private $class;
 

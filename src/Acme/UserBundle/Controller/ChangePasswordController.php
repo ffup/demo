@@ -15,7 +15,7 @@ class ChangePasswordController extends Controller
     public function changePasswordAction(Request $request)
     {
         $user = $this->getUser();
-        $form = $this->createForm(new \Acme\UserBundle\Form\ChangePasswordType(), $user);
+        $formFactory = $this->container->get('acme_user.change_password.form.factory');
         $dispatcher = $this->container->get('event_dispatcher');
         
         $event = new GetResponseUserEvent($user, $request);
@@ -25,6 +25,8 @@ class ChangePasswordController extends Controller
             return $event->getResponse();
         }
         
+        $form = $formFactory->createForm();
+        $form->setData($user);
         $form->handleRequest($request);
         
         if ($form->isValid()) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\UserBundle\Form;
+namespace Acme\UserBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
