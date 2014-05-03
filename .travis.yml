@@ -4,7 +4,11 @@ php:
   - 5.3.3
   - 5.3
   - 5.4
+  - 5.5
 
-before_script: composer update
+before_script:
+    - echo "extension = "memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "extension = "memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - composer install --prefer-source --dev
 
 script: phpunit -c app

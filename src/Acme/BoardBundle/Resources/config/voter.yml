@@ -1,0 +1,19 @@
+parameters:
+
+
+services:
+    security.access.thread_voter:
+        class:      Acme\BoardBundle\Security\Authorization\Voter\ThreadVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+    security.access.comment_voter:
+        class:      Acme\BoardBundle\Security\Authorization\Voter\CommentVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+    security.access.module_voter:
+        class:      Acme\BoardBundle\Security\Authorization\Voter\ModuleVoter
+        public:     false
+        tags:
+           - { name: security.voter }

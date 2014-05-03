@@ -1,0 +1,13 @@
+services:
+  twig.extension.text:
+      class: Twig_Extensions_Extension_Text
+      tags:
+          - { name: twig.extension }
+      public: false
+      
+  acme.twig.acme_extension:
+      class: Acme\BoardBundle\Twig\AcmeExtension
+      arguments: [@translator]
+      tags:
+          - { name: twig.extension }
+      public: false          
