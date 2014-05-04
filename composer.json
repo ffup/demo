@@ -23,7 +23,8 @@
         "zendframework/zendframework": "2.*",
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "excelwebzone/recaptcha-bundle": "1.0.0",
-        "zendframework/zendservice-recaptcha": "2.0.*"
+        "zendframework/zendservice-recaptcha": "2.0.*",
+        "hwi/oauth-bundle": "0.4.*@dev"        
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "2.2.*",

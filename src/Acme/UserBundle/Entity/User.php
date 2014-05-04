@@ -2,13 +2,10 @@
 
 namespace Acme\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;     
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-class User implements AdvancedUserInterface, \Serializable, EquatableInterface
+class User implements UserInterface
 {
     /**
      * @var string
@@ -126,6 +123,10 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      * @var string
      */
     private $plainPassword;
+
+    private $googleId;
+    
+    private $googleAccessToken;
 
     public function __construct()
     {
@@ -338,7 +339,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
         return $this->isActive;
     }
     
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user)
     {
     	  if ($this->id !== $user->getId()) {
             return false;
@@ -750,7 +751,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      * @param integer $passwordRequestedAt
      * @return User
      */
-    public function setPasswordRequestedAt($passwordRequestedAt)
+    public function setPasswordRequestedAt($passwordRequestedAt = null)
     {
         $this->passwordRequestedAt = $passwordRequestedAt;
 
@@ -817,5 +818,51 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function getEmailCanonical()
     {
         return $this->emailCanonical;
+    }
+
+    /**
+     * Set googleId
+     *
+     * @param string $googleId
+     * @return User
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return string 
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * Set googleAccessToken
+     *
+     * @param string $googleAccessToken
+     * @return User
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->googleAccessToken = $googleAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get googleAccessToken
+     *
+     * @return string 
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->googleAccessToken;
     }
 }

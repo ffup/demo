@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Acme\BoardBundle\AcmeBoardBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

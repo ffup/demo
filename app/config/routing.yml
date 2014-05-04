@@ -29,5 +29,12 @@ acme_homepage:
     pattern:  /{_locale}
     defaults: { _controller: AcmeBoardBundle:Default:index, _locale: en }
     schemes:  [http]
+    
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+    
+google_login:
+    pattern: /login/check-google
 
 

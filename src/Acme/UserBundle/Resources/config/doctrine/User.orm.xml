@@ -42,5 +42,7 @@
         </inverse-join-columns>
       </join-table>
     </many-to-many>
+    <field name="googleId" type="string" column="google_id" length="255" nullable="true"/>
+    <field name="googleAccessToken" type="string" column="google_access_token" length="255" nullable="true"/>    
   </entity>
 </doctrine-mapping>

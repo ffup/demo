@@ -3,8 +3,9 @@
 namespace Acme\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
-interface UserInterface extends AdvancedUserInterface, \Serializable
+interface UserInterface extends AdvancedUserInterface, \Serializable, EquatableInterface
 {
     /**
      * Sets the username.
@@ -97,14 +98,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return boolean
      */
-    public function isUser(UserInterface $user = null);
+    // public function isUser(UserInterface $user = null);
 
     /**
      * @param boolean $boolean
      *
      * @return self
      */
-    public function setEnabled($boolean);
+    // public function setEnabled($boolean);
 
     /**
      * Sets the locking status of the user.
@@ -113,7 +114,7 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return self
      */
-    public function setLocked($boolean);
+    // public function setLocked($boolean);
 
     /**
      * Gets the confirmation token.
@@ -134,11 +135,11 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
     /**
      * Sets the timestamp that the user requested a password reset.
      *
-     * @param null|\DateTime $date
+     * @param null|\Integer $timestamp
      *
      * @return self
      */
-    public function setPasswordRequestedAt(\DateTime $date = null);
+    public function setPasswordRequestedAt($timestamp = null);
 
     /**
      * Checks whether the password reset request has expired.
@@ -156,6 +157,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return self
      */
-    public function setLastLogin(\DateTime $time = null);
+    // public function setLastLogin(\DateTime $time = null);
 }
 

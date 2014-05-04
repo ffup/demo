@@ -15,3 +15,7 @@ services:
     acme_user_provider:
         class: Acme\UserBundle\Security\EmailUserProvider
         arguments: [@user_manager]
+    
+    acme_oauth_provider:
+        class: Acme\UserBundle\Security\OAuthUserProvider
+        arguments: [@user_manager, { google: googleId }]

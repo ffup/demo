@@ -38,18 +38,19 @@ class SigninListener
 	  {
 		    if ($this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
 			    // user has just logged in
+		        $user = $event->getAuthenticationToken()->getUser();
+		        // $user->setCredentialsExpireAt(time() + 300);
+		        $user->setLastSigninAt(time());
+            $this->em->persist($user);        
+		        $this->em->flush();			    
 		    }
 		
 		    if ($this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			    // user has logged in using remember_me cookie
 		    }
-		
+		    
 		    // do some other magic here
-		    $user = $event->getAuthenticationToken()->getUser();
-		    // $user->setCredentialsExpireAt(time() + 300);
-		    $user->setLastSigninAt(time());
-        $this->em->persist($user);        
-		    $this->em->flush();
+
 		    // ...
 	  }
 }

@@ -15,7 +15,7 @@ security:
         user_db:
             id: acme_user_provider
             #entity: { class: Acme\UserBundle\Entity\User } 
-            #entity: { class: Acme\UserBundle\Entity\User, property: username } 
+
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -43,6 +43,17 @@ security:
                 target_path_parameter:          _target_path
                 #use_referer:                    true
             
+            oauth:
+                resource_owners:
+                    google:             google_login
+
+                login_path:        _signin
+                use_forward:       false
+                failure_path:      _signin
+
+                oauth_user_provider:
+                    service: acme_oauth_provider
+
             switch_user:  true
             
             remember_me:
@@ -69,6 +80,7 @@ security:
             
     access_control:
         - { path: /user, roles: ROLE_USER }
-        - { path: /settings, roles: ROLE_USER }        
+        - { path: /settings, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }        
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
