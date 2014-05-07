@@ -3,9 +3,13 @@
 namespace Acme\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
-interface UserInterface extends AdvancedUserInterface, \Serializable
+interface UserInterface extends AdvancedUserInterface, \Serializable, EquatableInterface
 {
+    const ROLE_DEFAULT = 'ROLE_USER';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    
     /**
      * Sets the username.
      *
@@ -97,14 +101,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return boolean
      */
-    public function isUser(UserInterface $user = null);
+    # public function isUser(UserInterface $user = null);
 
     /**
      * @param boolean $boolean
      *
      * @return self
      */
-    public function setEnabled($boolean);
+    # public function setEnabled($boolean);
 
     /**
      * Sets the locking status of the user.
@@ -113,7 +117,7 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return self
      */
-    public function setLocked($boolean);
+    # public function setLocked($boolean);
 
     /**
      * Gets the confirmation token.
@@ -138,7 +142,7 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return self
      */
-    public function setPasswordRequestedAt(\DateTime $date = null);
+    public function setPasswordRequestedAt($date = null);
 
     /**
      * Checks whether the password reset request has expired.
@@ -156,6 +160,64 @@ interface UserInterface extends AdvancedUserInterface, \Serializable
      *
      * @return self
      */
-    public function setLastLogin(\DateTime $time = null);
-}
+    # public function setLastLogin(\DateTime $time = null);
+    
+    /**
+     * Tells if the the given user has the super admin role.
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin();
+    
+    /**
+     * Sets the super admin status
+     *
+     * @param boolean $boolean
+     *
+     * @return self
+     */
+    public function setSuperAdmin($boolean);
+    
+    /**
+     * Never use this to check if this user has access to anything!
+     *
+     * Use the SecurityContext, or an implementation of AccessDecisionManager
+     * instead, e.g.
+     *
+     *         $securityContext->isGranted('ROLE_USER');
+     *
+     * @param string $role
+     *
+     * @return boolean
+     */
+    public function hasRole($role);
 
+    /**
+     * Sets the roles of the user.
+     *
+     * This overwrites any previous roles.
+     *
+     * @param array $roles
+     *
+     * @return self
+     */
+    public function setRoles(array $roles);
+
+    /**
+     * Adds a role to the user.
+     *
+     * @param string $role
+     *
+     * @return self
+     */
+    public function addRole($role);
+
+    /**
+     * Removes a role to the user.
+     *
+     * @param string $role
+     *
+     * @return self
+     */
+    public function removeRole($role);
+}

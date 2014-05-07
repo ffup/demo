@@ -32,6 +32,8 @@
     <one-to-many field="threads" target-entity="Acme\BoardBundle\Entity\Thread" mapped-by="user"/>
     <one-to-many field="threadTracks" target-entity="Acme\BoardBundle\Entity\ThreadTrack" mapped-by="user"/>
     <one-to-many field="commentTracks" target-entity="Acme\BoardBundle\Entity\CommentTrack" mapped-by="user"/>
+    <field name="roles" column="roles" type="array" />
+    <!--
     <many-to-many field="roles" target-entity="Acme\UserBundle\Entity\Role" inversed-by="users">
       <join-table name="user_role">
         <join-columns>
@@ -42,5 +44,6 @@
         </inverse-join-columns>
       </join-table>
     </many-to-many>
+    -->
   </entity>
 </doctrine-mapping>

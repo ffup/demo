@@ -4,7 +4,6 @@ namespace Acme\UserBundle\Entity;
 
 use Acme\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Abstract User Manager implementation which can be used as base class for your

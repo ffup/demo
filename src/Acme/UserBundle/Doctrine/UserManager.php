@@ -3,7 +3,7 @@
 namespace Acme\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Acme\UserBundle\Entity\UserInterface;
 use Acme\UserBundle\Entity\UserManager as BaseUserManager;
 use Acme\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;

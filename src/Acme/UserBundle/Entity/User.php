@@ -2,13 +2,11 @@
 
 namespace Acme\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;     
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
-class User implements AdvancedUserInterface, \Serializable, EquatableInterface
+class User implements UserInterface
 {
     /**
      * @var string
@@ -116,7 +114,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     private $commentTracks;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var array
      */
     private $roles;
 
@@ -130,7 +128,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function __construct()
     {
         $this->threads = new ArrayCollection();
-        $this->roles = new ArrayCollection();
+        $this->roles = array();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
     }
@@ -171,15 +169,6 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRoles()
-    {
-        return $this->roles->toArray();
-        // return array('ROLE_USER');
     }
 
     /**
@@ -255,7 +244,6 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     	  return $this->isActive;
     }
     
-
     /**
      * Get id
      *
@@ -338,7 +326,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
         return $this->isActive;
     }
     
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(BaseUserInterface $user)
     {
     	  if ($this->id !== $user->getId()) {
             return false;
@@ -491,29 +479,6 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function getCommentTracks()
     {
         return $this->commentTracks;
-    }
-
-    /**
-     * Add roles
-     *
-     * @param \Acme\UserBundle\Entity\Role $roles
-     * @return User
-     */
-    public function addRole(\Acme\UserBundle\Entity\Role $roles)
-    {
-        $this->roles[] = $roles;
-
-        return $this;
-    }
-
-    /**
-     * Remove roles
-     *
-     * @param \Acme\UserBundle\Entity\Role $roles
-     */
-    public function removeRole(\Acme\UserBundle\Entity\Role $roles)
-    {
-        $this->roles->removeElement($roles);
     }
 
     /**
@@ -750,7 +715,7 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
      * @param integer $passwordRequestedAt
      * @return User
      */
-    public function setPasswordRequestedAt($passwordRequestedAt)
+    public function setPasswordRequestedAt($passwordRequestedAt = null)
     {
         $this->passwordRequestedAt = $passwordRequestedAt;
 
@@ -817,5 +782,94 @@ class User implements AdvancedUserInterface, \Serializable, EquatableInterface
     public function getEmailCanonical()
     {
         return $this->emailCanonical;
+    }
+    
+    public function isSuperAdmin()
+    {
+        return $this->hasRole(static::ROLE_SUPER_ADMIN);
+    }
+    
+    public function setSuperAdmin($boolean)
+    {
+        if (true === $boolean) {
+            $this->addRole(static::ROLE_SUPER_ADMIN);
+        } else {
+            $this->removeRole(static::ROLE_SUPER_ADMIN);
+        }
+
+        return $this;
+    }
+    
+    public function removeRole($role)
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+    
+    public function setRoles(array $roles)
+    {
+        $this->roles = array();
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+
+        return $this;
+    }
+    
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === static::ROLE_DEFAULT) {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Never use this to check if this user has access to anything!
+     *
+     * Use the SecurityContext, or an implementation of AccessDecisionManager
+     * instead, e.g.
+     *
+     *         $securityContext->isGranted('ROLE_USER');
+     *
+     * @param string $role
+     *
+     * @return boolean
+     */
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
+    }
+    
+    /**
+     * Returns the user roles
+     *
+     * @return array The roles
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        /*
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+        */
+        
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
     }
 }

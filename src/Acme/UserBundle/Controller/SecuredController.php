@@ -73,9 +73,6 @@ class SecuredController extends Controller
         if ($form->isValid()) {
             // perform some action, such as saving the task to the database
             // TODO
-            $em = $this->getDoctrine()->getManager();
-            $role = $em->getRepository('AcmeUserBundle:Role')->findOneByRole('ROLE_USER');
-            $user->addRole($role);
             
             $userManager->updateUser($user);
                      

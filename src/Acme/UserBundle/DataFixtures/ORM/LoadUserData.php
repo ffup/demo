@@ -39,9 +39,7 @@ class LoadUserData extends AbstractFixture implements
         $user->setUsername('testuser')
             ->setEmail('testuser@email.com')
             ->setPlainPassword('password');
-        // $user->setSalt(md5(uniqid()));
-        $user->addRole($this->getReference('role-user'));
-          
+        // $user->setSalt(md5(uniqid()));          
         $userManager->updateUser($user);
         
         // Admin
@@ -50,7 +48,7 @@ class LoadUserData extends AbstractFixture implements
             ->setEmail('testadmin@email.com')
             ->setPlainPassword('password');
             
-        $admin->addRole($this->getReference('role-admin'));
+        $admin->addRole('ROLE_ADMIN');
         
         $userManager->updateUser($admin);
              
@@ -60,7 +58,7 @@ class LoadUserData extends AbstractFixture implements
             ->setEmail('testsuperadmin@email.com')
             ->setPlainPassword('password');
             
-        $super->addRole($this->getReference('role-super-admin'));
+        $super->addRole('ROLE_SUPER_ADMIN');
         
         $userManager->updateUser($super);            
     }

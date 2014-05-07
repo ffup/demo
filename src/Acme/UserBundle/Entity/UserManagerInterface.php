@@ -2,7 +2,6 @@
 
 namespace Acme\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Interface to be implemented by user managers. This adds an additional level
  * of abstraction between your application, and the actual repository.
