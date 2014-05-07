@@ -55,6 +55,32 @@ doctrine:
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
         # path:     "%database_path%"
+        # slaves:
+            # a collection of named slave connections (e.g. slave1, slave2)
+            # slave1:
+                # dbname:               ~
+                # host:                 localhost
+                # port:                 ~
+                # user:                 root
+                # password:             ~
+                # charset:              ~
+                # path:                 ~
+                # memory:               ~
+
+                # The unix socket to use for MySQL
+                # unix_socket:          ~
+                # True to use as persistent connection for the ibm_db2 driver
+                # persistent:           ~
+                # The protocol to use for the ibm_db2 driver (default to TCPIP if omitted)
+                # protocol:             ~
+                # True to use dbname as service name instead of SID for Oracle
+                # service:              ~
+                # The session mode to use for the oci8 driver
+                # sessionMode:          ~
+                # True to use a pooled server with the oci8 driver
+                # pooled:               ~
+                # Configuring MultipleActiveResultSets for the pdo_sqlsrv driver
+                # MultipleActiveResultSets:  ~
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"

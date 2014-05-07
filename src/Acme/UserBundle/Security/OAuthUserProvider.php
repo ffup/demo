@@ -92,7 +92,8 @@ class OAuthUserProvider implements AccountConnectorInterface, OAuthAwareUserProv
             $user->$setter_token($response->getAccessToken());
             //I have set all requested data with the user's username
             //modify here with relevant data
-            $user->setUsername($username);
+            // TODO
+            $user->setUsername($service . '_' . $username);
             $user->setEmail($username);
             $user->setPassword($username);
             $this->userManager->updateUser($user);
@@ -100,14 +101,13 @@ class OAuthUserProvider implements AccountConnectorInterface, OAuthAwareUserProv
         }
  
         //if user exists - go with the HWIOAuth way
-        $user = parent::loadUserByOAuthUserResponse($response);
- 
+        
         $serviceName = $response->getResourceOwner()->getName();
         $setter = 'set' . ucfirst($serviceName) . 'AccessToken';
  
         //update access token
         $user->$setter($response->getAccessToken());
- 
+        
         return $user;
     }
     
